@@ -41,7 +41,29 @@ import Script from "next/script";
 
 **HubSpot Code Location**: End of `<body>` tag in `app/layout.tsx`
 
-### 2. Domain Configuration
+### 2. HubSpot Contact Form (MANDATORY)
+
+**ALL contact/CTA buttons must link to `/contact`** which contains the HubSpot form.
+
+**Form Details:**
+- **Portal ID**: 244506871
+- **Form ID**: 3976e6ce-1379-48ca-9b7d-6ba3b45c269e
+- **Region**: na2
+- **Location**: `/app/contact/page.tsx`
+
+**Contact Button Standard:**
+```tsx
+<a
+  href="/contact"
+  className="px-8 py-4 bg-accent-cyan hover:bg-cyan-500 text-slate-900 font-bold rounded-lg transition-all"
+>
+  Contact / Get Started / Get in Touch
+</a>
+```
+
+**Never use** `mailto:` links for primary CTAs - always use `/contact` instead.
+
+### 3. Domain Configuration
 
 The project uses Next.js rewrites (configured in `next.config.ts`) to handle multiple domains:
 

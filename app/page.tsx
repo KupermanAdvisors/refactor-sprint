@@ -470,7 +470,7 @@ export default function Home() {
               72 hours. Fixed fee. Actionable roadmap.
             </p>
             <a
-              href="mailto:jason@kupermanadvisors.com?subject=Book%20Refactor%20Sprint"
+              href="/contact"
               className="inline-block px-8 md:px-12 py-4 md:py-6 bg-accent-cyan hover:bg-cyan-500 text-slate-900 text-lg md:text-xl font-bold transition-all rounded-lg shadow-lg shadow-cyan-500/20"
             >
               Start Your Sprint — $<RollingNumber value={7} />,<RollingNumber value={500} />
@@ -544,7 +544,7 @@ export default function Home() {
             </div>
             <div className="flex gap-8">
               <a 
-                href="mailto:jason@kupermanadvisors.com" 
+                href="/contact" 
                 className="text-slate-400 hover:text-accent-cyan transition-colors text-sm"
               >
                 Contact

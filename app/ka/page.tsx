@@ -42,7 +42,7 @@ export default function KupermanAdvisorsPage() {
             ← Back to Refactor Sprint
           </Link>
           <a
-            href="mailto:jason@kupermanadvisors.com"
+            href="/contact"
             className="px-6 py-3 bg-accent-cyan hover:bg-cyan-500 text-slate-900 font-bold rounded-lg transition-all"
           >
             Contact
@@ -74,7 +74,7 @@ export default function KupermanAdvisorsPage() {
               Access strategic marketing leadership on demand. Suited for $2m-$50m ARR companies that need executive marketing ownership without the full-time costs.
             </p>
             <a
-              href="https://kupermanadvisors.com/getting-started"
+              href="/contact"
               className="inline-flex items-center gap-2 px-8 py-4 bg-accent-cyan hover:bg-cyan-500 text-slate-900 text-lg font-bold rounded-lg transition-all shadow-lg shadow-cyan-500/20"
             >
               Get Started for Free <ArrowRight className="w-5 h-5" />
@@ -289,7 +289,7 @@ export default function KupermanAdvisorsPage() {
               Strategic marketing leadership on demand. Let's build your revenue engine.
             </p>
             <a
-              href="https://kupermanadvisors.com/contact-us"
+              href="/contact"
               className="inline-block px-10 py-5 bg-accent-cyan hover:bg-cyan-500 text-slate-900 text-lg font-bold rounded-lg transition-all shadow-lg shadow-cyan-500/20"
             >
               Get in Touch
