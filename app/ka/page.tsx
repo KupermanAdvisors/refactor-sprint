@@ -62,29 +62,45 @@ export default function KupermanAdvisorsPage() {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(6,182,212,0.1),transparent_50%)]"></div>
         
         <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="max-w-4xl"
-          >
-            <h1 className="text-5xl md:text-7xl font-bold leading-tight mb-8">
-              Turn <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-cyan to-accent-violet">Scattered Marketing</span><br />
-              into a Predictable Revenue Engine
-            </h1>
-            <p className="text-xl md:text-2xl text-slate-300 mb-8 leading-relaxed">
-              <strong>In a world of AI-generated sameness, strategic thinking is the only differentiator.</strong>
-            </p>
-            <p className="text-lg md:text-xl text-slate-400 mb-12 leading-relaxed">
-              Access strategic marketing leadership on demand. Suited for $2m-$50m ARR companies that need executive marketing ownership without the full-time costs.
-            </p>
-            <a
-              href="https://refactorsprint.com"
-              className="inline-flex items-center gap-2 px-8 py-4 bg-accent-cyan hover:bg-cyan-500 text-slate-900 text-lg font-bold rounded-lg transition-all shadow-lg shadow-cyan-500/20"
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* Left Column - Text Content */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
             >
-              Explore the Refactor Sprint <ArrowRight className="w-5 h-5" />
-            </a>
-          </motion.div>
+              <h1 className="text-5xl md:text-7xl font-bold leading-tight mb-8">
+                Turn <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-cyan to-accent-violet">Scattered Marketing</span><br />
+                into a Predictable Revenue Engine
+              </h1>
+              <p className="text-xl md:text-2xl text-slate-300 mb-8 leading-relaxed">
+                <strong>In a world of AI-generated sameness, strategic thinking is the only differentiator.</strong>
+              </p>
+              <p className="text-lg md:text-xl text-slate-400 mb-12 leading-relaxed">
+                Access strategic marketing leadership on demand. Suited for $2m-$50m ARR companies that need executive marketing ownership without the full-time costs.
+              </p>
+              <a
+                href="https://refactorsprint.com"
+                className="inline-flex items-center gap-2 px-8 py-4 bg-accent-cyan hover:bg-cyan-500 text-slate-900 text-lg font-bold rounded-lg transition-all shadow-lg shadow-cyan-500/20"
+              >
+                Explore the Refactor Sprint <ArrowRight className="w-5 h-5" />
+              </a>
+            </motion.div>
+
+            {/* Right Column - Refactor Logo */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="flex items-center justify-center lg:justify-end"
+            >
+              <img
+                src="/refaclogo.png"
+                alt="Refactor Sprint"
+                className="w-full max-w-md lg:max-w-lg h-auto"
+              />
+            </motion.div>
+          </div>
         </div>
       </section>
 
