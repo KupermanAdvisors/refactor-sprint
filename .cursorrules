@@ -1,0 +1,408 @@
+# Refactor Sprint / Kuperman Advisors - Project Rules
+
+## Project Overview
+
+This is a dual-domain Next.js 14 (App Router) project serving two related brands:
+- **refactorsprint.com** - High-velocity strategic sprint service
+- **kupermanadvisors.com** - Broader marketing consulting services
+
+Both sites share the same design system but serve different content.
+
+## Tech Stack
+
+- **Framework**: Next.js 14+ (App Router)
+- **Styling**: Tailwind CSS v4 (configured via CSS `@theme` directive in globals.css)
+- **Animations**: Framer Motion
+- **Icons**: Lucide React
+- **Fonts**: 
+  - Inter (body/UI)
+  - JetBrains Mono (data points/technical elements)
+- **Deployment**: Vercel
+- **Analytics**: HubSpot (Portal ID: 244506871)
+
+## Critical Requirements
+
+### 1. HubSpot Tracking Code (MANDATORY)
+
+**ALL pages must include HubSpot tracking.** This is already implemented in the root layout (`app/layout.tsx`), which applies to all pages automatically.
+
+**If creating a new standalone page or custom layout**, you MUST include:
+
+```tsx
+import Script from "next/script";
+
+// Inside the layout/page component, before closing </body>:
+<Script
+  id="hs-script-loader"
+  src="//js-na2.hs-scripts.com/244506871.js"
+  strategy="afterInteractive"
+/>
+```
+
+**HubSpot Code Location**: End of `<body>` tag in `app/layout.tsx`
+
+### 2. Domain Configuration
+
+The project uses Next.js rewrites (configured in `next.config.ts`) to handle multiple domains:
+
+- `refactorsprint.com` → Main site (homepage)
+- `refactorsprint.com/ka` → Kuperman Advisors page
+- `kupermanadvisors.com` → Automatically shows `/ka` content (via rewrite)
+
+**When creating new pages:**
+- Consider which domain(s) should access the page
+- Update `next.config.ts` if domain-specific routing is needed
+
+## Design System
+
+### Brand Guidelines
+
+**Complete specifications in `/BRAND_GUIDELINES.md`**
+
+Key design elements to always follow:
+
+#### Colors
+
+**Primary:**
+- Background: `#0f172a` (Slate 900) / `#020617` (Slate 950)
+- Text: `#f8fafc` (Slate 50)
+- Accent Cyan (PRIMARY): `#06b6d4`
+- Accent Violet (SECONDARY): `#8b5cf6`
+
+**Usage:**
+- All CTAs use Cyan (`bg-accent-cyan`)
+- Gradients use Cyan → Violet
+- Text on Cyan buttons: `text-slate-900` (dark)
+
+#### Typography
+
+**Fonts:**
+```tsx
+// Body text (default)
+font-family: var(--font-inter)
+
+// Data points, numbers, technical labels
+font-family: var(--font-jetbrains-mono)
+```
+
+**Scale:**
+- H1 Hero: `text-6xl md:text-8xl` (96px desktop, 48px mobile)
+- H2: `text-4xl md:text-6xl` (48px desktop, 32px mobile)
+- H3: `text-2xl md:text-4xl`
+- Body: `text-base md:text-lg`
+
+#### Components
+
+**Glass Cards (signature component):**
+```tsx
+<div className="glass rounded-xl p-8">
+  {/* content */}
+</div>
+```
+
+**Primary Button:**
+```tsx
+<button className="px-8 py-4 bg-accent-cyan hover:bg-cyan-500 text-slate-900 font-bold rounded-lg transition-all shadow-lg shadow-cyan-500/20">
+  Button Text
+</button>
+```
+
+**Gradient Text:**
+```tsx
+<span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-cyan to-accent-violet">
+  Highlighted Text
+</span>
+```
+
+### Animation Standards
+
+Use Framer Motion for all animations:
+
+```tsx
+// Standard fade-in
+<motion.div
+  initial={{ opacity: 0, y: 20 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  viewport={{ once: true }}
+  transition={{ duration: 0.6 }}
+>
+```
+
+**Animation Principles:**
+- Keep duration ≤ 0.6s (fast, purposeful)
+- Use `viewport={{ once: true }}` for scroll animations
+- Stagger delays: `delay: index * 0.1` for lists
+
+### Spacing & Layout
+
+**Responsive Padding:**
+```tsx
+// Sections
+className="py-16 md:py-24 px-4 md:px-6 lg:px-8"
+
+// Cards
+className="p-6 md:p-8"
+```
+
+**Container Max-Width:**
+```tsx
+className="max-w-7xl mx-auto"  // Standard
+className="max-w-4xl mx-auto"  // Narrow content
+```
+
+## Code Standards
+
+### File Structure
+
+```
+app/
+  layout.tsx          # Root layout (includes HubSpot tracking)
+  page.tsx            # refactorsprint.com homepage
+  ka/
+    page.tsx          # kupermanadvisors.com content
+  globals.css         # Global styles + Tailwind config
+components/
+  *.tsx               # Reusable components
+next.config.ts        # Domain rewrites
+BRAND_GUIDELINES.md   # Complete design system
+```
+
+### Component Guidelines
+
+1. **Use 'use client' directive** when using:
+   - Framer Motion
+   - React hooks (useState, useEffect, etc.)
+   - Event handlers
+
+2. **Export as default** for page components
+   ```tsx
+   export default function PageName() { }
+   ```
+
+3. **Use TypeScript** - always type props and return values
+
+4. **Import order:**
+   ```tsx
+   // 1. React/Next
+   import { useState } from 'react';
+   import Link from 'next/link';
+   
+   // 2. Third-party
+   import { motion } from 'framer-motion';
+   import { Icon } from 'lucide-react';
+   
+   // 3. Local components
+   import Component from '@/components/Component';
+   ```
+
+### CSS Guidelines
+
+**Use Tailwind classes** - avoid custom CSS unless absolutely necessary.
+
+**Do NOT create** `tailwind.config.ts` - this project uses Tailwind CSS v4 with inline `@theme` configuration in `globals.css`.
+
+**Color usage:**
+```tsx
+// Backgrounds
+bg-slate-950, bg-slate-900, bg-slate-800
+
+// Text
+text-slate-50, text-slate-300, text-slate-400
+
+// Accents
+bg-accent-cyan, text-accent-cyan
+bg-accent-violet, text-accent-violet
+
+// Glass effect
+className="glass"
+```
+
+## Content Guidelines
+
+### Brand Voice
+
+**The Refactor Sprint:**
+- Authoritative, precise, direct, urgent
+- Technical but accessible
+- Focus on speed and results
+- Use specific metrics ("72 hours", "3x pipeline")
+
+**Kuperman Advisors:**
+- Executive, strategic, experience-driven
+- Emphasize expertise ("25 years")
+- Balance technical and creative
+- Focus on transformation and leadership
+
+### Messaging Principles
+
+**Do:**
+- Lead with results and timeframes
+- Use technical metaphors ("Debug your revenue engine")
+- Quantify everything
+- Challenge status quo
+- Keep sentences short and punchy
+
+**Don't:**
+- Use buzzwords ("synergy", "leverage")
+- Make vague promises
+- Sound like generic AI content
+- Hide pricing or timelines
+
+## Development Workflow
+
+### Creating New Pages
+
+1. **Choose location:**
+   - Root level (`app/page-name/`) for general pages
+   - Under `app/ka/` for Kuperman Advisors-specific pages
+
+2. **Required structure:**
+   ```tsx
+   'use client';
+   
+   import { motion } from 'framer-motion';
+   // ... other imports
+   
+   export default function PageName() {
+     return (
+       <div className="min-h-screen bg-slate-950 text-white">
+         {/* Navbar */}
+         <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-slate-900/80 border-b border-slate-800">
+           {/* Nav content */}
+         </nav>
+         
+         {/* Page content */}
+         <main>
+           {/* Sections */}
+         </main>
+         
+         {/* Footer */}
+         <footer className="py-12 bg-slate-900 border-t border-slate-800">
+           {/* Footer content */}
+         </footer>
+       </div>
+     );
+   }
+   ```
+
+3. **HubSpot tracking** is already included via root layout - no action needed unless creating custom layout
+
+4. **Update domain routing** if needed in `next.config.ts`
+
+### Before Committing
+
+- [ ] HubSpot tracking present (automatic via layout)
+- [ ] Responsive design tested (mobile, tablet, desktop)
+- [ ] Animations use Framer Motion with appropriate timing
+- [ ] Colors match brand guidelines (Cyan/Violet accents)
+- [ ] Typography uses Inter (body) and JetBrains Mono (data)
+- [ ] Glass cards and gradients used appropriately
+- [ ] All links and CTAs functional
+
+## Deployment
+
+**Platform**: Vercel (auto-deploys from main branch)
+
+**Domains:**
+- refactorsprint.com (primary)
+- kupermanadvisors.com (secondary, rewrites to /ka)
+
+**DNS Provider**: Network Solutions
+
+**Process:**
+1. Commit and push to main branch
+2. Vercel auto-builds and deploys
+3. Check both domains after deployment
+
+## Analytics & Tracking
+
+**HubSpot Portal**: 244506871
+
+**Tracking Code**: Automatically loaded on all pages via `app/layout.tsx`
+
+**Do NOT:**
+- Remove or modify the HubSpot Script component
+- Add duplicate tracking codes
+- Change the `strategy="afterInteractive"` setting
+
+## Common Patterns
+
+### Hero Section
+```tsx
+<section className="relative pt-32 md:pt-40 pb-24 md:pb-32 px-4 md:px-6 lg:px-8">
+  <div className="max-w-7xl mx-auto">
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8 }}
+    >
+      <h1 className="text-5xl md:text-7xl font-bold mb-8">
+        Regular Text{' '}
+        <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-cyan to-accent-violet">
+          Gradient Text
+        </span>
+      </h1>
+    </motion.div>
+  </div>
+</section>
+```
+
+### Feature Card
+```tsx
+<div className="glass rounded-xl p-8 group hover:bg-slate-800/40 transition-all">
+  <div className="w-16 h-16 rounded-xl bg-accent-cyan/10 flex items-center justify-center mb-4">
+    <Icon className="w-8 h-8 text-accent-cyan" />
+  </div>
+  <h3 className="text-2xl font-bold mb-4">Title</h3>
+  <p className="text-slate-400 leading-relaxed">Description</p>
+</div>
+```
+
+### CTA Section
+```tsx
+<section className="py-20 md:py-32 px-4 md:px-6 lg:px-8 bg-slate-950">
+  <div className="max-w-4xl mx-auto text-center">
+    <h2 className="text-4xl md:text-6xl font-bold mb-6">
+      Call to <span className="text-accent-cyan">Action</span>
+    </h2>
+    <a
+      href="/contact"
+      className="inline-block px-10 py-5 bg-accent-cyan hover:bg-cyan-500 text-slate-900 text-lg font-bold rounded-lg transition-all shadow-lg shadow-cyan-500/20"
+    >
+      Get Started
+    </a>
+  </div>
+</section>
+```
+
+## Troubleshooting
+
+### HubSpot Tracking Not Working
+- Check browser console for errors
+- Verify Script component in `app/layout.tsx`
+- Ensure `strategy="afterInteractive"` is set
+- Check HubSpot portal for tracking events
+
+### Styles Not Applying
+- Remember: Tailwind v4 uses `@theme` in globals.css, not tailwind.config.ts
+- Check globals.css for color variable definitions
+- Use DevTools to inspect applied classes
+
+### Domain Routing Issues
+- Check `next.config.ts` rewrites configuration
+- Verify Vercel domain settings
+- Check DNS propagation (can take 24-48 hours)
+
+## Resources
+
+- **Brand Guidelines**: `/BRAND_GUIDELINES.md`
+- **Design System**: See globals.css for colors, spacing, animations
+- **HubSpot Portal**: https://app.hubspot.com/contacts/244506871
+- **Vercel Dashboard**: https://vercel.com/dashboard
+- **Tailwind v4 Docs**: https://tailwindcss.com/docs/v4-beta
+
+---
+
+**Last Updated**: January 30, 2026
+**Maintained By**: Jason Kuperman
+**Contact**: jason@kupermanadvisors.com
