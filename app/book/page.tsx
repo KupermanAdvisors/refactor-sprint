@@ -4,8 +4,29 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Script from 'next/script';
 import { Calendar, Clock, Zap } from 'lucide-react';
+import { useEffect } from 'react';
 
 export default function BookPage() {
+  useEffect(() => {
+    // Initialize HubSpot meetings embed when script loads
+    const initializeEmbed = () => {
+      if (window.hbspt) {
+        window.hbspt.meetings.create({
+          portalId: '244506871',
+          formInstanceId: 'jason-kuperman'
+        });
+      }
+    };
+
+    // Check if script is already loaded
+    if (window.hbspt) {
+      initializeEmbed();
+    } else {
+      // Wait for script to load
+      window.addEventListener('hubspot-meetings-ready', initializeEmbed);
+      return () => window.removeEventListener('hubspot-meetings-ready', initializeEmbed);
+    }
+  }, []);
   return (
     <div className="min-h-screen bg-slate-950 text-white">
       {/* Navbar */}
@@ -93,7 +114,7 @@ export default function BookPage() {
             {/* HubSpot Meetings Embed */}
             <div 
               className="meetings-iframe-container" 
-              data-src="https://kupermanadvisors.com/meetings/jason-kuperman?embed=true"
+              data-src="https://meetings.hubspot.com/jason-kuperman?embed=true"
             ></div>
           </motion.div>
 
@@ -144,8 +165,13 @@ export default function BookPage() {
 
       {/* HubSpot Meetings Embed Script */}
       <Script
+        type="text/javascript"
         src="https://static.hsappstatic.net/MeetingsEmbed/ex/MeetingsEmbedCode.js"
-        strategy="lazyOnload"
+        strategy="afterInteractive"
+        onLoad={() => {
+          // Trigger custom event when script loads
+          window.dispatchEvent(new Event('hubspot-meetings-ready'));
+        }}
       />
 
       {/* Custom Styling for Meetings Embed */}
@@ -168,4 +194,15 @@ export default function BookPage() {
       `}</style>
     </div>
   );
+}
+
+// TypeScript declaration for HubSpot meetings API
+declare global {
+  interface Window {
+    hbspt: {
+      meetings: {
+        create: (options: { portalId: string; formInstanceId: string }) => void;
+      };
+    };
+  }
 }
