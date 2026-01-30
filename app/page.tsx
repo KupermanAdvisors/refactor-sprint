@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useAnimationControls } from "framer-motion";
-import { Radio, Activity, Heart, CheckCircle, XCircle, Zap, Clock, Target } from "lucide-react";
+import { Radio, Activity, Heart, CheckCircle, XCircle, Zap, Clock, Target, Hammer, Sparkles, Globe } from "lucide-react";
 import NeuralBraidBackground from "@/components/neural-braid-background";
 import { useState } from "react";
 
@@ -485,63 +485,112 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Footer - Scope & Trust */}
-      <footer className="py-16 px-6 lg:px-8 bg-slate-900 border-t border-slate-800">
-        <div className="max-w-6xl mx-auto">
-          {/* Scope Table */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="mb-12"
-          >
-            <h3 className="text-2xl font-bold mb-8 text-center">Scope Clarity</h3>
-            <div className="glass rounded-xl overflow-hidden">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b border-slate-700">
-                    <th className="px-8 py-5 text-left font-bold">Service</th>
-                    <th className="px-8 py-5 text-left font-bold">Focus</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr className="border-b border-slate-800">
-                    <td className="px-8 py-5">
-                      <div className="font-bold text-xl text-accent-cyan">The Refactor Sprint</div>
-                      <div className="text-sm font-mono text-slate-500">3 Days • Architecture</div>
-                    </td>
-                    <td className="px-8 py-5 text-slate-300">
-                      Diagnostics, Strategy, Creative Briefing, Tech Audit
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="px-8 py-5">
-                      <div className="font-bold text-xl text-slate-400">Fractional CMO</div>
-                      <div className="text-sm font-mono text-slate-600">Ongoing • Execution</div>
-                    </td>
-                    <td className="px-8 py-5 text-slate-500">
-                      Execution, Creative Production, Team Management, Tech Implementation
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+      {/* About Section */}
+      <section className="py-16 md:py-24 px-4 md:px-6 lg:px-8 bg-slate-900 border-t border-slate-800">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid md:grid-cols-12 gap-8 md:gap-12 items-center mb-12">
+            {/* Photo - Left Column */}
+            <div className="md:col-span-4">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                className="relative"
+              >
+                <div className="aspect-square rounded-2xl overflow-hidden border-4 border-accent-cyan/20">
+                  <img
+                    src="/jason-kuperman.jpg"
+                    alt="Jason Kuperman - Marketing Strategy Expert"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              </motion.div>
             </div>
-          </motion.div>
 
-          {/* Trust Indicator */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center glass rounded-lg p-8 max-w-3xl mx-auto mb-12"
-          >
-            <div className="text-sm font-mono text-slate-500 uppercase tracking-wider mb-3">Led by</div>
-            <div className="text-2xl font-bold mb-3">Jason Kuperman</div>
-            <p className="text-slate-400">
-              25 years building digital infrastructure for global brands (Apple, OUTFRONT). 
-              Now applying that rigor to scale-ups.
-            </p>
-          </motion.div>
+            {/* Bio Content - Right Column */}
+            <div className="md:col-span-8">
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+              >
+                <h2 className="text-3xl md:text-5xl font-bold mb-8">Jason Kuperman</h2>
+                
+                <div className="grid md:grid-cols-2 gap-6">
+                  {/* Feature Card 1 */}
+                  <div className="flex gap-4">
+                    <div className="flex-shrink-0">
+                      <div className="w-12 h-12 rounded-lg bg-accent-cyan/10 flex items-center justify-center">
+                        <Hammer className="w-6 h-6 text-accent-cyan" />
+                      </div>
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-bold mb-2">The Architect</h3>
+                      <p className="text-slate-400 text-sm leading-relaxed">Started at Frank Gehry's office, mastering complex systems.</p>
+                    </div>
+                  </div>
+
+                  {/* Feature Card 2 */}
+                  <div className="flex gap-4">
+                    <div className="flex-shrink-0">
+                      <div className="w-12 h-12 rounded-lg bg-accent-cyan/10 flex items-center justify-center">
+                        <Sparkles className="w-6 h-6 text-accent-cyan" />
+                      </div>
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-bold mb-2">Built on Experience</h3>
+                      <p className="text-slate-400 text-sm leading-relaxed">Jason has spent 25+ years navigating the intersection of digital disruption and creative storytelling.</p>
+                    </div>
+                  </div>
+
+                  {/* Feature Card 3 */}
+                  <div className="flex gap-4">
+                    <div className="flex-shrink-0">
+                      <div className="w-12 h-12 rounded-lg bg-accent-cyan/10 flex items-center justify-center">
+                        <Globe className="w-6 h-6 text-accent-cyan" />
+                      </div>
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-bold mb-2">The Digital Pioneer</h3>
+                      <p className="text-slate-400 text-sm leading-relaxed">Built TBWA's first digital division, leading the team behind Apple's first digital campaigns.</p>
+                    </div>
+                  </div>
+
+                  {/* Feature Card 4 */}
+                  <div className="flex gap-4">
+                    <div className="flex-shrink-0">
+                      <div className="w-12 h-12 rounded-lg bg-accent-cyan/10 flex items-center justify-center">
+                        <Globe className="w-6 h-6 text-accent-cyan" />
+                      </div>
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-bold mb-2">The Global Operator</h3>
+                      <p className="text-slate-400 text-sm leading-relaxed">Scaled digital operations across 16 markets in Asia-Pacific for Omnicom Group.</p>
+                    </div>
+                  </div>
+
+                  {/* Feature Card 5 */}
+                  <div className="flex gap-4">
+                    <div className="flex-shrink-0">
+                      <div className="w-12 h-12 rounded-lg bg-accent-cyan/10 flex items-center justify-center">
+                        <Zap className="w-6 h-6 text-accent-cyan" />
+                      </div>
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-bold mb-2">The Transformer</h3>
+                      <p className="text-slate-400 text-sm leading-relaxed">Led the GTM strategy for OUTFRONT Media's $3.2B digital transformation.</p>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="py-12 px-6 lg:px-8 bg-slate-900 border-t border-slate-800">
+        <div className="max-w-7xl mx-auto">
 
           {/* Footer Links */}
           <div className="flex flex-col md:flex-row justify-between items-center gap-6 pt-8 border-t border-slate-800">
