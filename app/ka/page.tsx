@@ -225,7 +225,7 @@ export default function KupermanAdvisorsPage() {
                   <img
                     src="/refaclogo.png"
                     alt="Refactor Sprint"
-                    className="h-8 w-auto flex-shrink-0"
+                    className="h-12 w-auto flex-shrink-0"
                   />
                   <div className="flex-1">
                     <p className="text-sm text-slate-300 group-hover:text-white transition-colors">
