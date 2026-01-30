@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { Award, Zap, TrendingUp, DollarSign, RotateCw, ArrowRight, Sparkles, Globe, Wrench, Hammer, Mail } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 // Reusable Glass Card Component
 const GlassCard = ({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) => (
@@ -224,9 +225,14 @@ export default function KupermanAdvisorsPage() {
                 className="relative"
               >
                 <div className="aspect-square rounded-2xl overflow-hidden border-4 border-accent-cyan/20">
-                  <div className="w-full h-full bg-gradient-to-br from-accent-cyan/20 to-accent-violet/20 flex items-center justify-center">
-                    <span className="text-8xl font-bold text-accent-cyan opacity-50">JK</span>
-                  </div>
+                  <Image
+                    src="/jason-kuperman.jpg"
+                    alt="Jason Kuperman - Marketing Strategy Expert"
+                    width={800}
+                    height={800}
+                    className="w-full h-full object-cover"
+                    priority
+                  />
                 </div>
               </motion.div>
             </div>
