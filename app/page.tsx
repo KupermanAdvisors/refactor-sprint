@@ -70,18 +70,18 @@ export default function Home() {
       </nav>
 
       {/* Hero Section - The Value Proposition */}
-      <section className="relative pt-32 pb-40 px-6 lg:px-8 overflow-hidden min-h-screen flex items-center">
+      <section className="relative pt-24 md:pt-32 pb-32 md:pb-40 px-4 md:px-6 lg:px-8 overflow-hidden min-h-screen flex items-center justify-center">
         {/* Neural Braid Background Animation */}
         <NeuralBraidBackground />
 
         {/* Content with backdrop blur for readability */}
-        <div className="max-w-6xl mx-auto text-center relative z-10 backdrop-blur-sm bg-slate-900/30 rounded-2xl p-12">
+        <div className="w-full max-w-6xl mx-auto text-center relative z-10 backdrop-blur-sm bg-slate-900/30 rounded-2xl p-6 md:p-12">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <h1 className="text-6xl lg:text-8xl font-bold leading-[1.05] mb-8">
+            <h1 className="text-4xl md:text-6xl lg:text-8xl font-bold leading-[1.1] md:leading-[1.05] mb-6 md:mb-8 px-2">
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-slate-50 to-slate-400">
                 25 Years of Marketing Strategy.
               </span>
@@ -90,13 +90,13 @@ export default function Home() {
                 Compressed into 72 Hours.
               </span>
             </h1>
-            <p className="text-xl text-slate-300 mb-12 leading-relaxed max-w-4xl mx-auto">
+            <p className="text-base md:text-xl text-slate-300 mb-8 md:mb-12 leading-relaxed max-w-4xl mx-auto px-2">
               We leverage a proprietary AI stack to ingest your data, debug your revenue engine, 
               and deliver a 90-day roadmap—faster than a traditional agency can schedule a kickoff.
             </p>
             <a
               href="#book"
-              className="inline-block px-10 py-5 bg-accent-cyan hover:bg-cyan-500 text-slate-900 text-lg font-bold transition-all rounded-lg shadow-lg shadow-cyan-500/20"
+              className="inline-block px-8 md:px-10 py-4 md:py-5 bg-accent-cyan hover:bg-cyan-500 text-slate-900 text-base md:text-lg font-bold transition-all rounded-lg shadow-lg shadow-cyan-500/20"
             >
               Start the Sprint
             </a>
@@ -105,7 +105,7 @@ export default function Home() {
       </section>
 
       {/* The Why - The Efficiency */}
-      <section className="py-24 px-6 lg:px-8 bg-slate-950 border-y border-slate-800">
+      <section className="py-16 md:py-24 px-4 md:px-6 lg:px-8 bg-slate-950 border-y border-slate-800">
         <div className="max-w-5xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -113,7 +113,7 @@ export default function Home() {
             viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <h2 className="text-5xl font-bold mb-6">
+            <h2 className="text-3xl md:text-5xl font-bold mb-6">
               The End of the{" "}
               <span className="relative inline-block">
                 <span className="text-slate-300">8-Week Discovery Phase</span>
@@ -151,13 +151,13 @@ export default function Home() {
                 </motion.svg>
               </span>
             </h2>
-            <p className="text-2xl text-slate-300 max-w-3xl mx-auto leading-relaxed mb-8">
+            <p className="text-lg md:text-2xl text-slate-300 max-w-3xl mx-auto leading-relaxed mb-8 px-2">
               You don't have months to wait for a strategy deck. By combining senior executive 
               leadership with computational market intelligence, we strip away the "consulting fluff" 
               and get straight to the math of your market position.
             </p>
-            <div className="inline-block glass rounded-lg px-8 py-4">
-              <div className="text-4xl font-bold text-accent-cyan mb-2">
+            <div className="inline-block glass rounded-lg px-6 md:px-8 py-3 md:py-4">
+              <div className="text-2xl md:text-4xl font-bold text-accent-cyan mb-2">
                 Same rigour.{" "}
                 <RollingNumber value={1} />/<RollingNumber value={10} />th of the time.
               </div>
@@ -248,15 +248,15 @@ export default function Home() {
       </section>
 
       {/* The Methodology - Human + Machine */}
-      <section className="py-32 px-6 lg:px-8 bg-slate-900">
+      <section className="py-16 md:py-32 px-4 md:px-6 lg:px-8 bg-slate-900">
         <div className="max-w-6xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-20"
+            className="text-center mb-12 md:mb-20"
           >
-            <h2 className="text-5xl font-bold mb-4">
+            <h2 className="text-3xl md:text-5xl font-bold mb-4">
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-cyan to-accent-violet">
                 Augmented Strategy
               </span>
@@ -312,22 +312,22 @@ export default function Home() {
       </section>
 
       {/* The Process - Signal Flow Timeline */}
-      <section className="py-24 px-6 lg:px-8 bg-slate-950 border-y border-slate-800">
+      <section className="py-16 md:py-24 px-4 md:px-6 lg:px-8 bg-slate-950 border-y border-slate-800">
         <div className="max-w-6xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-20"
+            className="text-center mb-12 md:mb-20"
           >
-            <h2 className="text-5xl font-bold mb-4">
+            <h2 className="text-3xl md:text-5xl font-bold mb-4">
               The <span className="text-accent-cyan">Refactor Sprint</span>
             </h2>
           </motion.div>
 
           <div className="relative">
             {/* Vertical Signal Flow Line */}
-            <div className="absolute left-8 md:left-24 top-0 bottom-0 w-1 bg-slate-800">
+            <div className="absolute left-4 md:left-8 lg:left-24 top-0 bottom-0 w-1 bg-slate-800">
               <motion.div
                 className="w-full bg-gradient-to-b from-accent-cyan via-accent-violet to-white"
                 initial={{ height: 0 }}
@@ -337,7 +337,7 @@ export default function Home() {
               />
             </div>
 
-            <div className="space-y-8">
+            <div className="space-y-6 md:space-y-8">
               {[
                 {
                   day: "01",
@@ -365,20 +365,26 @@ export default function Home() {
                     duration: 0.6,
                     ease: [0.25, 0.1, 0.25, 1]
                   }}
-                  className="grid md:grid-cols-12 gap-6 items-start relative"
+                  className="grid md:grid-cols-12 gap-4 md:gap-6 items-start relative"
                 >
                   {/* Connection node */}
-                  <div className="absolute left-8 md:left-24 top-8 w-4 h-4 -ml-1.5 bg-accent-cyan rounded-full shadow-lg shadow-cyan-500/50 z-10" />
+                  <div className="absolute left-4 md:left-8 lg:left-24 top-6 md:top-8 w-4 h-4 -ml-1.5 bg-accent-cyan rounded-full shadow-lg shadow-cyan-500/50 z-10" />
                   
-                  <div className="md:col-span-2 pl-20 md:pl-0">
-                    <div className="text-7xl font-bold font-mono text-accent-cyan opacity-20">
+                  <div className="hidden md:block md:col-span-2">
+                    <div className="text-5xl lg:text-7xl font-bold font-mono text-accent-cyan opacity-20">
                       {item.day}
                     </div>
                   </div>
                   
-                  <div className="md:col-span-10 glass rounded-xl p-8 ml-12 md:ml-0">
-                    <h3 className="text-2xl font-bold mb-3">{item.title}</h3>
-                    <p className="text-slate-400 leading-relaxed text-lg">{item.description}</p>
+                  <div className="md:col-span-10 glass rounded-xl p-6 md:p-8 ml-10 md:ml-0">
+                    <div className="flex items-center gap-4 mb-3 md:hidden">
+                      <div className="text-3xl font-bold font-mono text-accent-cyan opacity-30">
+                        {item.day}
+                      </div>
+                      <h3 className="text-xl font-bold">{item.title}</h3>
+                    </div>
+                    <h3 className="text-2xl font-bold mb-3 hidden md:block">{item.title}</h3>
+                    <p className="text-slate-400 leading-relaxed text-base md:text-lg">{item.description}</p>
                   </div>
                 </motion.div>
               ))}
@@ -388,13 +394,13 @@ export default function Home() {
       </section>
 
       {/* The Output - Deliverables */}
-      <section className="py-24 px-6 lg:px-8 bg-slate-900">
+      <section className="py-16 md:py-24 px-4 md:px-6 lg:px-8 bg-slate-900">
         <div className="max-w-6xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-16"
+            className="text-center mb-12 md:mb-16"
           >
             <div className="inline-block mb-4 px-4 py-2 glass rounded-full">
               <Clock className="w-4 h-4 inline-block mr-2 text-accent-cyan" />
@@ -402,12 +408,12 @@ export default function Home() {
                 <RollingNumber value={72} /> Hours Later
               </span>
             </div>
-            <h2 className="text-5xl font-bold mb-4">
+            <h2 className="text-3xl md:text-5xl font-bold mb-4 px-2">
               What You Get on <span className="text-accent-cyan">Thursday Morning</span>
             </h2>
           </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-3 gap-4 md:gap-6">
             {[
               {
                 number: "01",
@@ -445,7 +451,7 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section id="book" className="py-32 px-6 lg:px-8 relative overflow-hidden bg-slate-950">
+      <section id="book" className="py-20 md:py-32 px-4 md:px-6 lg:px-8 relative overflow-hidden bg-slate-950">
         <div className="absolute inset-0 bg-gradient-to-r from-accent-cyan/10 to-accent-violet/10"></div>
         
         <div className="max-w-4xl mx-auto text-center relative z-10">
@@ -454,18 +460,18 @@ export default function Home() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-5xl lg:text-6xl font-bold mb-8 leading-tight">
+            <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-6 md:mb-8 leading-tight px-2">
               Ready to Accelerate<br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-cyan to-accent-violet">
                 Your Strategy?
               </span>
             </h2>
-            <p className="text-xl text-slate-300 mb-12 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-lg md:text-xl text-slate-300 mb-8 md:mb-12 max-w-2xl mx-auto leading-relaxed px-2">
               72 hours. Fixed fee. Actionable roadmap.
             </p>
             <a
               href="mailto:jason@kupermanadvisors.com?subject=Book%20Refactor%20Sprint"
-              className="inline-block px-12 py-6 bg-accent-cyan hover:bg-cyan-500 text-slate-900 text-xl font-bold transition-all rounded-lg shadow-lg shadow-cyan-500/20"
+              className="inline-block px-8 md:px-12 py-4 md:py-6 bg-accent-cyan hover:bg-cyan-500 text-slate-900 text-lg md:text-xl font-bold transition-all rounded-lg shadow-lg shadow-cyan-500/20"
             >
               Start Your Sprint — $<RollingNumber value={7} />,<RollingNumber value={500} />
             </a>
