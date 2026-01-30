@@ -139,7 +139,7 @@ export default function Home() {
                     x2="100"
                     y2="10"
                     stroke="#dc2626"
-                    strokeWidth="4"
+                    strokeWidth="8"
                     strokeLinecap="round"
                     variants={{
                       hidden: { pathLength: 0, opacity: 0 },
