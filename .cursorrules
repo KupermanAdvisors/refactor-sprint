@@ -50,8 +50,8 @@ import Script from "next/script";
 
 **Details:**
 - **Location**: `/app/book/page.tsx`
-- **Embed URL**: `https://kupermanadvisors.com/meetings/jason-kuperman?embed=true`
-- **Script**: `https://static.hsappstatic.net/MeetingsEmbed/ex/MeetingsEmbedCode.js`
+- **Embed URL**: `https://app-na2.hubspot.com/meetings/jason-kuperman?embed=true`
+- **Implementation**: Direct iframe embed (no additional script needed)
 
 **Button Standard:**
 ```tsx
