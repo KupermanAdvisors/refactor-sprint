@@ -589,28 +589,18 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="py-12 px-6 lg:px-8 bg-slate-900 border-t border-slate-800">
-        <div className="max-w-7xl mx-auto">
-
-          {/* Footer Links */}
-          <div className="flex flex-col md:flex-row justify-between items-center gap-6 pt-8 border-t border-slate-800">
-            <div className="text-slate-500 text-sm">
-              © 2026 Kuperman Advisors. All rights reserved.
-            </div>
-            <div className="flex gap-8">
-              <a 
-                href="/contact" 
-                className="text-slate-400 hover:text-accent-cyan transition-colors text-sm"
-              >
-                Contact
-              </a>
-              <a 
-                href="#" 
-                className="text-slate-400 hover:text-accent-cyan transition-colors text-sm"
-              >
-                LinkedIn
-              </a>
-            </div>
+      <footer className="py-12 px-4 md:px-6 lg:px-8 bg-slate-900 border-t border-slate-800">
+        <div className="max-w-7xl mx-auto text-center">
+          <p className="text-slate-400">
+            © {new Date().getFullYear()} Kuperman Advisors. Strategic Marketing Leadership.
+          </p>
+          <div className="mt-4 flex justify-center gap-6">
+            <a href="https://refactorsprint.com" className="text-accent-cyan hover:text-cyan-400 transition-colors">
+              Refactor Sprint
+            </a>
+            <a href="https://kupermanadvisors.com" className="text-slate-400 hover:text-white transition-colors">
+              Main Site
+            </a>
           </div>
         </div>
       </footer>

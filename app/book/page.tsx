@@ -137,8 +137,16 @@ export default function BookPage() {
       <footer className="py-12 px-4 md:px-6 lg:px-8 bg-slate-900 border-t border-slate-800">
         <div className="max-w-7xl mx-auto text-center">
           <p className="text-slate-400">
-            © {new Date().getFullYear()} The Refactor Sprint / Kuperman Advisors
+            © {new Date().getFullYear()} Kuperman Advisors. Strategic Marketing Leadership.
           </p>
+          <div className="mt-4 flex justify-center gap-6">
+            <a href="https://refactorsprint.com" className="text-accent-cyan hover:text-cyan-400 transition-colors">
+              Refactor Sprint
+            </a>
+            <a href="https://kupermanadvisors.com" className="text-slate-400 hover:text-white transition-colors">
+              Main Site
+            </a>
+          </div>
         </div>
       </footer>
 

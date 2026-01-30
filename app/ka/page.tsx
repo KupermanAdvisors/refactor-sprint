@@ -331,9 +331,9 @@ export default function KupermanAdvisorsPage() {
             © {new Date().getFullYear()} Kuperman Advisors. Strategic Marketing Leadership.
           </p>
           <div className="mt-4 flex justify-center gap-6">
-            <Link href="/" className="text-accent-cyan hover:text-cyan-400 transition-colors">
+            <a href="https://refactorsprint.com" className="text-accent-cyan hover:text-cyan-400 transition-colors">
               Refactor Sprint
-            </Link>
+            </a>
             <a href="https://kupermanadvisors.com" className="text-slate-400 hover:text-white transition-colors">
               Main Site
             </a>
