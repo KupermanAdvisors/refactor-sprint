@@ -2,32 +2,9 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import Script from 'next/script';
 import { Calendar, Clock, Zap } from 'lucide-react';
-import { useEffect } from 'react';
-import '@/lib/types/hubspot';
 
 export default function BookPage() {
-  useEffect(() => {
-    // Initialize HubSpot meetings embed when script loads
-    const initializeEmbed = () => {
-      if (window.hbspt) {
-        window.hbspt.meetings.create({
-          portalId: '244506871',
-          formInstanceId: 'jason-kuperman'
-        });
-      }
-    };
-
-    // Check if script is already loaded
-    if (window.hbspt) {
-      initializeEmbed();
-    } else {
-      // Wait for script to load
-      window.addEventListener('hubspot-meetings-ready', initializeEmbed);
-      return () => window.removeEventListener('hubspot-meetings-ready', initializeEmbed);
-    }
-  }, []);
   return (
     <div className="min-h-screen bg-slate-950 text-white">
       {/* Navbar */}
@@ -113,10 +90,11 @@ export default function BookPage() {
             className="glass rounded-2xl p-8 md:p-12"
           >
             {/* HubSpot Meetings Embed */}
-            <div 
-              className="meetings-iframe-container" 
-              data-src="https://meetings.hubspot.com/jason-kuperman?embed=true"
-            ></div>
+            <iframe
+              src="https://meetings.hubspot.com/jason-kuperman?embed=true"
+              className="meetings-iframe"
+              title="Schedule a meeting with Jason Kuperman"
+            />
           </motion.div>
 
           {/* Alternative Contact */}
@@ -164,33 +142,15 @@ export default function BookPage() {
         </div>
       </footer>
 
-      {/* HubSpot Meetings Embed Script */}
-      <Script
-        type="text/javascript"
-        src="https://static.hsappstatic.net/MeetingsEmbed/ex/MeetingsEmbedCode.js"
-        strategy="afterInteractive"
-        onLoad={() => {
-          // Trigger custom event when script loads
-          window.dispatchEvent(new Event('hubspot-meetings-ready'));
-        }}
-      />
-
       {/* Custom Styling for Meetings Embed */}
       <style jsx global>{`
         /* HubSpot Meetings Embed Styling */
-        .meetings-iframe-container {
-          min-height: 600px;
+        .meetings-iframe {
+          min-height: 700px;
+          height: 100%;
           width: 100%;
-        }
-
-        .meetings-iframe-container iframe {
+          border: none;
           border-radius: 8px;
-          border: 1px solid rgba(148, 163, 184, 0.2);
-        }
-
-        /* Override HubSpot styles for dark theme */
-        .meetings-iframe-container {
-          background-color: transparent !important;
         }
       `}</style>
     </div>
