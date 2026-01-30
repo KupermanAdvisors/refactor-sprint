@@ -39,8 +39,15 @@ export default function KupermanAdvisorsPage() {
       {/* Navbar */}
       <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-slate-900/80 border-b border-slate-800">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <Link href="/" className="text-xl font-bold text-accent-cyan hover:text-cyan-400 transition-colors">
-            ← Back to Refactor Sprint
+          <Link href="/" className="flex items-center">
+            <Image
+              src="/logo2.png"
+              alt="Kuperman Advisors"
+              width={180}
+              height={60}
+              className="h-10 w-auto"
+              priority
+            />
           </Link>
           <a
             href="/contact"
@@ -75,10 +82,10 @@ export default function KupermanAdvisorsPage() {
               Access strategic marketing leadership on demand. Suited for $2m-$50m ARR companies that need executive marketing ownership without the full-time costs.
             </p>
             <a
-              href="/book"
+              href="https://refactorsprint.com"
               className="inline-flex items-center gap-2 px-8 py-4 bg-accent-cyan hover:bg-cyan-500 text-slate-900 text-lg font-bold rounded-lg transition-all shadow-lg shadow-cyan-500/20"
             >
-              Get Started for Free <ArrowRight className="w-5 h-5" />
+              Explore the Refactor Sprint <ArrowRight className="w-5 h-5" />
             </a>
           </motion.div>
         </div>
