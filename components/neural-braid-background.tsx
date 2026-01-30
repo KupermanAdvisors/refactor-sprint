@@ -33,12 +33,12 @@ export default function NeuralBraidBackground() {
         size: number;
       }> = [];
 
-      update(time: number) {
+      update(time: number, canvasWidth: number, canvasHeight: number) {
         // Add new particles at bottom
         if (Math.random() < 0.3) {
           this.particles.push({
-            x: canvas.width / 2,
-            y: canvas.height,
+            x: canvasWidth / 2,
+            y: canvasHeight,
             age: 0,
             size: 2 + Math.random() * 3,
           });
@@ -50,7 +50,7 @@ export default function NeuralBraidBackground() {
           p.y -= 1.5; // Slow upward movement
           
           // Calculate progress from bottom to top (1 = bottom, 0 = top)
-          const progress = p.y / canvas.height;
+          const progress = p.y / canvasHeight;
           
           // Amplitude decay: wide at bottom, narrow at top, zero at convergence
           const maxAmplitude = 150;
@@ -58,7 +58,7 @@ export default function NeuralBraidBackground() {
           
           // Double helix: sin(t) phase for Stream A
           const helixPhase = p.age * 2;
-          p.x = canvas.width / 2 + Math.sin(helixPhase) * amplitude;
+          p.x = canvasWidth / 2 + Math.sin(helixPhase) * amplitude;
 
           // Remove old particles
           if (p.y < 0 || p.age > 10) {
@@ -126,12 +126,12 @@ export default function NeuralBraidBackground() {
         speed: number;
       }> = [];
 
-      update(time: number) {
+      update(time: number, canvasWidth: number, canvasHeight: number) {
         // Add new particles at bottom
         if (Math.random() < 0.5) {
           this.particles.push({
-            x: canvas.width / 2,
-            y: canvas.height,
+            x: canvasWidth / 2,
+            y: canvasHeight,
             age: 0,
             size: 1 + Math.random() * 2,
             speed: 3 + Math.random() * 2,
@@ -144,7 +144,7 @@ export default function NeuralBraidBackground() {
           p.y -= p.speed; // Fast upward movement
           
           // Calculate progress from bottom to top (1 = bottom, 0 = top)
-          const progress = p.y / canvas.height;
+          const progress = p.y / canvasHeight;
           
           // Amplitude decay: wide at bottom, narrow at top, zero at convergence
           const maxAmplitude = 150;
@@ -152,7 +152,7 @@ export default function NeuralBraidBackground() {
           
           // Double helix: sin(t + PI) phase for Stream B (180 degrees out of phase)
           const helixPhase = p.age * 2;
-          p.x = canvas.width / 2 + Math.sin(helixPhase + Math.PI) * amplitude;
+          p.x = canvasWidth / 2 + Math.sin(helixPhase + Math.PI) * amplitude;
 
           // Jittery movement (high-frequency) - but smaller at top
           p.x += (Math.random() - 0.5) * 2 * progress;
@@ -211,13 +211,13 @@ export default function NeuralBraidBackground() {
     class Singularity {
       pulsePhase: number = 0;
 
-      draw(ctx: CanvasRenderingContext2D, humanParticles: any[], aiParticles: any[], time: number) {
-        const centerX = canvas.width / 2;
-        const singularityY = canvas.height * 0.15; // Convergence point
+      draw(ctx: CanvasRenderingContext2D, humanParticles: any[], aiParticles: any[], time: number, canvasWidth: number, canvasHeight: number) {
+        const centerX = canvasWidth / 2;
+        const singularityY = canvasHeight * 0.15; // Convergence point
         
         // Find particles near the singularity
         const nearSingularity = [...humanParticles, ...aiParticles].filter(
-          p => p.y < canvas.height * 0.25 && p.y > canvas.height * 0.05
+          p => p.y < canvasHeight * 0.25 && p.y > canvasHeight * 0.05
         );
         
         if (nearSingularity.length > 0) {
@@ -226,7 +226,7 @@ export default function NeuralBraidBackground() {
           const pulseScale = 1 + Math.sin(this.pulsePhase) * 0.2;
           
           // Vertical beam converging upward
-          const beamGradient = ctx.createLinearGradient(centerX, canvas.height * 0.3, centerX, 0);
+          const beamGradient = ctx.createLinearGradient(centerX, canvasHeight * 0.3, centerX, 0);
           beamGradient.addColorStop(0, 'rgba(255, 255, 255, 0)');
           beamGradient.addColorStop(0.3, 'rgba(59, 130, 246, 0.1)');
           beamGradient.addColorStop(0.6, 'rgba(255, 255, 255, 0.3)');
@@ -234,10 +234,10 @@ export default function NeuralBraidBackground() {
           
           ctx.fillStyle = beamGradient;
           ctx.beginPath();
-          ctx.moveTo(centerX - 60, canvas.height * 0.3);
+          ctx.moveTo(centerX - 60, canvasHeight * 0.3);
           ctx.lineTo(centerX - 15, singularityY);
           ctx.lineTo(centerX + 15, singularityY);
-          ctx.lineTo(centerX + 60, canvas.height * 0.3);
+          ctx.lineTo(centerX + 60, canvasHeight * 0.3);
           ctx.closePath();
           ctx.fill();
           
@@ -301,8 +301,8 @@ export default function NeuralBraidBackground() {
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       // Update and draw streams
-      humanStream.update(time);
-      aiStream.update(time);
+      humanStream.update(time, canvas.width, canvas.height);
+      aiStream.update(time, canvas.width, canvas.height);
       
       // Set blend mode for additive color mixing at intersections
       ctx.globalCompositeOperation = 'lighter';
@@ -312,7 +312,7 @@ export default function NeuralBraidBackground() {
       
       ctx.globalCompositeOperation = 'source-over';
       
-      singularity.draw(ctx, humanStream.particles, aiStream.particles, time);
+      singularity.draw(ctx, humanStream.particles, aiStream.particles, time, canvas.width, canvas.height);
 
       animationFrameId = requestAnimationFrame(animate);
     };
