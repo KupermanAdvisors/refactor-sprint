@@ -91,7 +91,7 @@ export default function BookPage() {
           >
             {/* HubSpot Meetings Embed */}
             <iframe
-              src="https://meetings.hubspot.com/jason-kuperman?embed=true"
+              src="https://app-na2.hubspot.com/meetings/jason-kuperman?embed=true"
               className="meetings-iframe"
               title="Schedule a meeting with Jason Kuperman"
             />
