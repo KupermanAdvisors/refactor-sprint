@@ -488,6 +488,15 @@ export default function Home() {
       {/* About Section */}
       <section className="py-16 md:py-24 px-4 md:px-6 lg:px-8 bg-slate-900 border-t border-slate-800">
         <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <p className="text-accent-cyan font-mono text-sm uppercase tracking-wider">Led by</p>
+          </motion.div>
+          
           <div className="grid md:grid-cols-12 gap-8 md:gap-12 items-center mb-12">
             {/* Photo - Left Column */}
             <div className="md:col-span-4">
