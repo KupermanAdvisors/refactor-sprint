@@ -38,12 +38,12 @@ export default function KupermanAdvisorsPage() {
     <div className="min-h-screen bg-slate-950 text-white">
       {/* Navbar */}
       <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-slate-900/80 border-b border-slate-800">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-6 py-6 flex items-center justify-between">
           <Link href="/" className="flex items-center">
             <img
               src="/logo2.png"
               alt="Kuperman Advisors"
-              className="h-10 w-auto"
+              className="h-[120px] w-auto"
             />
           </Link>
           <a
