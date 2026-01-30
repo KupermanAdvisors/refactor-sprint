@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useAnimationControls } from "framer-motion";
-import { Radio, Activity, Heart, CheckCircle, XCircle, Zap, Clock, Target, Hammer, Sparkles, Globe } from "lucide-react";
+import { Radio, Activity, Heart, CheckCircle, XCircle, Zap, Clock, Target, Hammer, Sparkles, Globe, MousePointer } from "lucide-react";
 import NeuralBraidBackground from "@/components/neural-braid-background";
 import { useState } from "react";
 
@@ -556,7 +556,7 @@ export default function Home() {
                   <div className="flex gap-4">
                     <div className="flex-shrink-0">
                       <div className="w-12 h-12 rounded-lg bg-accent-cyan/10 flex items-center justify-center">
-                        <Globe className="w-6 h-6 text-accent-cyan" />
+                        <MousePointer className="w-6 h-6 text-accent-cyan" />
                       </div>
                     </div>
                     <div>

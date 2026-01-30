@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Award, Zap, TrendingUp, DollarSign, RotateCw, ArrowRight, Sparkles, Globe, Wrench, Hammer, Mail } from 'lucide-react';
+import { Award, Zap, TrendingUp, DollarSign, RotateCw, ArrowRight, Sparkles, Globe, Wrench, Hammer, Mail, MousePointer } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -286,7 +286,7 @@ export default function KupermanAdvisorsPage() {
                     description="Jason has spent 25+ years navigating the intersection of digital disruption and creative storytelling."
                   />
                   <FeatureCard
-                    icon={Globe}
+                    icon={MousePointer}
                     title="The Digital Pioneer"
                     description="Built TBWA's first digital division, leading the team behind Apple's first digital campaigns."
                   />
