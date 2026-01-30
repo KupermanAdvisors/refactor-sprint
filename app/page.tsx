@@ -121,26 +121,26 @@ export default function Home() {
           >
             <h2 className="text-3xl md:text-5xl font-bold mb-6">
               The End of the{" "}
-              <span className="relative inline-block">
+              <span className="relative inline-block whitespace-nowrap">
                 <span className="text-slate-300">8-Week Discovery Phase</span>
                 {/* Red Pen Strikethrough */}
                 <motion.svg
-                  className="absolute left-0 top-0 w-full h-full pointer-events-none"
-                  viewBox="0 0 100 100"
+                  className="absolute left-0 top-1/2 -translate-y-1/2 w-full pointer-events-none"
+                  viewBox="0 0 100 20"
                   preserveAspectRatio="none"
                   initial="hidden"
                   whileInView="visible"
                   viewport={{ once: true }}
+                  style={{ height: '20px' }}
                 >
                   <motion.line
                     x1="0"
-                    y1="50"
+                    y1="10"
                     x2="100"
-                    y2="50"
+                    y2="10"
                     stroke="#dc2626"
-                    strokeWidth="18"
+                    strokeWidth="4"
                     strokeLinecap="round"
-                    vectorEffect="non-scaling-stroke"
                     variants={{
                       hidden: { pathLength: 0, opacity: 0 },
                       visible: { 
