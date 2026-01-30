@@ -115,24 +115,6 @@ export default function BookPage() {
         </div>
       </section>
 
-      {/* Trust Indicator */}
-      <section className="py-16 px-4 md:px-6 lg:px-8 bg-slate-950 border-t border-slate-800">
-        <div className="max-w-4xl mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <p className="text-slate-400 mb-4">
-              <span className="text-accent-cyan font-bold">25 Years</span> of Marketing Strategy Experience
-            </p>
-            <p className="text-slate-500 text-sm">
-              Led by Jason Kuperman • Former Architect • Builder of Digital Infrastructure for Apple & OUTFRONT Media
-            </p>
-          </motion.div>
-        </div>
-      </section>
-
       {/* Footer */}
       <footer className="py-12 px-4 md:px-6 lg:px-8 bg-slate-900 border-t border-slate-800">
         <div className="max-w-7xl mx-auto text-center">
