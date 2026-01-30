@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Script from 'next/script';
 import { Calendar, Clock, Zap } from 'lucide-react';
 import { useEffect } from 'react';
+import '@/lib/types/hubspot';
 
 export default function BookPage() {
   useEffect(() => {
@@ -194,15 +195,4 @@ export default function BookPage() {
       `}</style>
     </div>
   );
-}
-
-// TypeScript declaration for HubSpot meetings API
-declare global {
-  interface Window {
-    hbspt: {
-      meetings: {
-        create: (options: { portalId: string; formInstanceId: string }) => void;
-      };
-    };
-  }
 }

@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { useEffect } from 'react';
 import Script from 'next/script';
+import '@/lib/types/hubspot';
 
 export default function ContactPage() {
   useEffect(() => {
@@ -231,10 +232,4 @@ export default function ContactPage() {
       `}</style>
     </div>
   );
-}
-
-declare global {
-  interface Window {
-    hbspt: any;
-  }
 }
