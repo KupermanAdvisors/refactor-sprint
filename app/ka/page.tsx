@@ -212,9 +212,29 @@ export default function KupermanAdvisorsPage() {
               <p className="text-slate-400 leading-relaxed mb-4">
                 For companies struggling to track impact. Growth requires a machine, not just magic. I audit and rebuild your Go-To-Market infrastructure—from your Ad Tech stack to your CRM—ensuring your demand generation is precise, programmatic, and attributable.
               </p>
-              <p className="text-sm text-accent-violet font-mono">
+              <p className="text-sm text-accent-violet font-mono mb-6">
                 Focus: Tech Stack Audit, ABM Strategy, Attribution Models, KPI Dashboards.
               </p>
+
+              {/* Refactor Sprint Option */}
+              <div className="mt-6 pt-6 border-t border-slate-700/50">
+                <a 
+                  href="https://refactorsprint.com"
+                  className="flex items-center gap-3 group hover:bg-slate-800/30 p-3 rounded-lg transition-all"
+                >
+                  <img
+                    src="/refaclogo.png"
+                    alt="Refactor Sprint"
+                    className="h-8 w-auto flex-shrink-0"
+                  />
+                  <div className="flex-1">
+                    <p className="text-sm text-slate-300 group-hover:text-white transition-colors">
+                      Available as a 72-hour high-velocity diagnostic.
+                    </p>
+                  </div>
+                  <ArrowRight className="w-4 h-4 text-accent-cyan opacity-0 group-hover:opacity-100 transition-opacity" />
+                </a>
+              </div>
             </GlassCard>
 
             {/* Service 3 */}
