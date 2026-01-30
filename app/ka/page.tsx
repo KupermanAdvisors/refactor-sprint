@@ -76,8 +76,11 @@ export default function KupermanAdvisorsPage() {
               <p className="text-xl md:text-2xl text-slate-300 mb-8 leading-relaxed">
                 <strong>In a world of AI-generated sameness, strategic thinking is the only differentiator.</strong>
               </p>
-              <p className="text-lg md:text-xl text-slate-400 mb-12 leading-relaxed">
+              <p className="text-lg md:text-xl text-slate-400 mb-8 leading-relaxed">
                 Access strategic marketing leadership on demand. Suited for $2m-$50m ARR companies that need executive marketing ownership without the full-time costs.
+              </p>
+              <p className="text-base md:text-lg text-slate-300 mb-8 leading-relaxed">
+                Get started fast with a 72-hour high-velocity diagnostic.
               </p>
               <a
                 href="https://refactorsprint.com"
