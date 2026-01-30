@@ -74,7 +74,7 @@ export default function KupermanAdvisorsPage() {
               Access strategic marketing leadership on demand. Suited for $2m-$50m ARR companies that need executive marketing ownership without the full-time costs.
             </p>
             <a
-              href="/contact"
+              href="/book"
               className="inline-flex items-center gap-2 px-8 py-4 bg-accent-cyan hover:bg-cyan-500 text-slate-900 text-lg font-bold rounded-lg transition-all shadow-lg shadow-cyan-500/20"
             >
               Get Started for Free <ArrowRight className="w-5 h-5" />

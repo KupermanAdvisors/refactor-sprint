@@ -41,27 +41,51 @@ import Script from "next/script";
 
 **HubSpot Code Location**: End of `<body>` tag in `app/layout.tsx`
 
-### 2. HubSpot Contact Form (MANDATORY)
+### 2. HubSpot Forms & Booking (MANDATORY)
 
-**ALL contact/CTA buttons must link to `/contact`** which contains the HubSpot form.
+**Two conversion paths exist:**
 
-**Form Details:**
+#### A. Booking/Scheduling → `/book`
+**Use for**: "Start the Sprint", "Get Started", "Book Your Sprint", "Schedule a Call"
+
+**Details:**
+- **Location**: `/app/book/page.tsx`
+- **Embed URL**: `https://kupermanadvisors.com/meetings/jason-kuperman?embed=true`
+- **Script**: `https://static.hsappstatic.net/MeetingsEmbed/ex/MeetingsEmbedCode.js`
+
+**Button Standard:**
+```tsx
+<a
+  href="/book"
+  className="px-8 py-4 bg-accent-cyan hover:bg-cyan-500 text-slate-900 font-bold rounded-lg transition-all"
+>
+  Start the Sprint / Get Started for Free
+</a>
+```
+
+#### B. Contact Form → `/contact`
+**Use for**: "Contact", "Get in Touch", "Send a Message", general inquiries
+
+**Details:**
 - **Portal ID**: 244506871
 - **Form ID**: 3976e6ce-1379-48ca-9b7d-6ba3b45c269e
 - **Region**: na2
 - **Location**: `/app/contact/page.tsx`
 
-**Contact Button Standard:**
+**Button Standard:**
 ```tsx
 <a
   href="/contact"
   className="px-8 py-4 bg-accent-cyan hover:bg-cyan-500 text-slate-900 font-bold rounded-lg transition-all"
 >
-  Contact / Get Started / Get in Touch
+  Contact / Get in Touch
 </a>
 ```
 
-**Never use** `mailto:` links for primary CTAs - always use `/contact` instead.
+**Rule of Thumb:**
+- Primary action (booking a Sprint) → `/book`
+- Secondary/alternative contact → `/contact`
+- **Never use** `mailto:` links for CTAs
 
 ### 3. Domain Configuration
 

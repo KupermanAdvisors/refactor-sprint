@@ -61,7 +61,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-6 lg:px-8 py-5 flex justify-between items-center">
           <div className="text-lg font-semibold tracking-tight">The Refactor Sprint</div>
           <a
-            href="#book"
+            href="/book"
             className="px-6 py-2.5 bg-accent-cyan hover:bg-cyan-500 text-slate-900 rounded font-semibold transition-all"
           >
             Start the Sprint
@@ -95,7 +95,7 @@ export default function Home() {
               and deliver a 90-day roadmap—faster than a traditional agency can schedule a kickoff.
             </p>
             <a
-              href="#book"
+              href="/book"
               className="inline-block px-8 md:px-10 py-4 md:py-5 bg-accent-cyan hover:bg-cyan-500 text-slate-900 text-base md:text-lg font-bold transition-all rounded-lg shadow-lg shadow-cyan-500/20"
             >
               Start the Sprint
@@ -470,7 +470,7 @@ export default function Home() {
               72 hours. Fixed fee. Actionable roadmap.
             </p>
             <a
-              href="/contact"
+              href="/book"
               className="inline-block px-8 md:px-12 py-4 md:py-6 bg-accent-cyan hover:bg-cyan-500 text-slate-900 text-lg md:text-xl font-bold transition-all rounded-lg shadow-lg shadow-cyan-500/20"
             >
               Start Your Sprint — $<RollingNumber value={7} />,<RollingNumber value={500} />
