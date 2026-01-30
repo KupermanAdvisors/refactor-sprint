@@ -58,8 +58,14 @@ export default function Home() {
     <div className="min-h-screen bg-slate-900 text-slate-50">
       {/* Navbar */}
       <nav className="border-b border-slate-800/50 bg-slate-900/80 backdrop-blur-sm fixed w-full z-50">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-5 flex justify-between items-center">
-          <div className="text-lg font-semibold tracking-tight">The Refactor Sprint</div>
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-4 flex justify-between items-center">
+          <a href="/" className="flex items-center">
+            <img
+              src="/refaclogo.png"
+              alt="The Refactor Sprint"
+              className="h-[60px] w-auto"
+            />
+          </a>
           <a
             href="/book"
             className="px-6 py-2.5 bg-accent-cyan hover:bg-cyan-500 text-slate-900 rounded font-semibold transition-all"
