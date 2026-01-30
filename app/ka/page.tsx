@@ -97,7 +97,7 @@ export default function KupermanAdvisorsPage() {
               <img
                 src="/refaclogo.png"
                 alt="Refactor Sprint"
-                className="w-full max-w-md lg:max-w-lg h-auto"
+                className="w-full max-w-[224px] lg:max-w-[256px] h-auto mix-blend-lighten opacity-90"
               />
             </motion.div>
           </div>
