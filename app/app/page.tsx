@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Lock, Eye, EyeOff } from "lucide-react";
+import { Lock, Eye, EyeOff, Activity, Bot, FileUp, Play, Zap, Download, AlertTriangle, CheckCircle, Clock } from "lucide-react";
 
 export default function AppPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -44,7 +44,7 @@ export default function AppPage() {
   // Loading state
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-slate-900 flex items-center justify-center">
+      <div className="min-h-screen bg-slate-950 flex items-center justify-center">
         <div className="text-slate-400">Loading...</div>
       </div>
     );
@@ -53,13 +53,13 @@ export default function AppPage() {
   // Login Form
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-slate-900 text-slate-50 flex items-center justify-center px-4">
+      <div className="min-h-screen bg-slate-950 text-slate-50 flex items-center justify-center px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="w-full max-w-md"
         >
-          <div className="glass rounded-2xl p-8 border border-slate-800">
+          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-8">
             {/* Logo */}
             <div className="flex justify-center mb-8">
               <img
@@ -71,17 +71,17 @@ export default function AppPage() {
 
             {/* Title */}
             <div className="text-center mb-8">
-              <div className="w-16 h-16 rounded-full bg-accent-cyan/10 flex items-center justify-center mx-auto mb-4">
-                <Lock className="w-8 h-8 text-accent-cyan" />
+              <div className="w-16 h-16 rounded-full bg-green-500/10 flex items-center justify-center mx-auto mb-4">
+                <Lock className="w-8 h-8 text-green-500" />
               </div>
-              <h1 className="text-3xl font-bold mb-2">Refactor Sprint App</h1>
+              <h1 className="text-3xl font-bold mb-2">Command Center</h1>
               <p className="text-slate-400">Enter password to access</p>
             </div>
 
             {/* Form */}
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
-                <label htmlFor="password" className="block text-sm font-medium mb-2">
+                <label htmlFor="password" className="block text-sm font-medium mb-2 text-slate-300">
                   Password
                 </label>
                 <div className="relative">
@@ -90,7 +90,7 @@ export default function AppPage() {
                     id="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-cyan focus:border-transparent text-slate-50 pr-12"
+                    className="w-full px-4 py-3 bg-slate-950 border border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-slate-50 pr-12 font-mono"
                     placeholder="Enter password"
                     autoFocus
                   />
@@ -112,7 +112,7 @@ export default function AppPage() {
                 <motion.div
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="p-3 bg-red-500/10 border border-red-500/20 rounded-lg text-red-400 text-sm"
+                  className="p-3 bg-red-500/10 border border-red-500/50 rounded-lg text-red-400 text-sm"
                 >
                   {error}
                 </motion.div>
@@ -120,9 +120,9 @@ export default function AppPage() {
 
               <button
                 type="submit"
-                className="w-full px-6 py-3 bg-accent-cyan hover:bg-cyan-500 text-slate-900 font-bold rounded-lg transition-all shadow-lg shadow-cyan-500/20"
+                className="w-full px-6 py-3 bg-green-500 hover:bg-green-400 text-slate-950 font-bold rounded-lg transition-all shadow-lg shadow-green-500/20"
               >
-                Access App
+                ACCESS COMMAND CENTER
               </button>
             </form>
 
@@ -130,7 +130,7 @@ export default function AppPage() {
             <div className="mt-6 text-center">
               <a
                 href="/"
-                className="text-sm text-slate-400 hover:text-accent-cyan transition-colors"
+                className="text-sm text-slate-400 hover:text-green-500 transition-colors"
               >
                 ← Back to Refactor Sprint
               </a>
@@ -141,80 +141,522 @@ export default function AppPage() {
     );
   }
 
-  // Protected App Content
+  // Protected App Content - Command Center
+  return <CommandCenter onLogout={handleLogout} />;
+}
+
+// Command Center Component
+function CommandCenter({ onLogout }: { onLogout: () => void }) {
+  // State for Pane 1 - Flight Deck
+  const [companyName, setCompanyName] = useState("");
+  const [annualRevenue, setAnnualRevenue] = useState("");
+  const [burnRate, setBurnRate] = useState("");
+  const [hypothesis, setHypothesis] = useState("");
+  const [uploadedFiles, setUploadedFiles] = useState<string[]>([]);
+  const [sprintStartTime] = useState(Date.now());
+  
+  // State for Pane 2 - Agents
+  const [transcript, setTranscript] = useState("");
+  const [agent1Output, setAgent1Output] = useState("");
+  const [agent1Loading, setAgent1Loading] = useState(false);
+  
+  const [competitor1, setCompetitor1] = useState("");
+  const [competitor2, setCompetitor2] = useState("");
+  const [competitor3, setCompetitor3] = useState("");
+  const [agent2Output, setAgent2Output] = useState("");
+  const [agent2Loading, setAgent2Loading] = useState(false);
+  
+  const [selectedCsv, setSelectedCsv] = useState("");
+  const [agent3Output, setAgent3Output] = useState("");
+  const [agent3Loading, setAgent3Loading] = useState(false);
+  
+  // State for Pane 3 - Architect
+  const [growthThesis, setGrowthThesis] = useState("");
+  const [mustFixItems, setMustFixItems] = useState<string[]>([]);
+  const [newMustFix, setNewMustFix] = useState("");
+
+  // Countdown Timer
+  const [timeRemaining, setTimeRemaining] = useState(72 * 60 * 60 * 1000); // 72 hours in ms
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const elapsed = Date.now() - sprintStartTime;
+      const remaining = Math.max(0, (72 * 60 * 60 * 1000) - elapsed);
+      setTimeRemaining(remaining);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [sprintStartTime]);
+
+  const formatTime = (ms: number) => {
+    const hours = Math.floor(ms / (1000 * 60 * 60));
+    const minutes = Math.floor((ms % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((ms % (1000 * 60)) / 1000);
+    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  };
+
+  // File upload handler
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files) {
+      const fileNames = Array.from(files).map(f => f.name);
+      setUploadedFiles([...uploadedFiles, ...fileNames]);
+    }
+  };
+
+  // Agent 1: Extract Pain Points
+  const handleAgent1 = async () => {
+    setAgent1Loading(true);
+    try {
+      const response = await fetch('/api/agent-listener', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ transcript })
+      });
+      const data = await response.json();
+      setAgent1Output(data.analysis || "Analysis complete. See results above.");
+    } catch (error) {
+      setAgent1Output("ERROR: Failed to process transcript.");
+    }
+    setAgent1Loading(false);
+  };
+
+  // Agent 2: Market Intel (Mock)
+  const handleAgent2 = () => {
+    setAgent2Loading(true);
+    setTimeout(() => {
+      setAgent2Output(`
+COMPETITIVE INTELLIGENCE SCAN COMPLETE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Competitor 1: ${competitor1 || "N/A"}
+  → Positioning: Enterprise SaaS Platform
+  → Price Point: $5k-$15k/mo
+  → Key Message: "All-in-one solution"
+
+Competitor 2: ${competitor2 || "N/A"}
+  → Positioning: SMB Focused
+  → Price Point: $500-$2k/mo
+  → Key Message: "Easy to use, quick setup"
+
+Competitor 3: ${competitor3 || "N/A"}
+  → Positioning: Vertical Specialist
+  → Price Point: $10k-$50k/mo
+  → Key Message: "Industry expertise"
+
+GAP ANALYSIS:
+• All competitors focus on feature lists
+• None emphasize strategic outcomes
+• Opportunity: Position as "Revenue Architect"
+      `);
+      setAgent2Loading(false);
+    }, 2000);
+  };
+
+  // Agent 3: Forensics (Mock)
+  const handleAgent3 = () => {
+    setAgent3Loading(true);
+    setTimeout(() => {
+      setAgent3Output(`
+CRM AUTOPSY COMPLETE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+File Analyzed: ${selectedCsv || "No file selected"}
+
+KEY METRICS:
+┌────────────────────────────────────┐
+│ Win Rate:           23.4%          │
+│ Avg Deal Size:      $47,200        │
+│ Sales Cycle:        127 days       │
+│ Churn Source:       Feature Fit    │
+└────────────────────────────────────┘
+
+CRITICAL FINDINGS:
+⚠ Lost deals mention "unclear value prop" 47% of the time
+⚠ Closed/Won deals had <60 day cycles vs 180+ for lost
+⚠ Pricing objections correlate with poor discovery calls
+
+RECOMMENDATION:
+Fix the narrative BEFORE scaling spend.
+      `);
+      setAgent3Loading(false);
+    }, 2500);
+  };
+
+  // Export Blueprint
+  const handleExport = () => {
+    const markdown = `
+# REFACTOR SPRINT BLUEPRINT
+**Client:** ${companyName || "[Company Name]"}
+**Generated:** ${new Date().toLocaleDateString()}
+
+---
+
+## GROWTH THESIS
+${growthThesis || "[No thesis generated yet]"}
+
+---
+
+## MUST FIX (Priority Order)
+${mustFixItems.map((item, i) => `${i + 1}. ${item}`).join('\n') || "[No items added]"}
+
+---
+
+## AGENT OUTPUTS
+
+### The Listener (Kickoff Analysis)
+${agent1Output || "[No analysis run]"}
+
+### The Spy (Market Intel)
+${agent2Output || "[No intel gathered]"}
+
+### The Analyst (CRM Forensics)
+${agent3Output || "[No forensics run]"}
+    `.trim();
+
+    // Copy to clipboard
+    navigator.clipboard.writeText(markdown);
+    alert("Blueprint copied to clipboard!");
+  };
+
   return (
-    <div className="min-h-screen bg-slate-900 text-slate-50">
-      {/* Navbar */}
-      <nav className="border-b border-slate-800/50 bg-slate-900/80 backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-4 flex justify-between items-center">
-          <div className="flex items-center gap-3">
-            <img
-              src="/refaclogo.png"
-              alt="The Refactor Sprint"
-              className="h-[40px] w-auto"
-            />
-            <span className="text-slate-400 text-sm font-mono">/ app</span>
+    <div className="min-h-screen bg-slate-950 text-slate-50">
+      {/* Top Bar */}
+      <div className="border-b border-slate-800 bg-slate-900/80 backdrop-blur-sm sticky top-0 z-50">
+        <div className="px-6 py-4 flex justify-between items-center">
+          <div className="flex items-center gap-4">
+            <img src="/refaclogo.png" alt="Refactor Sprint" className="h-8" />
+            <span className="text-slate-500 font-mono text-sm">/ command-center</span>
           </div>
+          
+          {/* Countdown Timer */}
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 px-4 py-2 bg-amber-500/10 border border-amber-500/50 rounded-lg">
+              <Clock className="w-4 h-4 text-amber-500" />
+              <span className="font-mono text-amber-500 font-bold">{formatTime(timeRemaining)}</span>
+            </div>
+            
+            <button
+              onClick={onLogout}
+              className="px-4 py-2 text-sm text-slate-400 hover:text-white border border-slate-700 hover:border-slate-600 rounded transition-all"
+            >
+              Logout
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Three Column Layout */}
+      <div className="grid lg:grid-cols-3 gap-4 p-4 max-w-[1800px] mx-auto">
+        
+        {/* PANE 1: FLIGHT DECK */}
+        <div className="space-y-4">
+          <div className="text-green-500 font-mono text-xs uppercase tracking-wider border-l-2 border-green-500 pl-3">
+            Pane 1: Flight Deck
+          </div>
+
+          {/* Client Vitals */}
+          <div className="bg-slate-900 border border-slate-800 rounded-lg p-4">
+            <div className="flex items-center gap-2 mb-4">
+              <Activity className="w-5 h-5 text-green-500" />
+              <h3 className="font-bold text-green-500 font-mono">CLIENT VITALS</h3>
+            </div>
+            
+            <div className="space-y-3">
+              <div>
+                <label className="block text-xs text-slate-400 mb-1 font-mono">Company Name</label>
+                <input
+                  type="text"
+                  value={companyName}
+                  onChange={(e) => setCompanyName(e.target.value)}
+                  className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded text-sm focus:outline-none focus:ring-1 focus:ring-green-500"
+                  placeholder="Acme Corp"
+                />
+              </div>
+              
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs text-slate-400 mb-1 font-mono">Annual Revenue</label>
+                  <input
+                    type="text"
+                    value={annualRevenue}
+                    onChange={(e) => setAnnualRevenue(e.target.value)}
+                    className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded text-sm focus:outline-none focus:ring-1 focus:ring-green-500"
+                    placeholder="$5M"
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-xs text-slate-400 mb-1 font-mono">Burn Rate</label>
+                  <input
+                    type="text"
+                    value={burnRate}
+                    onChange={(e) => setBurnRate(e.target.value)}
+                    className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded text-sm focus:outline-none focus:ring-1 focus:ring-green-500"
+                    placeholder="$200K/mo"
+                  />
+                </div>
+              </div>
+              
+              <div>
+                <label className="block text-xs text-slate-400 mb-1 font-mono">Critical Error Hypothesis</label>
+                <textarea
+                  value={hypothesis}
+                  onChange={(e) => setHypothesis(e.target.value)}
+                  className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded text-sm focus:outline-none focus:ring-1 focus:ring-green-500 h-20 resize-none"
+                  placeholder="What's broken in their GTM engine?"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Data Ingestion */}
+          <div className="bg-slate-900 border border-slate-800 rounded-lg p-4">
+            <div className="flex items-center gap-2 mb-4">
+              <FileUp className="w-5 h-5 text-green-500" />
+              <h3 className="font-bold text-green-500 font-mono">DATA INGESTION</h3>
+            </div>
+            
+            <div className="border-2 border-dashed border-slate-700 rounded-lg p-6 text-center hover:border-green-500/50 transition-colors">
+              <input
+                type="file"
+                multiple
+                accept=".csv,.txt"
+                onChange={handleFileUpload}
+                className="hidden"
+                id="file-upload"
+              />
+              <label htmlFor="file-upload" className="cursor-pointer">
+                <FileUp className="w-8 h-8 text-slate-600 mx-auto mb-2" />
+                <p className="text-sm text-slate-400">Drop files or click to upload</p>
+                <p className="text-xs text-slate-600 mt-1">.csv, .txt accepted</p>
+              </label>
+            </div>
+            
+            {uploadedFiles.length > 0 && (
+              <div className="mt-4 space-y-2">
+                {uploadedFiles.map((file, i) => (
+                  <div key={i} className="flex items-center gap-2 text-sm bg-slate-950 px-3 py-2 rounded border border-slate-800">
+                    <CheckCircle className="w-4 h-4 text-green-500" />
+                    <span className="text-slate-300 font-mono text-xs flex-1">{file}</span>
+                    <span className="text-green-500 text-xs">READY</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* PANE 2: AGENT HIVE */}
+        <div className="space-y-4">
+          <div className="text-cyan-500 font-mono text-xs uppercase tracking-wider border-l-2 border-cyan-500 pl-3">
+            Pane 2: Agent Hive
+          </div>
+
+          {/* Agent 1: The Listener */}
+          <div className="bg-slate-900 border border-slate-800 rounded-lg p-4">
+            <div className="flex items-center gap-2 mb-4">
+              <Bot className="w-5 h-5 text-cyan-500" />
+              <h3 className="font-bold text-cyan-500 font-mono">AGENT 1: THE LISTENER</h3>
+            </div>
+            
+            <textarea
+              value={transcript}
+              onChange={(e) => setTranscript(e.target.value)}
+              className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded text-sm focus:outline-none focus:ring-1 focus:ring-cyan-500 h-32 resize-none mb-3 font-mono"
+              placeholder="Paste kickoff call transcript here..."
+            />
+            
+            <button
+              onClick={handleAgent1}
+              disabled={agent1Loading || !transcript}
+              className="w-full px-4 py-2 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold rounded transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            >
+              {agent1Loading ? (
+                <>Processing...</>
+              ) : (
+                <>
+                  <Play className="w-4 h-4" />
+                  EXTRACT PAIN POINTS
+                </>
+              )}
+            </button>
+            
+            {agent1Output && (
+              <div className="mt-4 p-3 bg-slate-950 border border-cyan-500/30 rounded text-xs font-mono whitespace-pre-wrap text-slate-300">
+                {agent1Output}
+              </div>
+            )}
+          </div>
+
+          {/* Agent 2: The Spy */}
+          <div className="bg-slate-900 border border-slate-800 rounded-lg p-4">
+            <div className="flex items-center gap-2 mb-4">
+              <Bot className="w-5 h-5 text-purple-500" />
+              <h3 className="font-bold text-purple-500 font-mono">AGENT 2: THE SPY</h3>
+            </div>
+            
+            <div className="space-y-2 mb-3">
+              <input
+                type="text"
+                value={competitor1}
+                onChange={(e) => setCompetitor1(e.target.value)}
+                className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded text-sm focus:outline-none focus:ring-1 focus:ring-purple-500"
+                placeholder="Competitor 1 URL"
+              />
+              <input
+                type="text"
+                value={competitor2}
+                onChange={(e) => setCompetitor2(e.target.value)}
+                className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded text-sm focus:outline-none focus:ring-1 focus:ring-purple-500"
+                placeholder="Competitor 2 URL"
+              />
+              <input
+                type="text"
+                value={competitor3}
+                onChange={(e) => setCompetitor3(e.target.value)}
+                className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded text-sm focus:outline-none focus:ring-1 focus:ring-purple-500"
+                placeholder="Competitor 3 URL"
+              />
+            </div>
+            
+            <button
+              onClick={handleAgent2}
+              disabled={agent2Loading}
+              className="w-full px-4 py-2 bg-purple-500 hover:bg-purple-400 text-slate-950 font-bold rounded transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            >
+              {agent2Loading ? (
+                <>Scanning...</>
+              ) : (
+                <>
+                  <Zap className="w-4 h-4" />
+                  RUN INTEL SCAN
+                </>
+              )}
+            </button>
+            
+            {agent2Output && (
+              <div className="mt-4 p-3 bg-slate-950 border border-purple-500/30 rounded text-xs font-mono whitespace-pre-wrap text-slate-300">
+                {agent2Output}
+              </div>
+            )}
+          </div>
+
+          {/* Agent 3: The Analyst */}
+          <div className="bg-slate-900 border border-slate-800 rounded-lg p-4">
+            <div className="flex items-center gap-2 mb-4">
+              <Bot className="w-5 h-5 text-amber-500" />
+              <h3 className="font-bold text-amber-500 font-mono">AGENT 3: THE ANALYST</h3>
+            </div>
+            
+            <select
+              value={selectedCsv}
+              onChange={(e) => setSelectedCsv(e.target.value)}
+              className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded text-sm focus:outline-none focus:ring-1 focus:ring-amber-500 mb-3"
+            >
+              <option value="">Select CSV file</option>
+              {uploadedFiles.filter(f => f.endsWith('.csv')).map((file, i) => (
+                <option key={i} value={file}>{file}</option>
+              ))}
+            </select>
+            
+            <button
+              onClick={handleAgent3}
+              disabled={agent3Loading || !selectedCsv}
+              className="w-full px-4 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            >
+              {agent3Loading ? (
+                <>Analyzing...</>
+              ) : (
+                <>
+                  <AlertTriangle className="w-4 h-4" />
+                  RUN AUTOPSY
+                </>
+              )}
+            </button>
+            
+            {agent3Output && (
+              <div className="mt-4 p-3 bg-slate-950 border border-amber-500/30 rounded text-xs font-mono whitespace-pre-wrap text-slate-300">
+                {agent3Output}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* PANE 3: THE ARCHITECT */}
+        <div className="space-y-4">
+          <div className="text-violet-500 font-mono text-xs uppercase tracking-wider border-l-2 border-violet-500 pl-3">
+            Pane 3: The Architect
+          </div>
+
+          {/* Growth Thesis Editor */}
+          <div className="bg-slate-900 border border-slate-800 rounded-lg p-4">
+            <h3 className="font-bold text-violet-500 font-mono mb-4">GROWTH THESIS</h3>
+            
+            <textarea
+              value={growthThesis}
+              onChange={(e) => setGrowthThesis(e.target.value)}
+              className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded text-sm focus:outline-none focus:ring-1 focus:ring-violet-500 h-64 resize-none font-mono"
+              placeholder="Synthesize findings from agents into a coherent growth strategy..."
+            />
+          </div>
+
+          {/* Roadmap Generator */}
+          <div className="bg-slate-900 border border-slate-800 rounded-lg p-4">
+            <h3 className="font-bold text-violet-500 font-mono mb-4">MUST FIX ROADMAP</h3>
+            
+            <div className="flex gap-2 mb-4">
+              <input
+                type="text"
+                value={newMustFix}
+                onChange={(e) => setNewMustFix(e.target.value)}
+                onKeyPress={(e) => {
+                  if (e.key === 'Enter' && newMustFix.trim()) {
+                    setMustFixItems([...mustFixItems, newMustFix.trim()]);
+                    setNewMustFix("");
+                  }
+                }}
+                className="flex-1 px-3 py-2 bg-slate-950 border border-slate-700 rounded text-sm focus:outline-none focus:ring-1 focus:ring-violet-500"
+                placeholder="Add critical fix item..."
+              />
+              <button
+                onClick={() => {
+                  if (newMustFix.trim()) {
+                    setMustFixItems([...mustFixItems, newMustFix.trim()]);
+                    setNewMustFix("");
+                  }
+                }}
+                className="px-4 py-2 bg-violet-500 hover:bg-violet-400 text-slate-950 font-bold rounded transition-all"
+              >
+                +
+              </button>
+            </div>
+            
+            <div className="space-y-2 mb-4 max-h-48 overflow-y-auto">
+              {mustFixItems.map((item, i) => (
+                <div key={i} className="flex items-start gap-3 p-3 bg-slate-950 rounded border border-slate-800">
+                  <span className="text-violet-500 font-mono font-bold text-sm">{i + 1}.</span>
+                  <span className="text-slate-300 text-sm flex-1">{item}</span>
+                  <button
+                    onClick={() => setMustFixItems(mustFixItems.filter((_, idx) => idx !== i))}
+                    className="text-red-500 hover:text-red-400 text-xs"
+                  >
+                    ✕
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Export */}
           <button
-            onClick={handleLogout}
-            className="px-4 py-2 text-sm text-slate-400 hover:text-white border border-slate-700 hover:border-slate-600 rounded transition-all"
+            onClick={handleExport}
+            className="w-full px-6 py-4 bg-green-500 hover:bg-green-400 text-slate-950 font-bold rounded-lg transition-all shadow-lg shadow-green-500/20 flex items-center justify-center gap-3 text-lg"
           >
-            Logout
+            <Download className="w-5 h-5" />
+            GENERATE BLUEPRINT
           </button>
         </div>
-      </nav>
-
-      {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 py-12">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-        >
-          <h1 className="text-5xl font-bold mb-6">
-            Welcome to the <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-cyan to-accent-violet">Refactor Sprint App</span>
-          </h1>
-          <p className="text-xl text-slate-300 mb-8">
-            Your project management and operating system for executing the Refactor Sprint process.
-          </p>
-
-          {/* Placeholder Content */}
-          <div className="grid md:grid-cols-2 gap-6 mt-12">
-            <div className="glass rounded-xl p-8 border border-slate-800">
-              <h2 className="text-2xl font-bold mb-4 text-accent-cyan">Sprint Dashboard</h2>
-              <p className="text-slate-400">
-                View and manage your active Refactor Sprints. Track progress through the 3-day process.
-              </p>
-            </div>
-
-            <div className="glass rounded-xl p-8 border border-slate-800">
-              <h2 className="text-2xl font-bold mb-4 text-accent-violet">Client Portal</h2>
-              <p className="text-slate-400">
-                Access client information, deliverables, and communication history.
-              </p>
-            </div>
-
-            <div className="glass rounded-xl p-8 border border-slate-800">
-              <h2 className="text-2xl font-bold mb-4 text-accent-cyan">Process Templates</h2>
-              <p className="text-slate-400">
-                Standardized workflows for Ingestion, Refactoring, and Delivery phases.
-              </p>
-            </div>
-
-            <div className="glass rounded-xl p-8 border border-slate-800">
-              <h2 className="text-2xl font-bold mb-4 text-accent-violet">Analytics</h2>
-              <p className="text-slate-400">
-                Track sprint outcomes, client satisfaction, and process improvements.
-              </p>
-            </div>
-          </div>
-
-          <div className="mt-12 p-6 bg-accent-cyan/10 border border-accent-cyan/20 rounded-xl">
-            <p className="text-sm text-slate-300">
-              <strong>Coming Soon:</strong> This is the foundation for your Refactor Sprint operating system. 
-              Ready to build out the full functionality when you're ready to share the process details.
-            </p>
-          </div>
-        </motion.div>
       </div>
     </div>
   );
