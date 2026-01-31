@@ -107,8 +107,9 @@ ${sprint.agent_3_output || '[No forensics run]'}
 
     zip.file('00-BLUEPRINT.md', blueprint);
 
-    // Generate ZIP
-    const zipBuffer = await zip.generateAsync({ type: 'uint8array' });
+    // Generate ZIP as base64 and convert to Buffer
+    const zipBase64 = await zip.generateAsync({ type: 'base64' });
+    const zipBuffer = Buffer.from(zipBase64, 'base64');
 
     // Return as downloadable file
     return new Response(zipBuffer, {
