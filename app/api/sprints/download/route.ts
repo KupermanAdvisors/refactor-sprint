@@ -111,7 +111,7 @@ ${sprint.agent_3_output || '[No forensics run]'}
     const zipBuffer = await zip.generateAsync({ type: 'uint8array' });
 
     // Return as downloadable file
-    return new NextResponse(zipBuffer, {
+    return new Response(zipBuffer, {
       headers: {
         'Content-Type': 'application/zip',
         'Content-Disposition': `attachment; filename="${sprint.client_name.replace(/[^a-z0-9]/gi, '-')}-sprint.zip"`,
