@@ -22,14 +22,20 @@ function generatePassword(clientName: string, date: Date): string {
   return `${sanitized}${month}${day}${year}${randomSuffix}`;
 }
 
-// Helper to generate slug (includes sprint name for uniqueness)
-function generateSlug(clientName: string, sprintName: string, date: Date): string {
+// Helper to generate slug (client name + date + random suffix for uniqueness)
+function generateSlug(clientName: string, date: Date): string {
   const sanitizedClient = sanitizeForSlug(clientName);
-  const sanitizedSprint = sprintName ? sanitizeForSlug(sprintName) : 'sprint';
   const month = String(date.getMonth() + 1).padStart(2, '0');
   const day = String(date.getDate()).padStart(2, '0');
   const year = date.getFullYear();
-  return `${sanitizedClient}${sanitizedSprint}${month}${day}${year}`;
+  
+  // Add random 3-character suffix for uniqueness (allows multiple sprints same day)
+  const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+  const randomSuffix = Array.from({ length: 3 }, () => 
+    chars.charAt(Math.floor(Math.random() * chars.length))
+  ).join('');
+  
+  return `${sanitizedClient}${month}${day}${year}${randomSuffix}`;
 }
 
 export async function POST(request: Request) {
@@ -62,7 +68,7 @@ export async function POST(request: Request) {
     }
 
     const now = new Date();
-    const slug = generateSlug(clientName, sprintName || 'sprint', now);
+    const slug = generateSlug(clientName, now);
     const password = generatePassword(clientName, now);
 
     // Check if sprint with this exact slug already exists (same client + sprint name + date)
