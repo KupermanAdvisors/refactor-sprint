@@ -141,17 +141,23 @@ export async function POST(request: Request) {
       );
     }
 
+    // Log first 200 chars for debugging
+    console.log('CSV Content Preview:', csvContent.substring(0, 200));
+    console.log('CSV Content Length:', csvContent.length);
+
     // Parse CSV
     const parseResult = Papa.parse<CSVRow>(csvContent, {
       header: true,
       skipEmptyLines: true,
       dynamicTyping: false,
+      trimHeaders: true,
     });
 
     if (parseResult.errors.length > 0) {
       console.error('CSV Parse Errors:', parseResult.errors);
+      const errorDetails = parseResult.errors.map(e => `${e.type}: ${e.message}`).join('; ');
       return NextResponse.json(
-        { error: 'Failed to parse CSV file' },
+        { error: `Failed to parse CSV file: ${errorDetails}` },
         { status: 400 }
       );
     }
