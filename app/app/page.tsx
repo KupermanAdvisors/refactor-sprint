@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Lock, Eye, EyeOff, Activity, Bot, FileUp, Play, Zap, Download, AlertTriangle, CheckCircle, Clock, Copy } from "lucide-react";
+import { Lock, Eye, EyeOff, Activity, Bot, FileUp, Play, Zap, Download, AlertTriangle, CheckCircle, Clock, Copy, Globe } from "lucide-react";
 import { toast, Toaster } from "sonner";
 
 export default function AppPage() {
@@ -528,6 +528,64 @@ refactorsprint.com
     toast.success("Gamma blueprint copied! Paste into gamma.app to generate slides with Refactor Sprint branding.");
   };
 
+  // Save sprint and generate web presentation
+  const handleWebPresentation = async () => {
+    try {
+      // Prepare sprint data
+      const sprintData = {
+        clientName: companyName,
+        annualRevenue,
+        burnRate,
+        hypothesis,
+        agent1Transcript: transcript,
+        agent1Output,
+        agent2Competitors: [competitor1, competitor2, competitor3].filter(c => c),
+        agent2Output,
+        agent3CsvFilename: selectedCsv,
+        agent3CsvContent: uploadedFiles.find(f => f.name === selectedCsv)?.content || '',
+        agent3Output,
+        growthThesis,
+        roadmapItems: mustFixItems,
+        uploadedFiles: uploadedFiles.map(f => ({ name: f.name, size: f.content.length })),
+      };
+
+      const response = await fetch('/api/sprints/save', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(sprintData),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        const fullUrl = `${window.location.origin}${data.presentationUrl}`;
+        
+        // Copy URL and password to clipboard
+        const message = `
+Presentation URL: ${fullUrl}
+Password: ${data.password}
+
+(This presentation expires in 30 days)
+        `.trim();
+        
+        navigator.clipboard.writeText(message);
+        toast.success("Presentation created! URL and password copied to clipboard.");
+        
+        // Show confirmation dialog
+        const openNow = confirm(`Presentation created!\n\nURL: ${fullUrl}\nPassword: ${data.password}\n\nURL and password have been copied to your clipboard.\n\nWould you like to open the presentation now?`);
+        
+        if (openNow) {
+          window.open(fullUrl, '_blank');
+        }
+      } else {
+        toast.error("Failed to create presentation");
+      }
+    } catch (error) {
+      console.error('Web presentation error:', error);
+      toast.error("Error creating presentation");
+    }
+  };
+
   return (
     <div className="min-h-screen bg-slate-950 text-slate-50">
       {/* Top Bar */}
@@ -538,8 +596,15 @@ refactorsprint.com
             <span className="text-slate-500 font-mono text-sm">/ command-center</span>
           </div>
           
-          {/* Countdown Timer */}
+          {/* Countdown Timer + Nav */}
           <div className="flex items-center gap-4">
+            <a
+              href="/archive"
+              className="text-slate-400 hover:text-white transition-colors text-sm"
+            >
+              Archive
+            </a>
+            
             <div className="flex items-center gap-2 px-4 py-2 bg-amber-500/10 border border-amber-500/50 rounded-lg">
               <Clock className="w-4 h-4 text-amber-500" />
               <span className="font-mono text-amber-500 font-bold">{formatTime(timeRemaining)}</span>
@@ -869,23 +934,36 @@ refactorsprint.com
             </div>
           </div>
 
-          {/* Export */}
-          <button
-            onClick={handleExport}
-            className="w-full px-6 py-4 bg-green-500 hover:bg-green-400 text-slate-950 font-bold rounded-lg transition-all shadow-lg shadow-green-500/20 flex items-center justify-center gap-3 text-lg mb-3"
-          >
-            <Download className="w-5 h-5" />
-            GENERATE BLUEPRINT
-          </button>
+          {/* Export Buttons */}
+          <div className="space-y-3">
+            <button
+              onClick={handleExport}
+              className="w-full px-6 py-4 bg-green-500 hover:bg-green-400 text-slate-950 font-bold rounded-lg transition-all shadow-lg shadow-green-500/20 flex items-center justify-center gap-3 text-lg"
+            >
+              <Download className="w-5 h-5" />
+              GENERATE BLUEPRINT
+            </button>
 
-          {/* Gamma Export */}
-          <button
-            onClick={handleGammaExport}
-            className="w-full px-6 py-4 bg-violet-500 hover:bg-violet-400 text-slate-950 font-bold rounded-lg transition-all shadow-lg shadow-violet-500/20 flex items-center justify-center gap-3 text-lg"
-          >
-            <Copy className="w-5 h-5" />
-            COPY GAMMA BLUEPRINT
-          </button>
+            <button
+              onClick={handleGammaExport}
+              className="w-full px-6 py-4 bg-violet-500 hover:bg-violet-400 text-slate-950 font-bold rounded-lg transition-all shadow-lg shadow-violet-500/20 flex items-center justify-center gap-3 text-lg"
+            >
+              <Copy className="w-5 h-5" />
+              COPY GAMMA BLUEPRINT
+            </button>
+
+            <button
+              onClick={handleWebPresentation}
+              disabled={!companyName}
+              className="w-full px-6 py-4 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold rounded-lg transition-all shadow-lg shadow-cyan-500/20 flex items-center justify-center gap-3 text-lg disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <Globe className="w-5 h-5" />
+              GENERATE WEB PRESENTATION
+            </button>
+            {!companyName && (
+              <p className="text-xs text-slate-500 text-center">Enter client name to generate presentation</p>
+            )}
+          </div>
         </div>
       </div>
       
