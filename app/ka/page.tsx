@@ -95,7 +95,7 @@ export default function KupermanAdvisorsPage() {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="flex items-center justify-center lg:justify-start lg:-ml-64"
+              className="flex items-center justify-center lg:justify-center"
             >
               <img
                 src="/refaclogo.png"
