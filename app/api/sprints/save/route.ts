@@ -18,13 +18,14 @@ function generatePassword(clientName: string, date: Date): string {
   return `${sanitized}${month}${day}${year}`;
 }
 
-// Helper to generate slug
-function generateSlug(clientName: string, date: Date): string {
-  const sanitized = sanitizeForSlug(clientName);
+// Helper to generate slug (includes sprint name for uniqueness)
+function generateSlug(clientName: string, sprintName: string, date: Date): string {
+  const sanitizedClient = sanitizeForSlug(clientName);
+  const sanitizedSprint = sprintName ? sanitizeForSlug(sprintName) : 'sprint';
   const month = String(date.getMonth() + 1).padStart(2, '0');
   const day = String(date.getDate()).padStart(2, '0');
   const year = date.getFullYear();
-  return `${sanitized}${month}${day}${year}`;
+  return `${sanitizedClient}${sanitizedSprint}${month}${day}${year}`;
 }
 
 export async function POST(request: Request) {
@@ -33,6 +34,7 @@ export async function POST(request: Request) {
     
     const {
       clientName,
+      sprintName,
       annualRevenue,
       burnRate,
       hypothesis,
@@ -56,10 +58,10 @@ export async function POST(request: Request) {
     }
 
     const now = new Date();
-    const slug = generateSlug(clientName, now);
+    const slug = generateSlug(clientName, sprintName || 'sprint', now);
     const password = generatePassword(clientName, now);
 
-    // Check if sprint with this slug already exists
+    // Check if sprint with this exact slug already exists (same client + sprint name + date)
     const { data: existing } = await supabaseAdmin
       .from('sprints')
       .select('id')
@@ -74,6 +76,7 @@ export async function POST(request: Request) {
         .from('sprints')
         .update({
           updated_at: now.toISOString(),
+          sprint_name: sprintName || 'Untitled Sprint',
           annual_revenue: annualRevenue,
           burn_rate: burnRate,
           hypothesis,
@@ -100,6 +103,7 @@ export async function POST(request: Request) {
         .from('sprints')
         .insert({
           client_name: clientName,
+          sprint_name: sprintName || 'Untitled Sprint',
           annual_revenue: annualRevenue,
           burn_rate: burnRate,
           hypothesis,

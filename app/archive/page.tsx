@@ -2,13 +2,15 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Lock, Eye, EyeOff, Download, ExternalLink, Calendar, FileText } from "lucide-react";
+import { Lock, Eye, EyeOff, Download, ExternalLink, Calendar, FileText, Upload } from "lucide-react";
 import { toast, Toaster } from "sonner";
 
 interface Sprint {
   id: string;
   client_name: string;
+  sprint_name: string;
   created_at: string;
+  updated_at: string;
   status: string;
   presentation_slug: string;
 }
@@ -90,6 +92,33 @@ export default function ArchivePage() {
       toast.error("Failed to download sprint");
     }
     setDownloadingId(null);
+  };
+
+  const handleLoadSprint = async (sprintId: string, clientName: string, sprintName: string) => {
+    try {
+      const response = await fetch('/api/sprints/load', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ sprintId }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        // Store in sessionStorage to restore in Command Center
+        sessionStorage.setItem('loadedSprint', JSON.stringify(data.sprint));
+        toast.success(`Loading "${sprintName}"...`);
+        
+        // Navigate to Command Center
+        setTimeout(() => {
+          window.location.href = '/app';
+        }, 500);
+      } else {
+        toast.error("Failed to load sprint");
+      }
+    } catch (error) {
+      toast.error("Error loading sprint");
+    }
   };
 
   const handleLogout = () => {
@@ -256,14 +285,26 @@ export default function ArchivePage() {
                   animate={{ opacity: 1, y: 0 }}
                   className="bg-slate-900 border border-slate-800 rounded-xl p-6 hover:border-slate-700 transition-all"
                 >
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-start justify-between gap-4">
                     <div className="flex-1">
-                      <h3 className="text-2xl font-bold mb-2">{sprint.client_name}</h3>
+                      <div className="flex items-center gap-3 mb-2">
+                        <h3 className="text-2xl font-bold">{sprint.client_name}</h3>
+                        {sprint.sprint_name && (
+                          <span className="px-3 py-1 bg-cyan-500/10 text-cyan-500 rounded-full text-sm font-mono">
+                            {sprint.sprint_name}
+                          </span>
+                        )}
+                      </div>
                       <div className="flex items-center gap-4 text-sm text-slate-400">
                         <div className="flex items-center gap-2">
                           <Calendar className="w-4 h-4" />
-                          {new Date(sprint.created_at).toLocaleDateString()}
+                          Created: {new Date(sprint.created_at).toLocaleDateString()}
                         </div>
+                        {sprint.updated_at && sprint.updated_at !== sprint.created_at && (
+                          <div className="flex items-center gap-2">
+                            Updated: {new Date(sprint.updated_at).toLocaleDateString()}
+                          </div>
+                        )}
                         <div className="flex items-center gap-2">
                           <span className={`px-2 py-1 rounded text-xs font-mono ${
                             sprint.status === 'completed' ? 'bg-green-500/10 text-green-500' :
@@ -276,22 +317,30 @@ export default function ArchivePage() {
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => handleLoadSprint(sprint.id, sprint.client_name, sprint.sprint_name)}
+                        className="px-4 py-2 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold rounded-lg transition-all flex items-center gap-2"
+                      >
+                        <Upload className="w-4 h-4" />
+                        Load
+                      </button>
+
                       <button
                         onClick={() => handleDownload(sprint.id, sprint.client_name)}
                         disabled={downloadingId === sprint.id}
                         className="px-4 py-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 rounded-lg transition-all flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         <Download className="w-4 h-4" />
-                        {downloadingId === sprint.id ? 'Downloading...' : 'Download ZIP'}
+                        {downloadingId === sprint.id ? 'Downloading...' : 'ZIP'}
                       </button>
 
                       <a
                         href={`/presentation/${sprint.presentation_slug}`}
-                        className="px-4 py-2 bg-green-500 hover:bg-green-400 text-slate-950 font-bold rounded-lg transition-all flex items-center gap-2"
+                        className="px-4 py-2 bg-violet-500 hover:bg-violet-400 text-slate-950 font-bold rounded-lg transition-all flex items-center gap-2"
                       >
                         <ExternalLink className="w-4 h-4" />
-                        View Presentation
+                        Present
                       </a>
                     </div>
                   </div>

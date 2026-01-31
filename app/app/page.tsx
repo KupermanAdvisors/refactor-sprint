@@ -149,6 +149,7 @@ export default function AppPage() {
 // Command Center Component
 function CommandCenter({ onLogout }: { onLogout: () => void }) {
   // State for Pane 1 - Flight Deck
+  const [sprintName, setSprintName] = useState("");
   const [companyName, setCompanyName] = useState("");
   const [annualRevenue, setAnnualRevenue] = useState("");
   const [burnRate, setBurnRate] = useState("");
@@ -188,6 +189,52 @@ function CommandCenter({ onLogout }: { onLogout: () => void }) {
 
     return () => clearInterval(interval);
   }, [sprintStartTime]);
+
+  // Check for loaded sprint data
+  useEffect(() => {
+    const loadedData = sessionStorage.getItem('loadedSprint');
+    if (loadedData) {
+      try {
+        const sprint = JSON.parse(loadedData);
+        
+        // Restore all state
+        setSprintName(sprint.sprintName || '');
+        setCompanyName(sprint.clientName || '');
+        setAnnualRevenue(sprint.annualRevenue || '');
+        setBurnRate(sprint.burnRate || '');
+        setHypothesis(sprint.hypothesis || '');
+        setTranscript(sprint.agent1Transcript || '');
+        setAgent1Output(sprint.agent1Output || '');
+        
+        if (sprint.agent2Competitors && sprint.agent2Competitors.length > 0) {
+          setCompetitor1(sprint.agent2Competitors[0] || '');
+          setCompetitor2(sprint.agent2Competitors[1] || '');
+          setCompetitor3(sprint.agent2Competitors[2] || '');
+        }
+        setAgent2Output(sprint.agent2Output || '');
+        
+        if (sprint.agent3CsvFilename && sprint.agent3CsvContent) {
+          setUploadedFiles([{
+            name: sprint.agent3CsvFilename,
+            content: sprint.agent3CsvContent
+          }]);
+          setSelectedCsv(sprint.agent3CsvFilename);
+        }
+        setAgent3Output(sprint.agent3Output || '');
+        
+        setGrowthThesis(sprint.growthThesis || '');
+        setMustFixItems(sprint.roadmapItems || []);
+        
+        // Clear the sessionStorage
+        sessionStorage.removeItem('loadedSprint');
+        
+        toast.success("Sprint loaded! Continue editing.");
+      } catch (error) {
+        console.error('Error loading sprint:', error);
+        toast.error("Failed to load sprint data");
+      }
+    }
+  }, []);
 
   const formatTime = (ms: number) => {
     const hours = Math.floor(ms / (1000 * 60 * 60));
@@ -534,6 +581,7 @@ refactorsprint.com
       // Prepare sprint data
       const sprintData = {
         clientName: companyName,
+        sprintName: sprintName || 'Untitled Sprint',
         annualRevenue,
         burnRate,
         hypothesis,
@@ -597,6 +645,7 @@ Password: ${data.password}
       // Prepare sprint data
       const sprintData = {
         clientName: companyName,
+        sprintName: sprintName || 'Untitled Sprint',
         annualRevenue,
         burnRate,
         hypothesis,
@@ -682,6 +731,17 @@ Password: ${data.password}
             </div>
             
             <div className="space-y-3">
+              <div>
+                <label className="block text-xs text-slate-400 mb-1 font-mono">Sprint Name / Version</label>
+                <input
+                  type="text"
+                  value={sprintName}
+                  onChange={(e) => setSprintName(e.target.value)}
+                  className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded text-sm focus:outline-none focus:ring-1 focus:ring-green-500"
+                  placeholder="Initial Audit, Revised Strategy, etc."
+                />
+              </div>
+
               <div>
                 <label className="block text-xs text-slate-400 mb-1 font-mono">Company Name</label>
                 <input
