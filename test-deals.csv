@@ -1,0 +1,11 @@
+Status,Amount,Lost Reason
+Closed Won,50000,
+Closed Lost,75000,Pricing too high
+Closed Won,15000,
+Closed Lost,120000,Unclear value proposition
+Closed Won,42000,
+Closed Lost,60000,Competitor chosen
+Closed Won,35000,
+Closed Lost,90000,Feature gap
+Closed Won,28000,
+Closed Lost,55000,Timeline too long

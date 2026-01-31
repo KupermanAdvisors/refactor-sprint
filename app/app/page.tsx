@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Lock, Eye, EyeOff, Activity, Bot, FileUp, Play, Zap, Download, AlertTriangle, CheckCircle, Clock } from "lucide-react";
+import { Lock, Eye, EyeOff, Activity, Bot, FileUp, Play, Zap, Download, AlertTriangle, CheckCircle, Clock, Copy } from "lucide-react";
+import { toast, Toaster } from "sonner";
 
 export default function AppPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -333,7 +334,124 @@ ${agent3Output || "[No forensics run]"}
 
     // Copy to clipboard
     navigator.clipboard.writeText(markdown);
-    alert("Blueprint copied to clipboard!");
+    toast.success("Blueprint copied to clipboard!");
+  };
+
+  // Export for Gamma
+  const handleGammaExport = () => {
+    // Extract insights from agent outputs for template variables
+    const extractCEOQuote = () => {
+      if (agent1Output) {
+        const ceoMatch = agent1Output.match(/CEO.*?:(.*?)(?=\n|Sales|CMO|CFO|$)/s);
+        return ceoMatch ? ceoMatch[1].trim().substring(0, 150) : "[Insert CEO Quote from Transcript]";
+      }
+      return "[Insert CEO Quote from Transcript]";
+    };
+
+    const extractCRMInsight = () => {
+      if (agent3Output) {
+        const insightMatch = agent3Output.match(/Win Rate:\s*(\d+\.?\d*%)/i);
+        if (insightMatch) return `Win rate is ${insightMatch[1]} - data shows actual conversion metrics`;
+      }
+      return "[Insert CRM Data Insight]";
+    };
+
+    const extractCapitalAllocation = () => {
+      if (agent2Output && agent3Output) {
+        return "Current spend is focused on channels that generate leads but not revenue. CRM data shows high CAC with low conversion on enterprise campaigns.";
+      }
+      return "[Insert Capital Allocation Analysis]";
+    };
+
+    const extractPhase1 = () => {
+      const items = mustFixItems.slice(0, 3);
+      return items.length > 0 ? items.map((item, i) => `  ${i + 1}. ${item}`).join('\n') : "[Define Phase 1 tasks]";
+    };
+
+    const extractPhase2 = () => {
+      const items = mustFixItems.slice(3, 6);
+      return items.length > 0 ? items.map((item, i) => `  ${i + 1}. ${item}`).join('\n') : "[Define Phase 2 tasks]";
+    };
+
+    const extractPhase3 = () => {
+      const items = mustFixItems.slice(6);
+      return items.length > 0 ? items.map((item, i) => `  ${i + 1}. ${item}`).join('\n') : "[Define Phase 3 tasks]";
+    };
+
+    const gammaMarkdown = `# Slide 1: Title Card
+**Title:** The Refactor Sprint: Diagnostic & Roadmap
+**Subtitle:** Prepared for ${companyName || "[Client Name]"}
+**Visual Style:** Minimalist, Dark Mode, Engineering/Terminal Aesthetic.
+
+---
+
+# Slide 2: Executive Scorecard
+**Concept:** A Red/Yellow/Green system status check.
+**Status:**
+- **Market Position:** ${agent2Output ? "Warning - Competitive differentiation unclear" : "[Assess Market Position]"}
+- **Unit Economics:** ${agent3Output ? "Critical - CAC/Win rate misalignment detected" : "[Assess Unit Economics]"}
+- **Tech Stack:** ${uploadedFiles.length > 0 ? "Stable - Data infrastructure functional" : "[Assess Tech Stack]"}
+**Visual Instruction:** Use a traffic light or grid layout.
+
+---
+
+# Slide 3: The Forensic Evidence (The Disconnect)
+**Headline:** The Data Contradicts the Strategy.
+**Concept:** Side-by-side comparison of "Belief" vs "Reality".
+- **The Belief (CEO View):** "${extractCEOQuote()}"
+- **The Reality (Data View):** "${extractCRMInsight()}"
+**Visual Instruction:** Split screen layout. High contrast.
+
+---
+
+# Slide 4: The Capital Allocation Model
+**Headline:** Where the Money is Actually Going.
+**Analysis:**
+${extractCapitalAllocation()}
+**Recommendation:**
+- STOP Spending on: ${agent2Output ? "Enterprise-focused campaigns with low conversion" : "[Identify stop spending]"}
+- START Spending on: ${agent3Output ? "Channels aligned with actual win profile" : "[Identify start spending]"}
+**Visual Instruction:** Use a Sankey diagram or "Stop/Start" list.
+
+---
+
+# Slide 5: The 90-Day Remediation Roadmap
+**Headline:** The Path to Stability.
+**Phase 1 (Days 1-30):**
+${extractPhase1()}
+
+**Phase 2 (Days 30-60):**
+${extractPhase2()}
+
+**Phase 3 (Days 60-90):**
+${extractPhase3()}
+
+**Visual Instruction:** Use a Gantt chart or horizontal timeline view.
+
+---
+
+# Slide 6: Growth Thesis
+**The Strategic Shift:**
+${growthThesis || "[Insert Growth Thesis - synthesize findings from agents]"}
+
+**Visual Instruction:** Clean text layout with key quotes highlighted.
+
+---
+
+# Slide 7: Next Steps
+**Immediate Actions:**
+1. Review and approve remediation roadmap
+2. Allocate budget for Phase 1 execution
+3. Schedule weekly check-ins during 90-day plan
+
+**Contact:** The Refactor Sprint Team
+**Timeline:** 90-Day Execution Phase
+
+**Visual Instruction:** Simple checklist layout with CTA.`.trim();
+
+    // Copy to clipboard
+    navigator.clipboard.writeText(gammaMarkdown);
+    toast.success("Gamma blueprint copied to clipboard! Paste into gamma.app to generate slides.");
   };
 
   return (
@@ -680,13 +798,25 @@ ${agent3Output || "[No forensics run]"}
           {/* Export */}
           <button
             onClick={handleExport}
-            className="w-full px-6 py-4 bg-green-500 hover:bg-green-400 text-slate-950 font-bold rounded-lg transition-all shadow-lg shadow-green-500/20 flex items-center justify-center gap-3 text-lg"
+            className="w-full px-6 py-4 bg-green-500 hover:bg-green-400 text-slate-950 font-bold rounded-lg transition-all shadow-lg shadow-green-500/20 flex items-center justify-center gap-3 text-lg mb-3"
           >
             <Download className="w-5 h-5" />
             GENERATE BLUEPRINT
           </button>
+
+          {/* Gamma Export */}
+          <button
+            onClick={handleGammaExport}
+            className="w-full px-6 py-4 bg-violet-500 hover:bg-violet-400 text-slate-950 font-bold rounded-lg transition-all shadow-lg shadow-violet-500/20 flex items-center justify-center gap-3 text-lg"
+          >
+            <Copy className="w-5 h-5" />
+            COPY GAMMA BLUEPRINT
+          </button>
         </div>
       </div>
+      
+      {/* Toast Notifications */}
+      <Toaster position="top-right" theme="dark" richColors />
     </div>
   );
 }
