@@ -150,7 +150,6 @@ export async function POST(request: Request) {
       header: true,
       skipEmptyLines: true,
       dynamicTyping: false,
-      trimHeaders: true,
     });
 
     if (parseResult.errors.length > 0) {
