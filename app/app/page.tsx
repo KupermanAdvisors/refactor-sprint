@@ -566,12 +566,24 @@ ${agent3Output || "[No forensics run]"}
               <h3 className="font-bold text-amber-500 font-mono">AGENT 3: THE ANALYST</h3>
             </div>
             
+            {uploadedFiles.length === 0 && (
+              <div className="mb-3 p-3 bg-slate-950 border border-slate-700 rounded text-xs text-slate-400">
+                ⚠ No files uploaded yet. Upload a CSV in Pane 1 first.
+              </div>
+            )}
+            
+            {uploadedFiles.length > 0 && uploadedFiles.filter(f => f.name.endsWith('.csv')).length === 0 && (
+              <div className="mb-3 p-3 bg-amber-500/10 border border-amber-500/30 rounded text-xs text-amber-400">
+                ⚠ No CSV files found. Please upload a .csv file.
+              </div>
+            )}
+            
             <select
               value={selectedCsv}
               onChange={(e) => setSelectedCsv(e.target.value)}
-              className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded text-sm focus:outline-none focus:ring-1 focus:ring-amber-500 mb-3"
+              className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded text-sm focus:outline-none focus:ring-1 focus:ring-amber-500 mb-3 font-mono"
             >
-              <option value="">Select CSV file</option>
+              <option value="">Select CSV file ({uploadedFiles.filter(f => f.name.endsWith('.csv')).length} available)</option>
               {uploadedFiles.filter(f => f.name.endsWith('.csv')).map((file, i) => (
                 <option key={i} value={file.name}>{file.name}</option>
               ))}
