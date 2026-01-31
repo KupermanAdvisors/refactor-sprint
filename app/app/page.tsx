@@ -152,7 +152,7 @@ function CommandCenter({ onLogout }: { onLogout: () => void }) {
   const [annualRevenue, setAnnualRevenue] = useState("");
   const [burnRate, setBurnRate] = useState("");
   const [hypothesis, setHypothesis] = useState("");
-  const [uploadedFiles, setUploadedFiles] = useState<string[]>([]);
+  const [uploadedFiles, setUploadedFiles] = useState<Array<{name: string; content: string}>>([]);
   const [sprintStartTime] = useState(Date.now());
   
   // State for Pane 2 - Agents
@@ -199,8 +199,14 @@ function CommandCenter({ onLogout }: { onLogout: () => void }) {
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files) {
-      const fileNames = Array.from(files).map(f => f.name);
-      setUploadedFiles([...uploadedFiles, ...fileNames]);
+      Array.from(files).forEach(file => {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          const content = event.target?.result as string;
+          setUploadedFiles(prev => [...prev, { name: file.name, content }]);
+        };
+        reader.readAsText(file);
+      });
     }
   };
 
@@ -221,66 +227,77 @@ function CommandCenter({ onLogout }: { onLogout: () => void }) {
     setAgent1Loading(false);
   };
 
-  // Agent 2: Market Intel (Mock)
-  const handleAgent2 = () => {
+  // Agent 2: Market Intel (LIVE)
+  const handleAgent2 = async () => {
     setAgent2Loading(true);
-    setTimeout(() => {
-      setAgent2Output(`
-COMPETITIVE INTELLIGENCE SCAN COMPLETE
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    setAgent2Output("");
+    
+    try {
+      const competitors = [competitor1, competitor2, competitor3].filter(c => c.trim() !== '');
+      
+      if (competitors.length === 0) {
+        setAgent2Output("ERROR: Please enter at least one competitor URL.");
+        setAgent2Loading(false);
+        return;
+      }
 
-Competitor 1: ${competitor1 || "N/A"}
-  → Positioning: Enterprise SaaS Platform
-  → Price Point: $5k-$15k/mo
-  → Key Message: "All-in-one solution"
-
-Competitor 2: ${competitor2 || "N/A"}
-  → Positioning: SMB Focused
-  → Price Point: $500-$2k/mo
-  → Key Message: "Easy to use, quick setup"
-
-Competitor 3: ${competitor3 || "N/A"}
-  → Positioning: Vertical Specialist
-  → Price Point: $10k-$50k/mo
-  → Key Message: "Industry expertise"
-
-GAP ANALYSIS:
-• All competitors focus on feature lists
-• None emphasize strategic outcomes
-• Opportunity: Position as "Revenue Architect"
-      `);
-      setAgent2Loading(false);
-    }, 2000);
+      const response = await fetch('/api/agent-spy', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ competitors })
+      });
+      
+      const data = await response.json();
+      
+      if (data.error) {
+        setAgent2Output(`ERROR: ${data.error}`);
+      } else {
+        let output = data.analysis || "Analysis complete.";
+        if (data.errors && data.errors.length > 0) {
+          output += `\n\n⚠ SCRAPING ERRORS:\n${data.errors.join('\n')}`;
+        }
+        setAgent2Output(output);
+      }
+    } catch (error) {
+      setAgent2Output("ERROR: Failed to process competitor intelligence.");
+    }
+    setAgent2Loading(false);
   };
 
-  // Agent 3: Forensics (Mock)
-  const handleAgent3 = () => {
+  // Agent 3: Forensics (LIVE)
+  const handleAgent3 = async () => {
     setAgent3Loading(true);
-    setTimeout(() => {
-      setAgent3Output(`
-CRM AUTOPSY COMPLETE
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    setAgent3Output("");
+    
+    try {
+      const selectedFile = uploadedFiles.find(f => f.name === selectedCsv);
+      
+      if (!selectedFile) {
+        setAgent3Output("ERROR: Selected file not found.");
+        setAgent3Loading(false);
+        return;
+      }
 
-File Analyzed: ${selectedCsv || "No file selected"}
-
-KEY METRICS:
-┌────────────────────────────────────┐
-│ Win Rate:           23.4%          │
-│ Avg Deal Size:      $47,200        │
-│ Sales Cycle:        127 days       │
-│ Churn Source:       Feature Fit    │
-└────────────────────────────────────┘
-
-CRITICAL FINDINGS:
-⚠ Lost deals mention "unclear value prop" 47% of the time
-⚠ Closed/Won deals had <60 day cycles vs 180+ for lost
-⚠ Pricing objections correlate with poor discovery calls
-
-RECOMMENDATION:
-Fix the narrative BEFORE scaling spend.
-      `);
-      setAgent3Loading(false);
-    }, 2500);
+      const response = await fetch('/api/agent-analyst', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          csvContent: selectedFile.content,
+          fileName: selectedFile.name
+        })
+      });
+      
+      const data = await response.json();
+      
+      if (data.error) {
+        setAgent3Output(`ERROR: ${data.error}`);
+      } else {
+        setAgent3Output(data.analysis || "Analysis complete.");
+      }
+    } catch (error) {
+      setAgent3Output("ERROR: Failed to process CSV forensics.");
+    }
+    setAgent3Loading(false);
   };
 
   // Export Blueprint
@@ -438,7 +455,7 @@ ${agent3Output || "[No forensics run]"}
                 {uploadedFiles.map((file, i) => (
                   <div key={i} className="flex items-center gap-2 text-sm bg-slate-950 px-3 py-2 rounded border border-slate-800">
                     <CheckCircle className="w-4 h-4 text-green-500" />
-                    <span className="text-slate-300 font-mono text-xs flex-1">{file}</span>
+                    <span className="text-slate-300 font-mono text-xs flex-1">{file.name}</span>
                     <span className="text-green-500 text-xs">READY</span>
                   </div>
                 ))}
@@ -555,8 +572,8 @@ ${agent3Output || "[No forensics run]"}
               className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded text-sm focus:outline-none focus:ring-1 focus:ring-amber-500 mb-3"
             >
               <option value="">Select CSV file</option>
-              {uploadedFiles.filter(f => f.endsWith('.csv')).map((file, i) => (
-                <option key={i} value={file}>{file}</option>
+              {uploadedFiles.filter(f => f.name.endsWith('.csv')).map((file, i) => (
+                <option key={i} value={file.name}>{file.name}</option>
               ))}
             </select>
             
