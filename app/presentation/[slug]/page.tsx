@@ -132,7 +132,7 @@ export default function PresentationPage({ params }: { params: Promise<{ slug: s
                   </button>
                 </div>
                 <p className="mt-2 text-xs text-slate-500">
-                  Format: clientname + mmddyyyy (e.g., techflow01312026)
+                  Format: clientname + mmddyyyy + 4-digit code (e.g., techflow013120261234)
                 </p>
               </div>
 

@@ -9,13 +9,17 @@ function sanitizeForSlug(name: string): string {
     .trim();
 }
 
-// Helper to generate password
+// Helper to generate password (with random suffix for security)
 function generatePassword(clientName: string, date: Date): string {
   const sanitized = sanitizeForSlug(clientName);
   const month = String(date.getMonth() + 1).padStart(2, '0');
   const day = String(date.getDate()).padStart(2, '0');
   const year = date.getFullYear();
-  return `${sanitized}${month}${day}${year}`;
+  
+  // Add random 4-digit suffix for security (not in URL)
+  const randomSuffix = Math.floor(1000 + Math.random() * 9000);
+  
+  return `${sanitized}${month}${day}${year}${randomSuffix}`;
 }
 
 // Helper to generate slug (includes sprint name for uniqueness)
