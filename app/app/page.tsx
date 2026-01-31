@@ -379,79 +379,153 @@ ${agent3Output || "[No forensics run]"}
     };
 
     const gammaMarkdown = `# Slide 1: Title Card
-**Title:** The Refactor Sprint: Diagnostic & Roadmap
-**Subtitle:** Prepared for ${companyName || "[Client Name]"}
-**Visual Style:** Minimalist, Dark Mode, Engineering/Terminal Aesthetic.
+**Title:** The Refactor Sprint
+**Subtitle:** 72-Hour Revenue Engine Diagnostic
+**Client:** ${companyName || "[Client Name]"}
+**Date:** ${new Date().toLocaleDateString()}
+
+**Visual Style Instructions:**
+- Background: Deep slate/charcoal (dark mode - #0f172a or similar)
+- Logo: Place Refactor Sprint logo in top left corner
+- Typography: Clean sans-serif (Inter) with monospace accents
+- Color scheme: Cyan (#06B6D4) and violet (#8B5CF6) gradient accents
+- Layout: Centered title with subtle grid pattern background
+- Aesthetic: "Terminal meets Strategy Firm" - technical precision with executive polish
 
 ---
 
 # Slide 2: Executive Scorecard
-**Concept:** A Red/Yellow/Green system status check.
-**Status:**
-- **Market Position:** ${agent2Output ? "Warning - Competitive differentiation unclear" : "[Assess Market Position]"}
-- **Unit Economics:** ${agent3Output ? "Critical - CAC/Win rate misalignment detected" : "[Assess Unit Economics]"}
-- **Tech Stack:** ${uploadedFiles.length > 0 ? "Stable - Data infrastructure functional" : "[Assess Tech Stack]"}
-**Visual Instruction:** Use a traffic light or grid layout.
+**Headline:** System Status: Revenue Engine Health Check
+
+**Status Indicators:**
+- 🟢 **Market Position:** ${agent2Output ? "Warning - Competitive differentiation unclear" : "[Assess Market Position]"}
+- 🟡 **Unit Economics:** ${agent3Output ? "Critical - CAC/Win rate misalignment detected" : "[Assess Unit Economics]"}  
+- 🔴 **Tech Stack:** ${uploadedFiles.length > 0 ? "Stable - Data infrastructure functional" : "[Assess Tech Stack]"}
+
+**Visual Style Instructions:**
+- Use traffic light color system (Green: #10b981, Yellow: #f59e0b, Red: #ef4444)
+- Dark card backgrounds with neon accent borders
+- Monospace font for metrics
+- Grid layout with glassmorphism effect
+- Terminal-style status indicators (e.g., "$ system_check --status")
 
 ---
 
-# Slide 3: The Forensic Evidence (The Disconnect)
-**Headline:** The Data Contradicts the Strategy.
-**Concept:** Side-by-side comparison of "Belief" vs "Reality".
-- **The Belief (CEO View):** "${extractCEOQuote()}"
-- **The Reality (Data View):** "${extractCRMInsight()}"
-**Visual Instruction:** Split screen layout. High contrast.
+# Slide 3: The Forensic Evidence
+**Headline:** The Disconnect: Belief vs. Data
+
+**The Strategic Contradiction:**
+
+**Leadership Belief:**
+> "${extractCEOQuote()}"
+
+**What the Data Shows:**
+> ${extractCRMInsight()}
+
+**Visual Style Instructions:**
+- Split-screen layout (belief on left, data on right)
+- High contrast - cyan accent for "Belief", violet accent for "Data"
+- Quote blocks with dark background and neon border glow
+- Use → arrow icon between sections to show contradiction
+- Typography: Larger font for quotes, monospace for data metrics
 
 ---
 
-# Slide 4: The Capital Allocation Model
-**Headline:** Where the Money is Actually Going.
-**Analysis:**
+# Slide 4: Capital Allocation Analysis
+**Headline:** Where Your GTM Budget is Actually Going
+
+**Current State:**
 ${extractCapitalAllocation()}
-**Recommendation:**
-- STOP Spending on: ${agent2Output ? "Enterprise-focused campaigns with low conversion" : "[Identify stop spending]"}
-- START Spending on: ${agent3Output ? "Channels aligned with actual win profile" : "[Identify start spending]"}
-**Visual Instruction:** Use a Sankey diagram or "Stop/Start" list.
+
+**The Reallocation Strategy:**
+
+**🛑 STOP Spending:**
+- ${agent2Output ? "Enterprise-focused campaigns with <10% conversion" : "[Identify stop spending]"}
+- High-CAC channels that don't align with win profile
+- Messaging that repels actual buyers
+
+**▶️ START Spending:**
+- ${agent3Output ? "Channels aligned with actual win profile (52%+ conversion)" : "[Identify start spending]"}
+- Mid-market focused campaigns
+- Fast ROI, proven conversion paths
+
+**Visual Style Instructions:**
+- Use Sankey diagram or flow chart showing budget reallocation
+- Red/stop indicators for waste, green/start indicators for opportunity
+- Dark background with glowing connection lines
+- Monospace font for dollar amounts
+- Include $ savings calculation prominently
 
 ---
 
 # Slide 5: The 90-Day Remediation Roadmap
-**Headline:** The Path to Stability.
-**Phase 1 (Days 1-30):**
+**Headline:** From Diagnosis to Execution
+
+**Phase 1: Stabilize (Days 1-30)**
 ${extractPhase1()}
 
-**Phase 2 (Days 30-60):**
+**Phase 2: Optimize (Days 30-60)**
 ${extractPhase2()}
 
-**Phase 3 (Days 60-90):**
+**Phase 3: Scale (Days 60-90)**
 ${extractPhase3()}
 
-**Visual Instruction:** Use a Gantt chart or horizontal timeline view.
+**Visual Style Instructions:**
+- Horizontal Gantt-style timeline
+- Three distinct phases with cyan → violet gradient progression
+- Dark card backgrounds for each phase
+- Checkbox icons for tasks
+- Timeline bar at top showing 90-day span
+- Monospace font for day counts
 
 ---
 
-# Slide 6: Growth Thesis
-**The Strategic Shift:**
+# Slide 6: The Growth Thesis
+**Headline:** The Strategic Shift
+
 ${growthThesis || "[Insert Growth Thesis - synthesize findings from agents]"}
 
-**Visual Instruction:** Clean text layout with key quotes highlighted.
+**Visual Style Instructions:**
+- Clean text layout with ample white (well, dark) space
+- Pull quotes highlighted in cyan boxes
+- Key metrics in monospace font with violet accents
+- Minimal decoration - let the content speak
+- Use → arrows between logical progressions
+- Dark slate background with subtle grid overlay
 
 ---
 
 # Slide 7: Next Steps
+**Headline:** From Blueprint to Execution
+
 **Immediate Actions:**
 1. Review and approve remediation roadmap
-2. Allocate budget for Phase 1 execution
-3. Schedule weekly check-ins during 90-day plan
+2. Allocate budget for Phase 1 execution  
+3. Schedule weekly check-ins during 90-day implementation
+4. Assign owners to each roadmap item
 
-**Contact:** The Refactor Sprint Team
-**Timeline:** 90-Day Execution Phase
+**What Happens Next:**
+- Week 1: Kickoff execution of Phase 1 items
+- Week 2-4: Weekly progress reviews
+- Week 5: Phase 2 planning and launch
+- Week 9: Phase 3 planning and launch
+- Day 90: Sprint retrospective and next quarter planning
 
-**Visual Instruction:** Simple checklist layout with CTA.`.trim();
+**Contact:**
+The Refactor Sprint Team
+refactorsprint.com
+
+**Visual Style Instructions:**
+- Simple checklist layout with cyan checkboxes
+- Timeline with milestone markers
+- Contact info in footer with subtle glow effect
+- CTA button: "Begin 90-Day Execution" in cyan (#06B6D4)
+- Logo in bottom corner
+- Dark background maintaining brand consistency`.trim();
 
     // Copy to clipboard
     navigator.clipboard.writeText(gammaMarkdown);
-    toast.success("Gamma blueprint copied to clipboard! Paste into gamma.app to generate slides.");
+    toast.success("Gamma blueprint copied! Paste into gamma.app to generate slides with Refactor Sprint branding.");
   };
 
   return (
