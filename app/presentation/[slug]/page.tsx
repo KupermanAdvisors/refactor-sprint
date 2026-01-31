@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import { Lock, Eye, EyeOff, Download, ArrowLeft } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Lock, Eye, EyeOff, ArrowLeft, Activity, Radio, FileText, TrendingUp, AlertTriangle, CheckCircle2 } from "lucide-react";
 import { toast, Toaster } from "sonner";
 import { use } from "react";
 
@@ -28,9 +28,9 @@ export default function PresentationPage({ params }: { params: Promise<{ slug: s
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [sprint, setSprint] = useState<Sprint | null>(null);
+  const [activeTab, setActiveTab] = useState<'listener' | 'spy' | 'analyst'>('listener');
 
   useEffect(() => {
-    // Check session
     const sessionKey = `presentation-${slug}`;
     const authStatus = sessionStorage.getItem(sessionKey);
     if (authStatus === "authenticated") {
@@ -81,36 +81,36 @@ export default function PresentationPage({ params }: { params: Promise<{ slug: s
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-slate-950 flex items-center justify-center">
-        <div className="text-slate-400">Loading presentation...</div>
+      <div className="min-h-screen bg-[#0F172A] flex items-center justify-center">
+        <div className="text-slate-400 font-mono">Loading presentation...</div>
       </div>
     );
   }
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-slate-950 text-slate-50 flex items-center justify-center px-4">
+      <div className="min-h-screen bg-[#0F172A] text-slate-50 flex items-center justify-center px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="w-full max-w-md"
         >
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-8">
+          <div className="bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-2xl p-8">
             <div className="flex justify-center mb-8">
               <img src="/refaclogo.png" alt="The Refactor Sprint" className="h-16 w-auto" />
             </div>
 
             <div className="text-center mb-8">
-              <div className="w-16 h-16 rounded-full bg-violet-500/10 flex items-center justify-center mx-auto mb-4">
-                <Lock className="w-8 h-8 text-violet-500" />
+              <div className="w-16 h-16 rounded-full bg-[#0070F3]/10 flex items-center justify-center mx-auto mb-4">
+                <Lock className="w-8 h-8 text-[#0070F3]" />
               </div>
-              <h1 className="text-3xl font-bold mb-2">Protected Presentation</h1>
-              <p className="text-slate-400">Enter password to view sprint results</p>
+              <h1 className="text-3xl font-bold mb-2 font-mono">SECURE ACCESS</h1>
+              <p className="text-slate-400 text-sm">Enter password to view blueprint</p>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
-                <label htmlFor="password" className="block text-sm font-medium mb-2 text-slate-300">
+                <label htmlFor="password" className="block text-xs font-mono uppercase tracking-wider mb-2 text-slate-400">
                   Password
                 </label>
                 <div className="relative">
@@ -119,8 +119,8 @@ export default function PresentationPage({ params }: { params: Promise<{ slug: s
                     id="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full px-4 py-3 bg-slate-950 border border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent text-slate-50 pr-12 font-mono"
-                    placeholder="Enter password"
+                    className="w-full px-4 py-3 bg-slate-950 border border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0070F3] focus:border-transparent text-slate-50 pr-12 font-mono text-sm"
+                    placeholder="clientname01312026xxxx"
                     autoFocus
                   />
                   <button
@@ -128,19 +128,16 @@ export default function PresentationPage({ params }: { params: Promise<{ slug: s
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-300 transition-colors"
                   >
-                    {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
                 </div>
-                <p className="mt-2 text-xs text-slate-500">
-                  Format: clientname + mmddyyyy + 4-digit code (e.g., techflow013120261234)
-                </p>
               </div>
 
               {error && (
                 <motion.div
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="p-3 bg-red-500/10 border border-red-500/50 rounded-lg text-red-400 text-sm"
+                  className="p-3 bg-[#FF4F00]/10 border border-[#FF4F00]/50 rounded-lg text-[#FF4F00] text-xs font-mono"
                 >
                   {error}
                 </motion.div>
@@ -148,15 +145,15 @@ export default function PresentationPage({ params }: { params: Promise<{ slug: s
 
               <button
                 type="submit"
-                className="w-full px-6 py-3 bg-violet-500 hover:bg-violet-400 text-slate-950 font-bold rounded-lg transition-all shadow-lg shadow-violet-500/20"
+                className="w-full px-6 py-3 bg-[#0070F3] hover:bg-[#0070F3]/90 text-white font-bold rounded-lg transition-all shadow-lg shadow-[#0070F3]/20 font-mono"
               >
-                VIEW PRESENTATION
+                ACCESS BLUEPRINT
               </button>
             </form>
 
             <div className="mt-6 text-center">
-              <a href="/" className="text-sm text-slate-400 hover:text-violet-500 transition-colors">
-                ← Back to Refactor Sprint
+              <a href="/" className="text-xs text-slate-500 hover:text-[#0070F3] transition-colors font-mono">
+                ← EXIT
               </a>
             </div>
           </div>
@@ -167,228 +164,303 @@ export default function PresentationPage({ params }: { params: Promise<{ slug: s
 
   if (!sprint) {
     return (
-      <div className="min-h-screen bg-slate-950 flex items-center justify-center">
-        <div className="text-red-400">Sprint not found</div>
+      <div className="min-h-screen bg-[#0F172A] flex items-center justify-center">
+        <div className="text-[#FF4F00] font-mono">ERROR: Sprint not found</div>
       </div>
     );
   }
 
-  // Split roadmap into phases
-  const phase1 = sprint.roadmap_items?.slice(0, 3) || [];
-  const phase2 = sprint.roadmap_items?.slice(3, 6) || [];
-  const phase3 = sprint.roadmap_items?.slice(6) || [];
-
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-50">
+    <div className="min-h-screen bg-[#0F172A] text-slate-50">
       {/* Fixed Header */}
       <div className="border-b border-slate-800 bg-slate-900/95 backdrop-blur-sm sticky top-0 z-50">
-        <div className="px-6 py-4 flex justify-between items-center max-w-7xl mx-auto">
+        <div className="px-6 py-3 flex justify-between items-center max-w-7xl mx-auto">
           <div className="flex items-center gap-4">
-            <img src="/refaclogo.png" alt="Refactor Sprint" className="h-8" />
-            <span className="text-slate-500 font-mono text-sm">/ presentation</span>
+            <img src="/refaclogo.png" alt="Refactor Sprint" className="h-6" />
+            <span className="text-slate-600 font-mono text-xs">/ BLUEPRINT</span>
           </div>
-          <a
-            href="/"
-            className="px-4 py-2 text-sm text-slate-400 hover:text-white border border-slate-700 hover:border-slate-600 rounded transition-all flex items-center gap-2"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Exit
-          </a>
+          
+          <div className="flex items-center gap-4">
+            {/* Live Doc Indicator */}
+            <div className="flex items-center gap-2 px-3 py-1.5 bg-[#0070F3]/10 border border-[#0070F3]/30 rounded">
+              <div className="w-2 h-2 rounded-full bg-[#0070F3] animate-pulse" />
+              <span className="text-[#0070F3] font-mono text-xs uppercase">Live Doc</span>
+            </div>
+            
+            <div className="text-right">
+              <div className="text-xs font-mono text-slate-500">Client: <span className="text-slate-300">{sprint.client_name}</span></div>
+              <div className="text-xs font-mono text-slate-500">Generated: {new Date(sprint.created_at).toLocaleDateString()}</div>
+            </div>
+            
+            <a
+              href="/"
+              className="px-3 py-1.5 text-xs text-slate-400 hover:text-white border border-slate-700 hover:border-slate-600 rounded transition-all flex items-center gap-2 font-mono"
+            >
+              <ArrowLeft className="w-3 h-3" />
+              EXIT
+            </a>
+          </div>
         </div>
       </div>
 
-      {/* Presentation Content */}
-      <div className="max-w-5xl mx-auto px-6 py-12 space-y-16">
-        {/* Slide 1: Title */}
-        <motion.section
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="min-h-[80vh] flex flex-col justify-center items-center text-center"
-        >
-          <div className="mb-8">
-            <img src="/refaclogo.png" alt="Refactor Sprint" className="h-20 mx-auto mb-6" />
-          </div>
-          <h1 className="text-6xl font-bold mb-6">The Refactor Sprint</h1>
-          <p className="text-2xl text-slate-400 mb-4">72-Hour Revenue Engine Diagnostic</p>
-          <div className="text-xl text-slate-500">
-            <p>Prepared for <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 to-violet-500 font-bold">{sprint.client_name}</span></p>
-            <p className="mt-2">{new Date(sprint.created_at).toLocaleDateString()}</p>
-          </div>
-        </motion.section>
-
-        {/* Slide 2: Executive Summary */}
+      <div className="max-w-7xl mx-auto px-6 py-12 space-y-12">
+        
+        {/* Executive Summary */}
         {(sprint.annual_revenue || sprint.burn_rate || sprint.hypothesis) && (
           <motion.section
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="min-h-screen flex flex-col justify-center"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-xl p-8"
           >
-            <h2 className="text-4xl font-bold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 to-violet-500">
-              Executive Summary
-            </h2>
-            <div className="space-y-6 bg-slate-900 border border-slate-800 rounded-xl p-8">
+            <h2 className="text-2xl font-bold mb-6 font-mono text-[#0070F3] uppercase tracking-wider">Executive Summary</h2>
+            <div className="grid grid-cols-3 gap-6">
               {sprint.annual_revenue && (
                 <div>
-                  <p className="text-sm text-slate-500 font-mono uppercase mb-2">Annual Revenue</p>
-                  <p className="text-2xl font-bold">{sprint.annual_revenue}</p>
+                  <p className="text-xs text-slate-500 font-mono uppercase tracking-wider mb-2">Annual Revenue</p>
+                  <p className="text-3xl font-bold font-mono text-slate-200">{sprint.annual_revenue}</p>
                 </div>
               )}
               {sprint.burn_rate && (
                 <div>
-                  <p className="text-sm text-slate-500 font-mono uppercase mb-2">Burn Rate</p>
-                  <p className="text-2xl font-bold">{sprint.burn_rate}</p>
+                  <p className="text-xs text-slate-500 font-mono uppercase tracking-wider mb-2">Burn Rate</p>
+                  <p className="text-3xl font-bold font-mono text-slate-200">{sprint.burn_rate}</p>
                 </div>
               )}
               {sprint.hypothesis && (
-                <div>
-                  <p className="text-sm text-slate-500 font-mono uppercase mb-2">Critical Error Hypothesis</p>
-                  <p className="text-lg leading-relaxed text-slate-300">{sprint.hypothesis}</p>
+                <div className="col-span-3 mt-4">
+                  <p className="text-xs text-slate-500 font-mono uppercase tracking-wider mb-2">Critical Error Hypothesis</p>
+                  <p className="text-base leading-relaxed text-slate-300">{sprint.hypothesis}</p>
                 </div>
               )}
             </div>
           </motion.section>
         )}
 
-        {/* Slide 3: Agent Outputs */}
-        {(sprint.agent_1_output || sprint.agent_2_output || sprint.agent_3_output) && (
-          <motion.section
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="min-h-screen flex flex-col justify-center"
-          >
-            <h2 className="text-4xl font-bold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 to-violet-500">
-              Forensic Analysis
-            </h2>
-            
-            {sprint.agent_1_output && (
-              <div className="mb-8 bg-slate-900 border border-cyan-500/30 rounded-xl p-6">
-                <h3 className="text-xl font-bold mb-4 text-cyan-500 font-mono">The Listener: Stakeholder Analysis</h3>
-                <pre className="text-sm text-slate-300 whitespace-pre-wrap font-mono leading-relaxed">
-                  {sprint.agent_1_output}
-                </pre>
-              </div>
-            )}
-
-            {sprint.agent_2_output && (
-              <div className="mb-8 bg-slate-900 border border-violet-500/30 rounded-xl p-6">
-                <h3 className="text-xl font-bold mb-4 text-violet-500 font-mono">The Spy: Competitive Intelligence</h3>
-                <pre className="text-sm text-slate-300 whitespace-pre-wrap font-mono leading-relaxed">
-                  {sprint.agent_2_output}
-                </pre>
-              </div>
-            )}
-
-            {sprint.agent_3_output && (
-              <div className="bg-slate-900 border border-amber-500/30 rounded-xl p-6">
-                <h3 className="text-xl font-bold mb-4 text-amber-500 font-mono">The Analyst: CRM Forensics</h3>
-                <pre className="text-sm text-slate-300 whitespace-pre-wrap font-mono leading-relaxed">
-                  {sprint.agent_3_output}
-                </pre>
-              </div>
-            )}
-          </motion.section>
-        )}
-
-        {/* Slide 4: Growth Thesis */}
+        {/* Growth Thesis - 2 Column Layout */}
         {sprint.growth_thesis && (
           <motion.section
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="min-h-screen flex flex-col justify-center"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
           >
-            <h2 className="text-4xl font-bold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 to-violet-500">
-              The Strategic Shift
-            </h2>
-            <div className="bg-slate-900 border border-slate-800 rounded-xl p-8">
-              <p className="text-lg leading-relaxed text-slate-300 whitespace-pre-wrap">
-                {sprint.growth_thesis}
-              </p>
+            <h2 className="text-3xl font-bold mb-8 font-mono text-[#0070F3] uppercase tracking-wider">Growth Thesis</h2>
+            
+            <div className="grid grid-cols-2 gap-8">
+              {/* Left Column - Narrative */}
+              <div className="space-y-6">
+                <div className="bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-xl p-6">
+                  <h3 className="text-lg font-bold mb-4 text-[#FF4F00] font-mono uppercase">The Strategic Contradiction</h3>
+                  <div className="text-slate-300 leading-relaxed whitespace-pre-wrap">
+                    {sprint.growth_thesis.split('\n\n')[0]}
+                  </div>
+                </div>
+              </div>
+
+              {/* Right Column - Evidence & Shift */}
+              <div className="space-y-6">
+                <div className="bg-gradient-to-br from-[#0070F3]/10 to-[#0070F3]/5 backdrop-blur-xl border border-[#0070F3]/30 rounded-xl p-6">
+                  <h3 className="text-lg font-bold mb-4 text-[#0070F3] font-mono uppercase">The Strategic Shift</h3>
+                  <div className="text-slate-200 leading-relaxed">
+                    {sprint.growth_thesis.split('\n\n').slice(-1)[0]}
+                  </div>
+                </div>
+
+                {/* Data Evidence Cards */}
+                <div className="grid grid-cols-3 gap-3">
+                  {sprint.agent_1_output && (
+                    <div className="bg-slate-900/50 border border-slate-700 rounded-lg p-4 text-center">
+                      <Radio className="w-5 h-5 text-cyan-500 mx-auto mb-2" />
+                      <p className="text-xs text-slate-400 font-mono">Transcript</p>
+                    </div>
+                  )}
+                  {sprint.agent_2_output && (
+                    <div className="bg-slate-900/50 border border-slate-700 rounded-lg p-4 text-center">
+                      <Activity className="w-5 h-5 text-violet-500 mx-auto mb-2" />
+                      <p className="text-xs text-slate-400 font-mono">Competitive</p>
+                    </div>
+                  )}
+                  {sprint.agent_3_output && (
+                    <div className="bg-slate-900/50 border border-slate-700 rounded-lg p-4 text-center">
+                      <FileText className="w-5 h-5 text-amber-500 mx-auto mb-2" />
+                      <p className="text-xs text-slate-400 font-mono">Forensics</p>
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
           </motion.section>
         )}
 
-        {/* Slide 5: 90-Day Roadmap */}
+        {/* Must Fix - Prioritized Action List */}
         {sprint.roadmap_items && sprint.roadmap_items.length > 0 && (
           <motion.section
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="min-h-screen flex flex-col justify-center"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
           >
-            <h2 className="text-4xl font-bold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 to-violet-500">
-              90-Day Remediation Roadmap
-            </h2>
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-3xl font-bold font-mono text-[#0070F3] uppercase tracking-wider">Must Fix</h2>
+              <span className="px-3 py-1 bg-[#FF4F00]/10 border border-[#FF4F00]/50 rounded text-[#FF4F00] font-mono text-xs uppercase">Priority: High</span>
+            </div>
             
-            <div className="space-y-6">
-              {phase1.length > 0 && (
-                <div className="bg-slate-900 border border-cyan-500/30 rounded-xl p-6">
-                  <h3 className="text-xl font-bold mb-4 text-cyan-500">Phase 1: Days 1-30</h3>
-                  <ul className="space-y-3">
-                    {phase1.map((item, i) => (
-                      <li key={i} className="flex gap-3">
-                        <span className="text-cyan-500 font-mono font-bold">{i + 1}.</span>
-                        <span className="text-slate-300">{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-
-              {phase2.length > 0 && (
-                <div className="bg-slate-900 border border-violet-500/30 rounded-xl p-6">
-                  <h3 className="text-xl font-bold mb-4 text-violet-500">Phase 2: Days 30-60</h3>
-                  <ul className="space-y-3">
-                    {phase2.map((item, i) => (
-                      <li key={i} className="flex gap-3">
-                        <span className="text-violet-500 font-mono font-bold">{i + 1}.</span>
-                        <span className="text-slate-300">{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-
-              {phase3.length > 0 && (
-                <div className="bg-slate-900 border border-amber-500/30 rounded-xl p-6">
-                  <h3 className="text-xl font-bold mb-4 text-amber-500">Phase 3: Days 60-90</h3>
-                  <ul className="space-y-3">
-                    {phase3.map((item, i) => (
-                      <li key={i} className="flex gap-3">
-                        <span className="text-amber-500 font-mono font-bold">{i + 1}.</span>
-                        <span className="text-slate-300">{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
+            <div className="space-y-2">
+              {sprint.roadmap_items.map((item, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.3 + i * 0.05 }}
+                  whileHover={{ x: 4, backgroundColor: 'rgba(15, 23, 42, 0.5)' }}
+                  className="bg-slate-900/30 border border-slate-800 rounded-lg p-4 cursor-pointer transition-all group"
+                >
+                  <div className="flex items-start gap-4">
+                    <span className="text-[#0070F3] font-mono font-bold text-sm flex-shrink-0 mt-0.5">{String(i + 1).padStart(2, '0')}</span>
+                    <div className="flex-1">
+                      <p className="text-slate-300 leading-relaxed group-hover:text-slate-200 transition-colors">{item}</p>
+                    </div>
+                    <CheckCircle2 className="w-5 h-5 text-slate-700 group-hover:text-green-500 transition-colors flex-shrink-0" />
+                  </div>
+                </motion.div>
+              ))}
             </div>
           </motion.section>
         )}
 
-        {/* Final Slide: Next Steps */}
+        {/* Agent Outputs - Tabbed Interface */}
+        {(sprint.agent_1_output || sprint.agent_2_output || sprint.agent_3_output) && (
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+          >
+            <h2 className="text-3xl font-bold mb-6 font-mono text-[#0070F3] uppercase tracking-wider">Agent Outputs</h2>
+            
+            {/* Tabs */}
+            <div className="flex gap-2 mb-6 border-b border-slate-800">
+              {sprint.agent_1_output && (
+                <button
+                  onClick={() => setActiveTab('listener')}
+                  className={`px-6 py-3 font-mono text-sm transition-all ${
+                    activeTab === 'listener'
+                      ? 'border-b-2 border-cyan-500 text-cyan-500'
+                      : 'text-slate-500 hover:text-slate-300'
+                  }`}
+                >
+                  THE LISTENER
+                </button>
+              )}
+              {sprint.agent_2_output && (
+                <button
+                  onClick={() => setActiveTab('spy')}
+                  className={`px-6 py-3 font-mono text-sm transition-all ${
+                    activeTab === 'spy'
+                      ? 'border-b-2 border-violet-500 text-violet-500'
+                      : 'text-slate-500 hover:text-slate-300'
+                  }`}
+                >
+                  THE SPY
+                </button>
+              )}
+              {sprint.agent_3_output && (
+                <button
+                  onClick={() => setActiveTab('analyst')}
+                  className={`px-6 py-3 font-mono text-sm transition-all ${
+                    activeTab === 'analyst'
+                      ? 'border-b-2 border-amber-500 text-amber-500'
+                      : 'text-slate-500 hover:text-slate-300'
+                  }`}
+                >
+                  THE ANALYST
+                </button>
+              )}
+            </div>
+
+            {/* Tab Content */}
+            <AnimatePresence mode="wait">
+              {activeTab === 'listener' && sprint.agent_1_output && (
+                <motion.div
+                  key="listener"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  className="bg-slate-900/50 backdrop-blur-xl border border-cyan-500/30 rounded-xl p-6"
+                >
+                  <div className="flex items-start gap-3 mb-4 pb-4 border-b border-slate-800">
+                    <AlertTriangle className="w-5 h-5 text-[#FF4F00] flex-shrink-0 mt-1" />
+                    <div>
+                      <h3 className="text-lg font-bold text-cyan-500 font-mono">CRITICAL MISALIGNMENTS</h3>
+                      <p className="text-xs text-slate-400 mt-1">Stakeholder Conflict Analysis</p>
+                    </div>
+                  </div>
+                  <pre className="text-sm text-slate-300 whitespace-pre-wrap font-mono leading-relaxed">
+                    {sprint.agent_1_output}
+                  </pre>
+                </motion.div>
+              )}
+
+              {activeTab === 'spy' && sprint.agent_2_output && (
+                <motion.div
+                  key="spy"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  className="bg-slate-900/50 backdrop-blur-xl border border-violet-500/30 rounded-xl p-6"
+                >
+                  <div className="flex items-start gap-3 mb-4 pb-4 border-b border-slate-800">
+                    <Activity className="w-5 h-5 text-violet-500 flex-shrink-0 mt-1" />
+                    <div>
+                      <h3 className="text-lg font-bold text-violet-500 font-mono">COMPETITIVE INTELLIGENCE</h3>
+                      <p className="text-xs text-slate-400 mt-1">Market Positioning Analysis</p>
+                    </div>
+                  </div>
+                  <pre className="text-sm text-slate-300 whitespace-pre-wrap font-mono leading-relaxed">
+                    {sprint.agent_2_output}
+                  </pre>
+                </motion.div>
+              )}
+
+              {activeTab === 'analyst' && sprint.agent_3_output && (
+                <motion.div
+                  key="analyst"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  className="bg-slate-900/50 backdrop-blur-xl border border-amber-500/30 rounded-xl p-6"
+                >
+                  <div className="flex items-start gap-3 mb-4 pb-4 border-b border-slate-800">
+                    <TrendingUp className="w-5 h-5 text-amber-500 flex-shrink-0 mt-1" />
+                    <div>
+                      <h3 className="text-lg font-bold text-amber-500 font-mono">CRM FORENSICS</h3>
+                      <p className="text-xs text-slate-400 mt-1">Revenue Engine Diagnostics</p>
+                    </div>
+                  </div>
+                  <pre className="text-sm text-slate-300 whitespace-pre-wrap font-mono leading-relaxed">
+                    {sprint.agent_3_output}
+                  </pre>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.section>
+        )}
+
+        {/* Footer CTA */}
         <motion.section
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="min-h-screen flex flex-col justify-center text-center"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.6 }}
+          className="text-center py-12 border-t border-slate-800"
         >
-          <h2 className="text-4xl font-bold mb-8">Ready to Execute?</h2>
-          <p className="text-xl text-slate-400 mb-12">
-            This presentation expires 30 days from creation.
+          <p className="text-sm text-slate-500 font-mono mb-6">
+            This presentation expires 30 days from creation
           </p>
-          <div className="flex justify-center gap-4">
-            <a
-              href="https://refactorsprint.com"
-              className="px-8 py-4 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold rounded-lg transition-all text-lg"
-            >
-              Learn More
-            </a>
-          </div>
-          <div className="mt-12">
-            <img src="/refaclogo.png" alt="Refactor Sprint" className="h-12 mx-auto opacity-50" />
+          <a
+            href="https://refactorsprint.com"
+            className="inline-block px-8 py-3 bg-[#0070F3] hover:bg-[#0070F3]/90 text-white font-bold rounded-lg transition-all font-mono text-sm"
+          >
+            LEARN MORE
+          </a>
+          <div className="mt-8">
+            <img src="/refaclogo.png" alt="Refactor Sprint" className="h-10 mx-auto opacity-30" />
           </div>
         </motion.section>
       </div>
