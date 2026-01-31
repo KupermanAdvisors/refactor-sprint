@@ -617,13 +617,20 @@ Password: ${data.password}
         `.trim();
         
         navigator.clipboard.writeText(message);
-        toast.success("Presentation created! URL and password copied to clipboard.");
         
-        // Show confirmation dialog
-        const openNow = confirm(`Presentation created!\n\nURL: ${fullUrl}\nPassword: ${data.password}\n\nURL and password have been copied to your clipboard.\n\nWould you like to open the presentation now?`);
+        // Open presentation in new tab immediately (before confirm dialog to avoid popup blockers)
+        const newWindow = window.open(fullUrl, '_blank', 'noopener,noreferrer');
         
-        if (openNow) {
-          window.open(fullUrl, '_blank');
+        if (newWindow) {
+          toast.success("Presentation created and opened! Password copied to clipboard.");
+        } else {
+          // Popup blocked - show manual link
+          toast.success("Presentation created! Click the link in the alert to open.", { duration: 5000 });
+          const openManually = confirm(`Presentation created!\n\nURL: ${fullUrl}\nPassword: ${data.password}\n\nURL and password have been copied to your clipboard.\n\nClick OK to try opening again, or paste the URL from your clipboard.`);
+          
+          if (openManually) {
+            window.location.href = fullUrl; // Navigate in same tab as fallback
+          }
         }
       } else {
         toast.error("Failed to create presentation");
