@@ -108,10 +108,10 @@ ${sprint.agent_3_output || '[No forensics run]'}
     zip.file('00-BLUEPRINT.md', blueprint);
 
     // Generate ZIP
-    const zipBlob = await zip.generateAsync({ type: 'nodebuffer' });
+    const zipBuffer = await zip.generateAsync({ type: 'uint8array' });
 
     // Return as downloadable file
-    return new NextResponse(zipBlob, {
+    return new NextResponse(zipBuffer, {
       headers: {
         'Content-Type': 'application/zip',
         'Content-Disposition': `attachment; filename="${sprint.client_name.replace(/[^a-z0-9]/gi, '-')}-sprint.zip"`,
