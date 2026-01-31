@@ -342,7 +342,7 @@ ${agent3Output || "[No forensics run]"}
     // Extract insights from agent outputs for template variables
     const extractCEOQuote = () => {
       if (agent1Output) {
-        const ceoMatch = agent1Output.match(/CEO.*?:(.*?)(?=\n|Sales|CMO|CFO|$)/s);
+        const ceoMatch = agent1Output.match(/CEO.*?:([\s\S]*?)(?=\nSales|CMO|CFO|$)/);
         return ceoMatch ? ceoMatch[1].trim().substring(0, 150) : "[Insert CEO Quote from Transcript]";
       }
       return "[Insert CEO Quote from Transcript]";
