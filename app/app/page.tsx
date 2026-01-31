@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Lock, Eye, EyeOff, Activity, Bot, FileUp, Play, Zap, Download, AlertTriangle, CheckCircle, Clock, Copy, Globe } from "lucide-react";
+import { Lock, Eye, EyeOff, Activity, Bot, FileUp, Play, Zap, Download, AlertTriangle, CheckCircle, Clock, Copy, Globe, Save } from "lucide-react";
 import { toast, Toaster } from "sonner";
 
 export default function AppPage() {
@@ -586,6 +586,51 @@ Password: ${data.password}
     }
   };
 
+  // Save sprint to archive (no presentation)
+  const handleSaveSprint = async () => {
+    if (!companyName) {
+      toast.error("Please enter client name first");
+      return;
+    }
+
+    try {
+      // Prepare sprint data
+      const sprintData = {
+        clientName: companyName,
+        annualRevenue,
+        burnRate,
+        hypothesis,
+        agent1Transcript: transcript,
+        agent1Output,
+        agent2Competitors: [competitor1, competitor2, competitor3].filter(c => c),
+        agent2Output,
+        agent3CsvFilename: selectedCsv,
+        agent3CsvContent: uploadedFiles.find(f => f.name === selectedCsv)?.content || '',
+        agent3Output,
+        growthThesis,
+        roadmapItems: mustFixItems,
+        uploadedFiles: uploadedFiles.map(f => ({ name: f.name, size: f.content.length })),
+      };
+
+      const response = await fetch('/api/sprints/save', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(sprintData),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        toast.success("Sprint saved to archive!");
+      } else {
+        toast.error("Failed to save sprint");
+      }
+    } catch (error) {
+      console.error('Save sprint error:', error);
+      toast.error("Error saving sprint");
+    }
+  };
+
   return (
     <div className="min-h-screen bg-slate-950 text-slate-50">
       {/* Top Bar */}
@@ -936,6 +981,17 @@ Password: ${data.password}
 
           {/* Export Buttons */}
           <div className="space-y-3">
+            {/* Save Sprint */}
+            <button
+              onClick={handleSaveSprint}
+              disabled={!companyName}
+              className="w-full px-6 py-4 bg-slate-700 hover:bg-slate-600 text-slate-50 font-bold rounded-lg transition-all shadow-lg flex items-center justify-center gap-3 text-lg disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <Save className="w-5 h-5" />
+              SAVE SPRINT TO ARCHIVE
+            </button>
+
+            {/* Generate Blueprint */}
             <button
               onClick={handleExport}
               className="w-full px-6 py-4 bg-green-500 hover:bg-green-400 text-slate-950 font-bold rounded-lg transition-all shadow-lg shadow-green-500/20 flex items-center justify-center gap-3 text-lg"
@@ -944,6 +1000,7 @@ Password: ${data.password}
               GENERATE BLUEPRINT
             </button>
 
+            {/* Gamma Export */}
             <button
               onClick={handleGammaExport}
               className="w-full px-6 py-4 bg-violet-500 hover:bg-violet-400 text-slate-950 font-bold rounded-lg transition-all shadow-lg shadow-violet-500/20 flex items-center justify-center gap-3 text-lg"
@@ -952,6 +1009,7 @@ Password: ${data.password}
               COPY GAMMA BLUEPRINT
             </button>
 
+            {/* Web Presentation */}
             <button
               onClick={handleWebPresentation}
               disabled={!companyName}
@@ -961,7 +1019,7 @@ Password: ${data.password}
               GENERATE WEB PRESENTATION
             </button>
             {!companyName && (
-              <p className="text-xs text-slate-500 text-center">Enter client name to generate presentation</p>
+              <p className="text-xs text-slate-500 text-center">Enter client name in Pane 1 to save or generate presentation</p>
             )}
           </div>
         </div>
