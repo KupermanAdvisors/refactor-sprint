@@ -28,8 +28,17 @@ export default function BookPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <h1 className="text-5xl md:text-7xl font-bold leading-tight mb-6">
-              Book Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-cyan to-accent-violet">Refactor Sprint</span>
+            {/* Logo */}
+            <div className="flex justify-center mb-6">
+              <img
+                src="/refaclogo.png"
+                alt="The Refactor Sprint"
+                className="h-16 md:h-20 w-auto"
+              />
+            </div>
+
+            <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-6">
+              Book Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-cyan to-accent-violet">Refactor Sprint</span> <span className="text-white">Consultation</span>
             </h1>
             <p className="text-xl md:text-2xl text-slate-300 mb-8 leading-relaxed">
               Schedule a 30-minute discovery call to discuss your revenue engine.

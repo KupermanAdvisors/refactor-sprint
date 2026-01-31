@@ -311,7 +311,7 @@ export default function KupermanAdvisorsPage() {
                   <FeatureCard
                     icon={MousePointer}
                     title="The Digital Pioneer"
-                    description="Built TBWA's first digital division, leading the team behind Apple's first digital campaigns."
+                    description="Built TBWA\Chiat\Day's first digital division, leading the team behind Apple's first digital campaigns."
                   />
                   <FeatureCard
                     icon={Globe}

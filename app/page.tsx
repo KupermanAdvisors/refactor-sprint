@@ -97,7 +97,7 @@ export default function Home() {
               </span>
             </h1>
             <p className="text-base md:text-xl text-slate-300 mb-8 md:mb-12 leading-relaxed max-w-4xl mx-auto px-2">
-              We leverage a proprietary AI stack to ingest your data, debug your revenue engine, 
+              We leverage an AI stack to ingest your data, debug your revenue engine, 
               and deliver a 90-day roadmap—faster than a traditional agency can schedule a kickoff.
             </p>
             <a
@@ -424,17 +424,14 @@ export default function Home() {
               {
                 number: "01",
                 title: "The Executive Scorecard",
-                description: "Red/Yellow/Green health check of your GTM engine.",
               },
               {
                 number: "02",
                 title: "The Forensic Evidence",
-                description: "Data-backed proof of wasted spend.",
               },
               {
                 number: "03",
                 title: "The Remediation Roadmap",
-                description: "Your 90-day execution plan.",
               },
             ].map((item, index) => (
               <motion.div
@@ -448,8 +445,7 @@ export default function Home() {
                 <div className="text-5xl font-bold font-mono text-accent-cyan opacity-30 mb-6">
                   {item.number}
                 </div>
-                <h3 className="text-2xl font-bold mb-3">{item.title}</h3>
-                <p className="text-slate-400 leading-relaxed">{item.description}</p>
+                <h3 className="text-2xl font-bold">{item.title}</h3>
               </motion.div>
             ))}
           </div>
@@ -561,7 +557,7 @@ export default function Home() {
                     </div>
                     <div>
                       <h3 className="text-lg font-bold mb-2">The Digital Pioneer</h3>
-                      <p className="text-slate-400 text-sm leading-relaxed">Built TBWA's first digital division, leading the team behind Apple's first digital campaigns.</p>
+                      <p className="text-slate-400 text-sm leading-relaxed">Built TBWA\Chiat\Day's first digital division, leading the team behind Apple's first digital campaigns.</p>
                     </div>
                   </div>
 
