@@ -2,9 +2,13 @@ import { NextResponse } from 'next/server';
 import OpenAI from 'openai';
 import Papa from 'papaparse';
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+function getOpenAIClient() {
+  const apiKey = process.env.OPENAI_API_KEY;
+  if (!apiKey) {
+    throw new Error('OPENAI_API_KEY environment variable is not set');
+  }
+  return new OpenAI({ apiKey });
+}
 
 interface CSVRow {
   [key: string]: string;
@@ -169,6 +173,7 @@ export async function POST(request: Request) {
     const csvSample = Papa.unparse(sampleData);
 
     // Analyze with OpenAI
+    const openai = getOpenAIClient();
     const completion = await openai.chat.completions.create({
       model: 'gpt-4o',
       messages: [

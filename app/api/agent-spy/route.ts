@@ -3,9 +3,13 @@ import OpenAI from 'openai';
 import axios from 'axios';
 import * as cheerio from 'cheerio';
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+function getOpenAIClient() {
+  const apiKey = process.env.OPENAI_API_KEY;
+  if (!apiKey) {
+    throw new Error('OPENAI_API_KEY environment variable is not set');
+  }
+  return new OpenAI({ apiKey });
+}
 
 interface CompetitorData {
   url: string;
@@ -98,6 +102,7 @@ export async function POST(request: Request) {
       .join('\n\n');
 
     // Analyze with OpenAI
+    const openai = getOpenAIClient();
     const completion = await openai.chat.completions.create({
       model: 'gpt-4o',
       messages: [
