@@ -24,7 +24,7 @@ function generateSlug(clientName: string, date: Date): string {
   const month = String(date.getMonth() + 1).padStart(2, '0');
   const day = String(date.getDate()).padStart(2, '0');
   const year = date.getFullYear();
-  return `${sanitized}-${month}${day}${year}`;
+  return `${sanitized}${month}${day}${year}`;
 }
 
 export async function POST(request: Request) {
