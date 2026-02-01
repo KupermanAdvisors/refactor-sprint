@@ -2,6 +2,427 @@ import { NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase/admin';
 import JSZip from 'jszip';
 
+// Generate print-ready HTML document
+function generateExecutiveBrief(sprint: any): string {
+  const createdDate = new Date(sprint.created_at).toLocaleDateString('en-US', { 
+    month: 'long', 
+    day: 'numeric', 
+    year: 'numeric' 
+  });
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${sprint.client_name} - Refactor Sprint Executive Brief</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
+      line-height: 1.6;
+      color: #1e293b;
+      background: white;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 8.5in;
+      margin: 0 auto;
+      padding: 0.75in;
+    }
+
+    /* Print Styles */
+    @media print {
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      
+      .container {
+        padding: 0.5in;
+      }
+
+      .page-break {
+        page-break-before: always;
+      }
+
+      .no-break {
+        page-break-inside: avoid;
+      }
+    }
+
+    /* Cover Page */
+    .cover-page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      border-bottom: 2px solid #e2e8f0;
+    }
+
+    .cover-title {
+      font-size: 48px;
+      font-weight: bold;
+      margin-bottom: 24px;
+      color: #0f172a;
+    }
+
+    .cover-subtitle {
+      font-size: 24px;
+      color: #64748b;
+      margin-bottom: 16px;
+    }
+
+    .cover-date {
+      font-size: 14px;
+      color: #94a3b8;
+      margin-top: 32px;
+    }
+
+    /* Section Styles */
+    h1 {
+      font-size: 32px;
+      font-weight: bold;
+      color: #0f172a;
+      margin: 48px 0 24px 0;
+      padding-bottom: 12px;
+      border-bottom: 3px solid #2563eb;
+    }
+
+    h2 {
+      font-size: 24px;
+      font-weight: bold;
+      color: #1e293b;
+      margin: 32px 0 16px 0;
+    }
+
+    h3 {
+      font-size: 18px;
+      font-weight: 600;
+      color: #334155;
+      margin: 24px 0 12px 0;
+    }
+
+    p {
+      margin-bottom: 12px;
+      line-height: 1.8;
+    }
+
+    /* Executive Summary Box */
+    .summary-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 24px;
+      margin: 24px 0;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+
+    .summary-item {
+      padding: 16px;
+      background: white;
+      border-radius: 4px;
+    }
+
+    .summary-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #64748b;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .summary-value {
+      font-size: 28px;
+      font-weight: bold;
+      color: #0f172a;
+    }
+
+    /* Strategic Contradiction */
+    .contradiction-box {
+      background: #fef2f2;
+      border-left: 4px solid #dc2626;
+      padding: 20px;
+      margin: 24px 0;
+    }
+
+    .contradiction-box h3 {
+      color: #991b1b;
+      margin-top: 0;
+    }
+
+    /* Strategic Shift - PROMINENT */
+    .shift-box {
+      background: #2563eb;
+      color: white;
+      padding: 32px;
+      border-radius: 8px;
+      margin: 32px 0;
+      box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
+    }
+
+    .shift-box h3 {
+      color: #dbeafe;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 16px;
+    }
+
+    .shift-box .shift-content {
+      font-size: 22px;
+      font-weight: bold;
+      line-height: 1.6;
+    }
+
+    /* Evidence Cards */
+    .evidence-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin: 24px 0;
+    }
+
+    .evidence-card {
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      padding: 16px;
+      text-align: center;
+    }
+
+    .evidence-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      font-weight: bold;
+      color: #475569;
+      margin-top: 8px;
+    }
+
+    .evidence-desc {
+      font-size: 12px;
+      color: #64748b;
+      margin-top: 4px;
+    }
+
+    /* Action Items */
+    .action-list {
+      list-style: none;
+      margin: 24px 0;
+    }
+
+    .action-item {
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+    }
+
+    .action-number {
+      font-size: 20px;
+      font-weight: bold;
+      color: #2563eb;
+      min-width: 32px;
+    }
+
+    .action-text {
+      font-size: 15px;
+      color: #334155;
+      line-height: 1.6;
+      font-weight: 600;
+    }
+
+    /* Agent Data */
+    .agent-section {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 24px;
+      margin: 24px 0;
+    }
+
+    .agent-section h3 {
+      color: #2563eb;
+      margin-top: 0;
+    }
+
+    .agent-content {
+      font-size: 13px;
+      color: #475569;
+      white-space: pre-wrap;
+      line-height: 1.7;
+      font-family: 'Courier New', monospace;
+    }
+
+    /* Footer */
+    .footer {
+      margin-top: 64px;
+      padding-top: 24px;
+      border-top: 1px solid #e2e8f0;
+      text-align: center;
+      color: #94a3b8;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Cover Page -->
+  <div class="cover-page page-break">
+    <div class="cover-title">${sprint.client_name}</div>
+    <div class="cover-subtitle">72-Hour Revenue Engine Diagnostic</div>
+    <div class="cover-subtitle" style="color: #2563eb; font-weight: 600;">Executive Brief</div>
+    <div class="cover-date">Generated ${createdDate}</div>
+  </div>
+
+  <div class="container">
+    <!-- Executive Summary -->
+    ${sprint.annual_revenue || sprint.burn_rate || sprint.hypothesis ? `
+    <div class="no-break">
+      <h1>Executive Summary</h1>
+      <div class="summary-box">
+        ${sprint.annual_revenue || sprint.burn_rate ? `
+        <div class="summary-grid">
+          ${sprint.annual_revenue ? `
+          <div class="summary-item">
+            <div class="summary-label">Annual Revenue</div>
+            <div class="summary-value">${sprint.annual_revenue}</div>
+          </div>
+          ` : ''}
+          ${sprint.burn_rate ? `
+          <div class="summary-item">
+            <div class="summary-label">Burn Rate</div>
+            <div class="summary-value">${sprint.burn_rate}</div>
+          </div>
+          ` : ''}
+        </div>
+        ` : ''}
+        ${sprint.hypothesis ? `
+        <div style="padding-top: ${sprint.annual_revenue || sprint.burn_rate ? '16px' : '0'}; border-top: ${sprint.annual_revenue || sprint.burn_rate ? '1px solid #e2e8f0' : 'none'};">
+          <div class="summary-label">Critical Error Hypothesis</div>
+          <p style="margin-top: 12px; font-size: 15px; color: #475569;">${sprint.hypothesis}</p>
+        </div>
+        ` : ''}
+      </div>
+    </div>
+    ` : ''}
+
+    <!-- Strategic Analysis -->
+    ${sprint.growth_thesis ? `
+    <div class="page-break">
+      <h1>Strategic Analysis</h1>
+      
+      <div class="contradiction-box no-break">
+        <h3>The Strategic Contradiction</h3>
+        <p>${sprint.growth_thesis.split('\n\n')[0] || sprint.growth_thesis}</p>
+      </div>
+
+      ${sprint.agent_1_output || sprint.agent_2_output || sprint.agent_3_output ? `
+      <div class="evidence-grid no-break">
+        ${sprint.agent_1_output ? `
+        <div class="evidence-card">
+          <div style="font-size: 24px;">🗣️</div>
+          <div class="evidence-title">Transcript Analysis</div>
+          <div class="evidence-desc">Stakeholder alignment</div>
+        </div>
+        ` : ''}
+        ${sprint.agent_2_output ? `
+        <div class="evidence-card">
+          <div style="font-size: 24px;">📊</div>
+          <div class="evidence-title">Competitive Intel</div>
+          <div class="evidence-desc">Market positioning</div>
+        </div>
+        ` : ''}
+        ${sprint.agent_3_output ? `
+        <div class="evidence-card">
+          <div style="font-size: 24px;">🔎</div>
+          <div class="evidence-title">CRM Forensics</div>
+          <div class="evidence-desc">Revenue patterns</div>
+        </div>
+        ` : ''}
+      </div>
+      ` : ''}
+
+      <div class="shift-box no-break">
+        <h3>Recommended Strategic Shift</h3>
+        <div class="shift-content">
+          ${sprint.growth_thesis.split('\n\n').slice(-1)[0] || sprint.growth_thesis}
+        </div>
+      </div>
+    </div>
+    ` : ''}
+
+    <!-- Prioritized Action Plan -->
+    ${sprint.roadmap_items && sprint.roadmap_items.length > 0 ? `
+    <div class="page-break">
+      <h1>Prioritized Action Plan</h1>
+      <ul class="action-list">
+        ${sprint.roadmap_items.map((item: string, i: number) => `
+        <li class="action-item no-break">
+          <div class="action-number">${i + 1}</div>
+          <div class="action-text">${item}</div>
+        </li>
+        `).join('')}
+      </ul>
+    </div>
+    ` : ''}
+
+    <!-- Supporting Agent Data -->
+    ${sprint.agent_1_output || sprint.agent_2_output || sprint.agent_3_output ? `
+    <div class="page-break">
+      <h1>Supporting Agent Data</h1>
+      
+      ${sprint.agent_1_output ? `
+      <div class="agent-section no-break">
+        <h3>The Listener: Stakeholder Analysis</h3>
+        <div class="agent-content">${sprint.agent_1_output}</div>
+      </div>
+      ` : ''}
+
+      ${sprint.agent_2_output ? `
+      <div class="agent-section no-break">
+        <h3>The Spy: Competitive Intelligence</h3>
+        <div class="agent-content">${sprint.agent_2_output}</div>
+      </div>
+      ` : ''}
+
+      ${sprint.agent_3_output ? `
+      <div class="agent-section no-break">
+        <h3>The Analyst: CRM Forensics</h3>
+        <div class="agent-content">${sprint.agent_3_output}</div>
+      </div>
+      ` : ''}
+    </div>
+    ` : ''}
+
+    <!-- Footer -->
+    <div class="footer">
+      <p>The Refactor Sprint | refactorsprint.com</p>
+      <p>This document expires 30 days from creation date</p>
+    </div>
+  </div>
+</body>
+</html>`;
+}
+
 export async function POST(request: Request) {
   try {
     const { sprintId } = await request.json();
@@ -29,6 +450,10 @@ export async function POST(request: Request) {
 
     // Create ZIP
     const zip = new JSZip();
+
+    // Add print-ready HTML executive brief (FIRST FILE)
+    const executiveBrief = generateExecutiveBrief(sprint);
+    zip.file('00-EXECUTIVE-BRIEF.html', executiveBrief);
 
     // Add client vitals
     zip.file('01-client-vitals.txt', `
@@ -106,6 +531,9 @@ ${sprint.agent_3_output || '[No forensics run]'}
     `.trim();
 
     zip.file('00-BLUEPRINT.md', blueprint);
+
+    // Add print-ready HTML (also include at end for easy access)
+    zip.file('EXECUTIVE-BRIEF-PRINT.html', executiveBrief);
 
     // Generate ZIP as base64 and convert to Buffer
     const zipBase64 = await zip.generateAsync({ type: 'base64' });
