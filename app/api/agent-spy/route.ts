@@ -95,7 +95,7 @@ export async function POST(request: Request) {
     const competitorContext = scrapedData
       .map((data, i) => {
         if (data.error) {
-          return `Competitor ${i + 1} (${data.url}): [Error: ${data.error}]`;
+          return `Competitor ${i + 1} (${data.url}): [Unable to access website - may be blocked or unavailable. Analyze based on URL/domain name if possible.]`;
         }
         return `Competitor ${i + 1}:\n${data.content}\n---`;
       })

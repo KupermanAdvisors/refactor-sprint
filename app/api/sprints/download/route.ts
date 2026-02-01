@@ -385,10 +385,55 @@ function generateExecutiveBrief(sprint: any): string {
     </div>
     ` : ''}
 
+    <!-- Raw Input Data -->
+    ${sprint.agent_1_transcript || sprint.agent_2_competitors || sprint.agent_3_csv_filename ? `
+    <div class="page-break">
+      <h1>Raw Input Data</h1>
+      <p style="color: #64748b; margin-bottom: 24px; font-size: 14px;">
+        Original data provided for analysis
+      </p>
+      
+      ${sprint.agent_1_transcript ? `
+      <div class="agent-section no-break">
+        <h3>Original Kickoff Call Transcript</h3>
+        <div class="agent-content">${sprint.agent_1_transcript}</div>
+      </div>
+      ` : ''}
+
+      ${sprint.agent_2_competitors && Array.isArray(sprint.agent_2_competitors) && sprint.agent_2_competitors.length > 0 ? `
+      <div class="agent-section no-break">
+        <h3>Competitor URLs Analyzed</h3>
+        <ul style="list-style: none; padding: 0; margin-top: 12px;">
+          ${sprint.agent_2_competitors.map((url: string, i: number) => `
+            <li style="padding: 8px 0; color: #475569;">
+              <strong>Competitor ${i + 1}:</strong> ${url}
+            </li>
+          `).join('')}
+        </ul>
+      </div>
+      ` : ''}
+
+      ${sprint.agent_3_csv_filename ? `
+      <div class="agent-section no-break">
+        <h3>CRM Data File</h3>
+        <p style="margin-top: 12px; color: #475569;">
+          <strong>Filename:</strong> ${sprint.agent_3_csv_filename}
+        </p>
+        ${sprint.agent_3_csv_content ? `
+        <details style="margin-top: 12px;">
+          <summary style="cursor: pointer; color: #2563eb; font-weight: 600;">View CSV Data (Click to expand)</summary>
+          <pre class="agent-content" style="margin-top: 12px; max-height: 400px; overflow-y: auto;">${sprint.agent_3_csv_content.slice(0, 5000)}${sprint.agent_3_csv_content.length > 5000 ? '\n\n... (truncated for length)' : ''}</pre>
+        </details>
+        ` : ''}
+      </div>
+      ` : ''}
+    </div>
+    ` : ''}
+
     <!-- Supporting Agent Data -->
     ${sprint.agent_1_output || sprint.agent_2_output || sprint.agent_3_output ? `
     <div class="page-break">
-      <h1>Supporting Agent Data</h1>
+      <h1>AI Analysis Outputs</h1>
       
       ${sprint.agent_1_output ? `
       <div class="agent-section no-break">
