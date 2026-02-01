@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, ChevronRight, Clock, AlertCircle, AlertTriangle, Target } from "lucide-react";
+import { ChevronLeft, ChevronRight, Clock, AlertCircle, AlertTriangle, Target, Play, Pause } from "lucide-react";
 
 interface ScriptContent {
   type: 'cue' | 'dialogue' | 'question' | 'note';
@@ -248,12 +248,9 @@ export default function KickoffDeck() {
         prevSlide();
       } else if (e.key === ' ' && (e.target as HTMLElement).tagName !== 'TEXTAREA') {
         e.preventDefault();
-        // Toggle probe assistant if current slide has one
+        // Spacebar only toggles probe assistant if available
         if (currentSection.probeAssistant) {
           setShowProbeAssistant(prev => !prev);
-        } else {
-          // Otherwise toggle timer
-          setIsTimerRunning(prev => !prev);
         }
       }
     };
@@ -313,13 +310,29 @@ export default function KickoffDeck() {
           </div>
           
           {/* Countdown Timer */}
-          <button
-            onClick={() => setIsTimerRunning(!isTimerRunning)}
-            className={`flex items-center gap-3 px-6 py-3 bg-slate-800 rounded-lg hover:bg-slate-700 transition-all ${getTimerColor()}`}
-          >
-            <Clock className="w-6 h-6" />
-            <span className="text-4xl font-bold font-mono">{formatTime(timeRemaining)}</span>
-          </button>
+          <div className="flex items-center gap-3">
+            <div className={`flex items-center gap-3 px-6 py-3 bg-slate-800 rounded-lg ${getTimerColor()}`}>
+              <Clock className="w-6 h-6" />
+              <span className="text-4xl font-bold font-mono">{formatTime(timeRemaining)}</span>
+            </div>
+            <button
+              onClick={() => setIsTimerRunning(!isTimerRunning)}
+              className="px-4 py-3 bg-slate-800 hover:bg-slate-700 rounded-lg transition-all flex items-center gap-2 text-slate-300"
+              title={isTimerRunning ? "Stop Timer" : "Start Timer"}
+            >
+              {isTimerRunning ? (
+                <>
+                  <Pause className="w-5 h-5" />
+                  <span className="text-sm font-mono">STOP</span>
+                </>
+              ) : (
+                <>
+                  <Play className="w-5 h-5" />
+                  <span className="text-sm font-mono">START</span>
+                </>
+              )}
+            </button>
+          </div>
 
           <div className="text-sm font-mono text-slate-400 text-right">
             <div>Section Progress: <span className="text-cyan-500 font-bold">{currentSlide + 1} of {SCRIPT_SECTIONS.length}</span></div>
@@ -478,7 +491,7 @@ export default function KickoffDeck() {
           </div>
 
           <div className="mt-3 text-center text-xs text-slate-600 font-mono">
-            Keyboard: ← → to navigate | SPACE to {currentSection.probeAssistant ? 'toggle probe assistant' : 'start/pause timer'}
+            Keyboard: ← → to navigate{currentSection.probeAssistant ? ' | SPACE to toggle probe assistant' : ''}
           </div>
         </div>
       </div>
