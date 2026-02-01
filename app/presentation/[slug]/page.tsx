@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Lock, Eye, EyeOff, ArrowLeft, Activity, Radio, FileText, TrendingUp, AlertTriangle, CheckCircle2 } from "lucide-react";
+import { motion } from "framer-motion";
+import { Lock, Eye, EyeOff, ArrowLeft, CheckSquare, ChevronDown, ChevronRight, MessageSquare, BarChart3, Search, TrendingUp, ArrowRight } from "lucide-react";
 import { toast, Toaster } from "sonner";
 import { use } from "react";
 
@@ -28,7 +28,7 @@ export default function PresentationPage({ params }: { params: Promise<{ slug: s
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [sprint, setSprint] = useState<Sprint | null>(null);
-  const [activeTab, setActiveTab] = useState<'listener' | 'spy' | 'analyst'>('listener');
+  const [showAgentData, setShowAgentData] = useState(false);
 
   useEffect(() => {
     const sessionKey = `presentation-${slug}`;
@@ -81,36 +81,33 @@ export default function PresentationPage({ params }: { params: Promise<{ slug: s
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-[#0F172A] flex items-center justify-center">
-        <div className="text-slate-400 font-mono">Loading presentation...</div>
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <div className="text-slate-600">Loading presentation...</div>
       </div>
     );
   }
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-[#0F172A] text-slate-50 flex items-center justify-center px-4">
+      <div className="min-h-screen bg-slate-50 text-slate-900 flex items-center justify-center px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="w-full max-w-md"
         >
-          <div className="bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-2xl p-8">
+          <div className="bg-white border border-slate-200 rounded-xl shadow-lg p-8">
             <div className="flex justify-center mb-8">
               <img src="/refaclogo.png" alt="The Refactor Sprint" className="h-16 w-auto" />
             </div>
 
             <div className="text-center mb-8">
-              <div className="w-16 h-16 rounded-full bg-[#0070F3]/10 flex items-center justify-center mx-auto mb-4">
-                <Lock className="w-8 h-8 text-[#0070F3]" />
-              </div>
-              <h1 className="text-3xl font-bold mb-2 font-mono">SECURE ACCESS</h1>
-              <p className="text-slate-400 text-sm">Enter password to view blueprint</p>
+              <h1 className="text-2xl font-bold mb-2">Secure Access Required</h1>
+              <p className="text-slate-600 text-sm">Enter password to view executive brief</p>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
-                <label htmlFor="password" className="block text-xs font-mono uppercase tracking-wider mb-2 text-slate-400">
+                <label htmlFor="password" className="block text-sm font-medium mb-2 text-slate-700">
                   Password
                 </label>
                 <div className="relative">
@@ -119,16 +116,16 @@ export default function PresentationPage({ params }: { params: Promise<{ slug: s
                     id="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full px-4 py-3 bg-slate-950 border border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0070F3] focus:border-transparent text-slate-50 pr-12 font-mono text-sm"
-                    placeholder="clientname01312026xxxx"
+                    className="w-full px-4 py-3 bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-900 pr-12"
+                    placeholder="Enter password"
                     autoFocus
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-300 transition-colors"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
                   >
-                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                   </button>
                 </div>
               </div>
@@ -137,7 +134,7 @@ export default function PresentationPage({ params }: { params: Promise<{ slug: s
                 <motion.div
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="p-3 bg-[#FF4F00]/10 border border-[#FF4F00]/50 rounded-lg text-[#FF4F00] text-xs font-mono"
+                  className="p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm"
                 >
                   {error}
                 </motion.div>
@@ -145,15 +142,15 @@ export default function PresentationPage({ params }: { params: Promise<{ slug: s
 
               <button
                 type="submit"
-                className="w-full px-6 py-3 bg-[#0070F3] hover:bg-[#0070F3]/90 text-white font-bold rounded-lg transition-all shadow-lg shadow-[#0070F3]/20 font-mono"
+                className="w-full px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-all shadow-md"
               >
-                ACCESS BLUEPRINT
+                Access Brief
               </button>
             </form>
 
             <div className="mt-6 text-center">
-              <a href="/" className="text-xs text-slate-500 hover:text-[#0070F3] transition-colors font-mono">
-                ← EXIT
+              <a href="/" className="text-sm text-slate-500 hover:text-blue-600 transition-colors">
+                ← Exit
               </a>
             </div>
           </div>
@@ -164,161 +161,175 @@ export default function PresentationPage({ params }: { params: Promise<{ slug: s
 
   if (!sprint) {
     return (
-      <div className="min-h-screen bg-[#0F172A] flex items-center justify-center">
-        <div className="text-[#FF4F00] font-mono">ERROR: Sprint not found</div>
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <div className="text-red-600">Sprint not found</div>
       </div>
     );
   }
 
+  // Parse growth thesis sections
+  const parseGrowthThesis = () => {
+    if (!sprint.growth_thesis) return null;
+    
+    const text = sprint.growth_thesis;
+    const sections = text.split('\n\n').filter(s => s.trim());
+    
+    return {
+      contradiction: sections[0] || text,
+      shift: sections[sections.length - 1] || '',
+      fullText: text
+    };
+  };
+
+  const growthThesis = parseGrowthThesis();
+
   return (
-    <div className="min-h-screen bg-[#0F172A] text-slate-50">
-      {/* Fixed Header */}
-      <div className="border-b border-slate-800 bg-slate-900/95 backdrop-blur-sm sticky top-0 z-50">
-        <div className="px-6 py-3 flex justify-between items-center max-w-7xl mx-auto">
+    <div className="min-h-screen bg-white text-slate-900">
+      {/* Header */}
+      <div className="border-b border-slate-200 bg-white sticky top-0 z-50 shadow-sm">
+        <div className="max-w-5xl mx-auto px-6 py-4 flex justify-between items-center">
           <div className="flex items-center gap-4">
-            <img src="/refaclogo.png" alt="Refactor Sprint" className="h-6" />
-            <span className="text-slate-600 font-mono text-xs">/ BLUEPRINT</span>
+            <img src="/refaclogo.png" alt="Refactor Sprint" className="h-8" />
           </div>
-          
-          <div className="flex items-center gap-4">
-            {/* Live Doc Indicator */}
-            <div className="flex items-center gap-2 px-3 py-1.5 bg-[#0070F3]/10 border border-[#0070F3]/30 rounded">
-              <div className="w-2 h-2 rounded-full bg-[#0070F3] animate-pulse" />
-              <span className="text-[#0070F3] font-mono text-xs uppercase">Live Doc</span>
-            </div>
-            
-            <div className="text-right">
-              <div className="text-xs font-mono text-slate-500">Client: <span className="text-slate-300">{sprint.client_name}</span></div>
-              <div className="text-xs font-mono text-slate-500">Generated: {new Date(sprint.created_at).toLocaleDateString()}</div>
-            </div>
-            
-            <a
-              href="/"
-              className="px-3 py-1.5 text-xs text-slate-400 hover:text-white border border-slate-700 hover:border-slate-600 rounded transition-all flex items-center gap-2 font-mono"
-            >
-              <ArrowLeft className="w-3 h-3" />
-              EXIT
-            </a>
-          </div>
+          <a
+            href="/"
+            className="px-4 py-2 text-sm text-slate-600 hover:text-slate-900 border border-slate-300 hover:border-slate-400 rounded-lg transition-all flex items-center gap-2"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Exit
+          </a>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 py-12 space-y-12">
+      <div className="max-w-5xl mx-auto px-6 py-12 space-y-12">
         
+        {/* Title Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center border-b border-slate-200 pb-8"
+        >
+          <h1 className="text-5xl font-bold mb-3 text-slate-900">{sprint.client_name}</h1>
+          <p className="text-xl text-slate-600 mb-2">72-Hour Revenue Engine Diagnostic</p>
+          <p className="text-sm text-slate-500">Generated {new Date(sprint.created_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</p>
+        </motion.div>
+
         {/* Executive Summary */}
         {(sprint.annual_revenue || sprint.burn_rate || sprint.hypothesis) && (
           <motion.section
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-xl p-8"
+            transition={{ delay: 0.1 }}
+            className="bg-slate-50 border border-slate-200 rounded-xl p-8"
           >
-            <h2 className="text-2xl font-bold mb-6 font-mono text-[#0070F3] uppercase tracking-wider">Executive Summary</h2>
-            <div className="grid grid-cols-3 gap-6">
+            <h2 className="text-2xl font-bold mb-6 text-slate-900">Executive Summary</h2>
+            <div className="grid grid-cols-2 gap-6">
               {sprint.annual_revenue && (
                 <div>
-                  <p className="text-xs text-slate-500 font-mono uppercase tracking-wider mb-2">Annual Revenue</p>
-                  <p className="text-3xl font-bold font-mono text-slate-200">{sprint.annual_revenue}</p>
+                  <p className="text-xs uppercase tracking-wide text-slate-500 mb-1 font-semibold">Annual Revenue</p>
+                  <p className="text-3xl font-bold text-slate-900">{sprint.annual_revenue}</p>
                 </div>
               )}
               {sprint.burn_rate && (
                 <div>
-                  <p className="text-xs text-slate-500 font-mono uppercase tracking-wider mb-2">Burn Rate</p>
-                  <p className="text-3xl font-bold font-mono text-slate-200">{sprint.burn_rate}</p>
-                </div>
-              )}
-              {sprint.hypothesis && (
-                <div className="col-span-3 mt-4">
-                  <p className="text-xs text-slate-500 font-mono uppercase tracking-wider mb-2">Critical Error Hypothesis</p>
-                  <p className="text-base leading-relaxed text-slate-300">{sprint.hypothesis}</p>
+                  <p className="text-xs uppercase tracking-wide text-slate-500 mb-1 font-semibold">Burn Rate</p>
+                  <p className="text-3xl font-bold text-slate-900">{sprint.burn_rate}</p>
                 </div>
               )}
             </div>
+            {sprint.hypothesis && (
+              <div className="mt-6 pt-6 border-t border-slate-200">
+                <p className="text-xs uppercase tracking-wide text-slate-500 mb-2 font-semibold">Critical Error Hypothesis</p>
+                <p className="text-base leading-relaxed text-slate-700">{sprint.hypothesis}</p>
+              </div>
+            )}
           </motion.section>
         )}
 
-        {/* Growth Thesis - 2 Column Layout */}
-        {sprint.growth_thesis && (
-          <motion.section
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-          >
-            <h2 className="text-3xl font-bold mb-8 font-mono text-[#0070F3] uppercase tracking-wider">Growth Thesis</h2>
-            
-            <div className="grid grid-cols-2 gap-8">
-              {/* Left Column - Narrative */}
-              <div className="space-y-6">
-                <div className="bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-xl p-6">
-                  <h3 className="text-lg font-bold mb-4 text-[#FF4F00] font-mono uppercase">The Strategic Contradiction</h3>
-                  <div className="text-slate-300 leading-relaxed whitespace-pre-wrap">
-                    {sprint.growth_thesis.split('\n\n')[0]}
-                  </div>
-                </div>
-              </div>
-
-              {/* Right Column - Evidence & Shift */}
-              <div className="space-y-6">
-                <div className="bg-gradient-to-br from-[#0070F3]/10 to-[#0070F3]/5 backdrop-blur-xl border border-[#0070F3]/30 rounded-xl p-6">
-                  <h3 className="text-lg font-bold mb-4 text-[#0070F3] font-mono uppercase">The Strategic Shift</h3>
-                  <div className="text-slate-200 leading-relaxed">
-                    {sprint.growth_thesis.split('\n\n').slice(-1)[0]}
-                  </div>
-                </div>
-
-                {/* Data Evidence Cards */}
-                <div className="grid grid-cols-3 gap-3">
-                  {sprint.agent_1_output && (
-                    <div className="bg-slate-900/50 border border-slate-700 rounded-lg p-4 text-center">
-                      <Radio className="w-5 h-5 text-cyan-500 mx-auto mb-2" />
-                      <p className="text-xs text-slate-400 font-mono">Transcript</p>
-                    </div>
-                  )}
-                  {sprint.agent_2_output && (
-                    <div className="bg-slate-900/50 border border-slate-700 rounded-lg p-4 text-center">
-                      <Activity className="w-5 h-5 text-violet-500 mx-auto mb-2" />
-                      <p className="text-xs text-slate-400 font-mono">Competitive</p>
-                    </div>
-                  )}
-                  {sprint.agent_3_output && (
-                    <div className="bg-slate-900/50 border border-slate-700 rounded-lg p-4 text-center">
-                      <FileText className="w-5 h-5 text-amber-500 mx-auto mb-2" />
-                      <p className="text-xs text-slate-400 font-mono">Forensics</p>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-          </motion.section>
-        )}
-
-        {/* Must Fix - Prioritized Action List */}
-        {sprint.roadmap_items && sprint.roadmap_items.length > 0 && (
+        {/* Growth Thesis */}
+        {growthThesis && (
           <motion.section
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
           >
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-3xl font-bold font-mono text-[#0070F3] uppercase tracking-wider">Must Fix</h2>
-              <span className="px-3 py-1 bg-[#FF4F00]/10 border border-[#FF4F00]/50 rounded text-[#FF4F00] font-mono text-xs uppercase">Priority: High</span>
-            </div>
+            <h2 className="text-3xl font-bold mb-8 text-slate-900">Strategic Analysis</h2>
             
-            <div className="space-y-2">
+            {/* The Contradiction */}
+            <div className="bg-slate-50 border-l-4 border-red-500 p-6 mb-6">
+              <h3 className="text-lg font-bold mb-3 text-red-700">The Strategic Contradiction</h3>
+              <p className="text-slate-700 leading-relaxed">{growthThesis.contradiction}</p>
+            </div>
+
+            {/* Evidence Cards Row */}
+            {(sprint.agent_1_output || sprint.agent_2_output || sprint.agent_3_output) && (
+              <div className="grid grid-cols-3 gap-4 mb-6">
+                {sprint.agent_1_output && (
+                  <div className="bg-white border border-slate-200 rounded-lg p-4 shadow-sm">
+                    <div className="flex items-center gap-2 mb-2">
+                      <MessageSquare className="w-5 h-5 text-blue-600" />
+                      <p className="text-xs font-bold uppercase tracking-wide text-slate-700">Transcript Analysis</p>
+                    </div>
+                    <p className="text-xs text-slate-600">Stakeholder misalignment identified</p>
+                  </div>
+                )}
+                {sprint.agent_2_output && (
+                  <div className="bg-white border border-slate-200 rounded-lg p-4 shadow-sm">
+                    <div className="flex items-center gap-2 mb-2">
+                      <BarChart3 className="w-5 h-5 text-blue-600" />
+                      <p className="text-xs font-bold uppercase tracking-wide text-slate-700">Competitive Intelligence</p>
+                    </div>
+                    <p className="text-xs text-slate-600">Market positioning analyzed</p>
+                  </div>
+                )}
+                {sprint.agent_3_output && (
+                  <div className="bg-white border border-slate-200 rounded-lg p-4 shadow-sm">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Search className="w-5 h-5 text-blue-600" />
+                      <p className="text-xs font-bold uppercase tracking-wide text-slate-700">CRM Forensics</p>
+                    </div>
+                    <p className="text-xs text-slate-600">Revenue patterns examined</p>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* The Strategic Shift - PROMINENT */}
+            <div className="bg-blue-600 text-white rounded-xl p-8 shadow-lg mb-6">
+              <h3 className="text-sm font-bold uppercase tracking-wide mb-4 text-blue-100">Recommended Strategic Shift</h3>
+              <div className="text-2xl font-bold leading-relaxed">
+                {growthThesis.shift}
+              </div>
+            </div>
+          </motion.section>
+        )}
+
+        {/* Must Fix - Action Items */}
+        {sprint.roadmap_items && sprint.roadmap_items.length > 0 && (
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+          >
+            <h2 className="text-3xl font-bold mb-6 text-slate-900">Prioritized Action Plan</h2>
+            
+            <div className="space-y-3">
               {sprint.roadmap_items.map((item, i) => (
                 <motion.div
                   key={i}
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.3 + i * 0.05 }}
-                  whileHover={{ x: 4, backgroundColor: 'rgba(15, 23, 42, 0.5)' }}
-                  className="bg-slate-900/30 border border-slate-800 rounded-lg p-4 cursor-pointer transition-all group"
+                  transition={{ delay: 0.4 + i * 0.05 }}
+                  className="bg-white border border-slate-200 rounded-lg p-5 shadow-sm hover:shadow-md transition-shadow"
                 >
                   <div className="flex items-start gap-4">
-                    <span className="text-[#0070F3] font-mono font-bold text-sm flex-shrink-0 mt-0.5">{String(i + 1).padStart(2, '0')}</span>
+                    <CheckSquare className="w-6 h-6 text-blue-600 flex-shrink-0 mt-0.5" />
                     <div className="flex-1">
-                      <p className="text-slate-300 leading-relaxed group-hover:text-slate-200 transition-colors">{item}</p>
+                      <div className="flex items-start gap-3">
+                        <span className="text-blue-600 font-bold text-lg flex-shrink-0">{i + 1}</span>
+                        <p className="text-slate-800 font-semibold leading-relaxed">{item}</p>
+                      </div>
                     </div>
-                    <CheckCircle2 className="w-5 h-5 text-slate-700 group-hover:text-green-500 transition-colors flex-shrink-0" />
                   </div>
                 </motion.div>
               ))}
@@ -326,146 +337,93 @@ export default function PresentationPage({ params }: { params: Promise<{ slug: s
           </motion.section>
         )}
 
-        {/* Agent Outputs - Tabbed Interface */}
+        {/* Collapsible Agent Data */}
         {(sprint.agent_1_output || sprint.agent_2_output || sprint.agent_3_output) && (
           <motion.section
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
+            transition={{ delay: 0.5 }}
+            className="border-t border-slate-200 pt-8"
           >
-            <h2 className="text-3xl font-bold mb-6 font-mono text-[#0070F3] uppercase tracking-wider">Agent Outputs</h2>
-            
-            {/* Tabs */}
-            <div className="flex gap-2 mb-6 border-b border-slate-800">
-              {sprint.agent_1_output && (
-                <button
-                  onClick={() => setActiveTab('listener')}
-                  className={`px-6 py-3 font-mono text-sm transition-all ${
-                    activeTab === 'listener'
-                      ? 'border-b-2 border-cyan-500 text-cyan-500'
-                      : 'text-slate-500 hover:text-slate-300'
-                  }`}
-                >
-                  THE LISTENER
-                </button>
-              )}
-              {sprint.agent_2_output && (
-                <button
-                  onClick={() => setActiveTab('spy')}
-                  className={`px-6 py-3 font-mono text-sm transition-all ${
-                    activeTab === 'spy'
-                      ? 'border-b-2 border-violet-500 text-violet-500'
-                      : 'text-slate-500 hover:text-slate-300'
-                  }`}
-                >
-                  THE SPY
-                </button>
-              )}
-              {sprint.agent_3_output && (
-                <button
-                  onClick={() => setActiveTab('analyst')}
-                  className={`px-6 py-3 font-mono text-sm transition-all ${
-                    activeTab === 'analyst'
-                      ? 'border-b-2 border-amber-500 text-amber-500'
-                      : 'text-slate-500 hover:text-slate-300'
-                  }`}
-                >
-                  THE ANALYST
-                </button>
-              )}
-            </div>
+            <button
+              onClick={() => setShowAgentData(!showAgentData)}
+              className="flex items-center gap-3 text-slate-700 hover:text-slate-900 transition-colors mb-4"
+            >
+              {showAgentData ? <ChevronDown className="w-5 h-5" /> : <ChevronRight className="w-5 h-5" />}
+              <span className="text-lg font-semibold">Supporting Agent Data</span>
+              <span className="text-sm text-slate-500">(Click to {showAgentData ? 'collapse' : 'expand'})</span>
+            </button>
 
-            {/* Tab Content */}
-            <AnimatePresence mode="wait">
-              {activeTab === 'listener' && sprint.agent_1_output && (
-                <motion.div
-                  key="listener"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  className="bg-slate-900/50 backdrop-blur-xl border border-cyan-500/30 rounded-xl p-6"
-                >
-                  <div className="flex items-start gap-3 mb-4 pb-4 border-b border-slate-800">
-                    <AlertTriangle className="w-5 h-5 text-[#FF4F00] flex-shrink-0 mt-1" />
-                    <div>
-                      <h3 className="text-lg font-bold text-cyan-500 font-mono">CRITICAL MISALIGNMENTS</h3>
-                      <p className="text-xs text-slate-400 mt-1">Stakeholder Conflict Analysis</p>
-                    </div>
+            {showAgentData && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                className="space-y-6"
+              >
+                {sprint.agent_1_output && (
+                  <div className="bg-slate-50 border border-slate-200 rounded-lg p-6">
+                    <h3 className="text-base font-bold mb-3 text-slate-900 flex items-center gap-2">
+                      <MessageSquare className="w-4 h-4 text-blue-600" />
+                      The Listener: Stakeholder Analysis
+                    </h3>
+                    <pre className="text-sm text-slate-700 whitespace-pre-wrap leading-relaxed font-sans">
+                      {sprint.agent_1_output}
+                    </pre>
                   </div>
-                  <pre className="text-sm text-slate-300 whitespace-pre-wrap font-mono leading-relaxed">
-                    {sprint.agent_1_output}
-                  </pre>
-                </motion.div>
-              )}
+                )}
 
-              {activeTab === 'spy' && sprint.agent_2_output && (
-                <motion.div
-                  key="spy"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  className="bg-slate-900/50 backdrop-blur-xl border border-violet-500/30 rounded-xl p-6"
-                >
-                  <div className="flex items-start gap-3 mb-4 pb-4 border-b border-slate-800">
-                    <Activity className="w-5 h-5 text-violet-500 flex-shrink-0 mt-1" />
-                    <div>
-                      <h3 className="text-lg font-bold text-violet-500 font-mono">COMPETITIVE INTELLIGENCE</h3>
-                      <p className="text-xs text-slate-400 mt-1">Market Positioning Analysis</p>
-                    </div>
+                {sprint.agent_2_output && (
+                  <div className="bg-slate-50 border border-slate-200 rounded-lg p-6">
+                    <h3 className="text-base font-bold mb-3 text-slate-900 flex items-center gap-2">
+                      <BarChart3 className="w-4 h-4 text-blue-600" />
+                      The Spy: Competitive Intelligence
+                    </h3>
+                    <pre className="text-sm text-slate-700 whitespace-pre-wrap leading-relaxed font-sans">
+                      {sprint.agent_2_output}
+                    </pre>
                   </div>
-                  <pre className="text-sm text-slate-300 whitespace-pre-wrap font-mono leading-relaxed">
-                    {sprint.agent_2_output}
-                  </pre>
-                </motion.div>
-              )}
+                )}
 
-              {activeTab === 'analyst' && sprint.agent_3_output && (
-                <motion.div
-                  key="analyst"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  className="bg-slate-900/50 backdrop-blur-xl border border-amber-500/30 rounded-xl p-6"
-                >
-                  <div className="flex items-start gap-3 mb-4 pb-4 border-b border-slate-800">
-                    <TrendingUp className="w-5 h-5 text-amber-500 flex-shrink-0 mt-1" />
-                    <div>
-                      <h3 className="text-lg font-bold text-amber-500 font-mono">CRM FORENSICS</h3>
-                      <p className="text-xs text-slate-400 mt-1">Revenue Engine Diagnostics</p>
-                    </div>
+                {sprint.agent_3_output && (
+                  <div className="bg-slate-50 border border-slate-200 rounded-lg p-6">
+                    <h3 className="text-base font-bold mb-3 text-slate-900 flex items-center gap-2">
+                      <Search className="w-4 h-4 text-blue-600" />
+                      The Analyst: CRM Forensics
+                    </h3>
+                    <pre className="text-sm text-slate-700 whitespace-pre-wrap leading-relaxed font-sans">
+                      {sprint.agent_3_output}
+                    </pre>
                   </div>
-                  <pre className="text-sm text-slate-300 whitespace-pre-wrap font-mono leading-relaxed">
-                    {sprint.agent_3_output}
-                  </pre>
-                </motion.div>
-              )}
-            </AnimatePresence>
+                )}
+              </motion.div>
+            )}
           </motion.section>
         )}
 
-        {/* Footer CTA */}
-        <motion.section
+        {/* Footer */}
+        <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.6 }}
-          className="text-center py-12 border-t border-slate-800"
+          className="text-center pt-12 border-t border-slate-200"
         >
-          <p className="text-sm text-slate-500 font-mono mb-6">
+          <p className="text-sm text-slate-500 mb-4">
             This presentation expires 30 days from creation
           </p>
           <a
             href="https://refactorsprint.com"
-            className="inline-block px-8 py-3 bg-[#0070F3] hover:bg-[#0070F3]/90 text-white font-bold rounded-lg transition-all font-mono text-sm"
+            className="inline-block px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-all shadow-md"
           >
-            LEARN MORE
+            Learn More About Refactor Sprint
           </a>
-          <div className="mt-8">
-            <img src="/refaclogo.png" alt="Refactor Sprint" className="h-10 mx-auto opacity-30" />
+          <div className="mt-6">
+            <img src="/refaclogo.png" alt="Refactor Sprint" className="h-8 mx-auto opacity-40" />
           </div>
-        </motion.section>
+        </motion.div>
       </div>
 
-      <Toaster position="top-right" theme="dark" richColors />
+      <Toaster position="top-right" theme="light" richColors />
     </div>
   );
 }
