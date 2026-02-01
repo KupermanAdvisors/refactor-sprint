@@ -324,7 +324,7 @@ export default function Home() {
                 </div>
                 <div>
                   <div className="text-xs font-mono text-slate-500 uppercase tracking-wider mb-1">Output</div>
-                  <p className="text-sm text-slate-300 leading-relaxed">Mathematically correlates your "Closed/Lost" deal data with your ad spend to find the cash leaks.</p>
+                  <p className="text-sm text-slate-300 leading-relaxed">Performs CRM autopsy to identify win/loss patterns, deal size trends, and sales cycle bottlenecks—revealing where revenue is leaking.</p>
                 </div>
               </div>
             </ForensicScanCard>
