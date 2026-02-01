@@ -63,7 +63,7 @@ export default function ArchivePage() {
       if (data.success) {
         setSprints(data.sprints);
         // Auto-expand all clients initially
-        const allClients = new Set(data.sprints.map((s: Sprint) => s.client_name));
+        const allClients = new Set<string>(data.sprints.map((s: Sprint) => s.client_name));
         setExpandedClients(allClients);
       } else {
         toast.error("Failed to load sprints");
