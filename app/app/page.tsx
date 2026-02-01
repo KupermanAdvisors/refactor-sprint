@@ -700,6 +700,13 @@ Password: ${data.password}
           {/* Countdown Timer + Nav */}
           <div className="flex items-center gap-4">
             <a
+              href="/kickoff"
+              className="text-slate-400 hover:text-white transition-colors text-sm"
+            >
+              Kickoff Deck
+            </a>
+            
+            <a
               href="/archive"
               className="text-slate-400 hover:text-white transition-colors text-sm"
             >
