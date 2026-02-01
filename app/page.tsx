@@ -579,19 +579,19 @@ export default function Home() {
                 <ul className="space-y-2 text-slate-300">
                   <li className="flex items-start gap-2">
                     <span className="text-accent-cyan mt-1">→</span>
-                    <span>Strategic Positioning</span>
+                    <span>Executive Scorecard</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-accent-cyan mt-1">→</span>
-                    <span>Revenue Architecture</span>
+                    <span>Growth Thesis</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-accent-cyan mt-1">→</span>
-                    <span>Narrative Framework</span>
+                    <span>Remediation Roadmap</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-accent-cyan mt-1">→</span>
-                    <span>90-Day Roadmap</span>
+                    <span>Command Center Access</span>
                   </li>
                 </ul>
               </motion.div>
