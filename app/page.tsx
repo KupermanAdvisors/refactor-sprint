@@ -358,7 +358,7 @@ export default function Home() {
                 {
                   day: "03",
                   title: "The Patch",
-                  description: "We hand you the Remediation Roadmap. A prioritized, fixed-fee plan to stabilize your revenue engine.",
+                  description: "On Thursday, you don't get a deck. You get a login. Access your password-protected Remediation Blueprint—a living dashboard showing your Executive Scorecard, Forensic Evidence, and interactive 90-Day Roadmap.",
                 },
               ].map((item, index) => (
                 <motion.div
