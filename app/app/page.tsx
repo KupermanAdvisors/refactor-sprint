@@ -162,6 +162,13 @@ function CommandCenter({ onLogout }: { onLogout: () => void }) {
   const [agent1Output, setAgent1Output] = useState("");
   const [agent1Loading, setAgent1Loading] = useState(false);
   
+  // Meeting Telemetry from Fireflies.ai
+  const [sentimentPositive, setSentimentPositive] = useState("");
+  const [sentimentNegative, setSentimentNegative] = useState("");
+  const [talkTimeCEO, setTalkTimeCEO] = useState("");
+  const [talkTimeSalesVP, setTalkTimeSalesVP] = useState("");
+  const [keyTopics, setKeyTopics] = useState("");
+  
   const [competitor1, setCompetitor1] = useState("");
   const [competitor2, setCompetitor2] = useState("");
   const [competitor3, setCompetitor3] = useState("");
@@ -205,6 +212,15 @@ function CommandCenter({ onLogout }: { onLogout: () => void }) {
         setHypothesis(sprint.hypothesis || '');
         setTranscript(sprint.agent1Transcript || '');
         setAgent1Output(sprint.agent1Output || '');
+        
+        // Restore telemetry data
+        if (sprint.agent1Telemetry) {
+          setSentimentPositive(sprint.agent1Telemetry.sentimentPositive?.toString() || '');
+          setSentimentNegative(sprint.agent1Telemetry.sentimentNegative?.toString() || '');
+          setTalkTimeCEO(sprint.agent1Telemetry.talkTimeCEO?.toString() || '');
+          setTalkTimeSalesVP(sprint.agent1Telemetry.talkTimeSalesVP?.toString() || '');
+          setKeyTopics(sprint.agent1Telemetry.keyTopics?.join(', ') || '');
+        }
         
         if (sprint.agent2Competitors && sprint.agent2Competitors.length > 0) {
           setCompetitor1(sprint.agent2Competitors[0] || '');
@@ -265,7 +281,16 @@ function CommandCenter({ onLogout }: { onLogout: () => void }) {
       const response = await fetch('/api/agent-listener', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ transcript })
+        body: JSON.stringify({ 
+          transcript,
+          telemetry: {
+            sentimentPositive: parseFloat(sentimentPositive) || 0,
+            sentimentNegative: parseFloat(sentimentNegative) || 0,
+            talkTimeCEO: parseFloat(talkTimeCEO) || 0,
+            talkTimeSalesVP: parseFloat(talkTimeSalesVP) || 0,
+            keyTopics: keyTopics.split(',').map(t => t.trim()).filter(t => t !== '')
+          }
+        })
       });
       const data = await response.json();
       setAgent1Output(data.analysis || "Analysis complete. See results above.");
@@ -587,6 +612,13 @@ refactorsprint.com
         hypothesis,
         agent1Transcript: transcript,
         agent1Output,
+        agent1Telemetry: {
+          sentimentPositive: parseFloat(sentimentPositive) || 0,
+          sentimentNegative: parseFloat(sentimentNegative) || 0,
+          talkTimeCEO: parseFloat(talkTimeCEO) || 0,
+          talkTimeSalesVP: parseFloat(talkTimeSalesVP) || 0,
+          keyTopics: keyTopics.split(',').map(t => t.trim()).filter(t => t !== '')
+        },
         agent2Competitors: [competitor1, competitor2, competitor3].filter(c => c),
         agent2Output,
         agent3CsvFilename: selectedCsv,
@@ -658,6 +690,13 @@ Password: ${data.password}
         hypothesis,
         agent1Transcript: transcript,
         agent1Output,
+        agent1Telemetry: {
+          sentimentPositive: parseFloat(sentimentPositive) || 0,
+          sentimentNegative: parseFloat(sentimentNegative) || 0,
+          talkTimeCEO: parseFloat(talkTimeCEO) || 0,
+          talkTimeSalesVP: parseFloat(talkTimeSalesVP) || 0,
+          keyTopics: keyTopics.split(',').map(t => t.trim()).filter(t => t !== '')
+        },
         agent2Competitors: [competitor1, competitor2, competitor3].filter(c => c),
         agent2Output,
         agent3CsvFilename: selectedCsv,
@@ -851,14 +890,151 @@ Password: ${data.password}
             <div className="flex items-center gap-2 mb-4">
               <Bot className="w-5 h-5 text-cyan-500" />
               <h3 className="font-bold text-cyan-500 font-mono">AGENT 1: THE LISTENER</h3>
+              <span className="text-xs text-slate-600 ml-auto">Fireflies.ai Integration</span>
             </div>
             
-            <textarea
-              value={transcript}
-              onChange={(e) => setTranscript(e.target.value)}
-              className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded text-sm focus:outline-none focus:ring-1 focus:ring-cyan-500 h-32 resize-none mb-3 font-mono"
-              placeholder="Paste kickoff call transcript here..."
-            />
+            {/* Meeting Vital Signs */}
+            {(talkTimeCEO || talkTimeSalesVP || sentimentPositive || sentimentNegative) && (
+              <div className="mb-4 p-3 bg-slate-950 border border-slate-700 rounded space-y-3">
+                <div className="text-xs font-mono text-slate-400 uppercase tracking-wider mb-2">Meeting Vital Signs</div>
+                
+                {/* Talk Time Visualization */}
+                {(talkTimeCEO || talkTimeSalesVP) && (
+                  <div>
+                    <div className="flex justify-between text-xs mb-1">
+                      <span className="text-slate-400">Talk Time Ratio</span>
+                      <span className="text-slate-500 font-mono">
+                        CEO: {talkTimeCEO}% | Sales VP: {talkTimeSalesVP}%
+                      </span>
+                    </div>
+                    <div className="h-2 bg-slate-800 rounded-full overflow-hidden flex">
+                      <div 
+                        className="bg-cyan-500 transition-all" 
+                        style={{ width: `${parseFloat(talkTimeCEO) || 0}%` }}
+                      />
+                      <div 
+                        className="bg-violet-500 transition-all" 
+                        style={{ width: `${parseFloat(talkTimeSalesVP) || 0}%` }}
+                      />
+                    </div>
+                    <div className="flex justify-between text-xs mt-1">
+                      <span className="text-cyan-500">■ CEO</span>
+                      <span className="text-violet-500">■ Sales VP</span>
+                    </div>
+                  </div>
+                )}
+                
+                {/* Sentiment Visualization */}
+                {(sentimentPositive || sentimentNegative) && (
+                  <div>
+                    <div className="flex justify-between text-xs mb-1">
+                      <span className="text-slate-400">Sentiment Balance</span>
+                      <span className="text-slate-500 font-mono">
+                        +{sentimentPositive}% / -{sentimentNegative}%
+                      </span>
+                    </div>
+                    <div className="h-2 bg-slate-800 rounded-full overflow-hidden flex">
+                      <div 
+                        className="bg-green-500 transition-all" 
+                        style={{ width: `${parseFloat(sentimentPositive) || 0}%` }}
+                      />
+                      <div 
+                        className="bg-red-500 transition-all" 
+                        style={{ width: `${parseFloat(sentimentNegative) || 0}%` }}
+                      />
+                    </div>
+                    <div className="flex justify-between text-xs mt-1">
+                      <span className="text-green-500">■ Positive</span>
+                      <span className="text-red-500">■ Negative</span>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+            
+            {/* Transcript Input */}
+            <div className="mb-3">
+              <label className="text-xs text-slate-400 mb-1 block">Transcript Text</label>
+              <textarea
+                value={transcript}
+                onChange={(e) => setTranscript(e.target.value)}
+                className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded text-sm focus:outline-none focus:ring-1 focus:ring-cyan-500 h-32 resize-none font-mono"
+                placeholder="Paste kickoff call transcript here..."
+              />
+            </div>
+            
+            {/* Meeting Telemetry Inputs */}
+            <div className="mb-3 space-y-2">
+              <div className="text-xs text-slate-400 uppercase tracking-wider mb-2">Meeting Telemetry (from Fireflies.ai)</div>
+              
+              {/* Sentiment Split */}
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <label className="text-xs text-slate-500 mb-1 block">Positive %</label>
+                  <input
+                    type="number"
+                    min="0"
+                    max="100"
+                    value={sentimentPositive}
+                    onChange={(e) => setSentimentPositive(e.target.value)}
+                    className="w-full px-2 py-1 bg-slate-950 border border-slate-700 rounded text-sm focus:outline-none focus:ring-1 focus:ring-green-500 font-mono"
+                    placeholder="0"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs text-slate-500 mb-1 block">Negative %</label>
+                  <input
+                    type="number"
+                    min="0"
+                    max="100"
+                    value={sentimentNegative}
+                    onChange={(e) => setSentimentNegative(e.target.value)}
+                    className="w-full px-2 py-1 bg-slate-950 border border-slate-700 rounded text-sm focus:outline-none focus:ring-1 focus:ring-red-500 font-mono"
+                    placeholder="0"
+                  />
+                </div>
+              </div>
+              
+              {/* Talk Time Ratio */}
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <label className="text-xs text-slate-500 mb-1 block">CEO Talk Time %</label>
+                  <input
+                    type="number"
+                    min="0"
+                    max="100"
+                    value={talkTimeCEO}
+                    onChange={(e) => setTalkTimeCEO(e.target.value)}
+                    className="w-full px-2 py-1 bg-slate-950 border border-slate-700 rounded text-sm focus:outline-none focus:ring-1 focus:ring-cyan-500 font-mono"
+                    placeholder="0"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs text-slate-500 mb-1 block">Sales VP Talk Time %</label>
+                  <input
+                    type="number"
+                    min="0"
+                    max="100"
+                    value={talkTimeSalesVP}
+                    onChange={(e) => setTalkTimeSalesVP(e.target.value)}
+                    className="w-full px-2 py-1 bg-slate-950 border border-slate-700 rounded text-sm focus:outline-none focus:ring-1 focus:ring-violet-500 font-mono"
+                    placeholder="0"
+                  />
+                </div>
+              </div>
+              
+              {/* Key Topics */}
+              <div>
+                <label className="text-xs text-slate-500 mb-1 block">Key Topics (comma-separated)</label>
+                <input
+                  type="text"
+                  value={keyTopics}
+                  onChange={(e) => setKeyTopics(e.target.value)}
+                  className="w-full px-2 py-1 bg-slate-950 border border-slate-700 rounded text-sm focus:outline-none focus:ring-1 focus:ring-cyan-500 font-mono"
+                  placeholder="e.g., product, pricing, customer pain, competition"
+                />
+              </div>
+            </div>
             
             <button
               onClick={handleAgent1}
