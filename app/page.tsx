@@ -274,59 +274,23 @@ export default function Home() {
           <div className="grid md:grid-cols-3 gap-6">
             {/* Agent 1: The Listener */}
             <ForensicScanCard delay={0}>
-              <div className="mb-6">
-                <div className="text-sm font-mono text-accent-cyan uppercase tracking-wider mb-2">Agent 1</div>
-                <div className="text-2xl font-bold font-mono text-white mb-4">The Listener</div>
-                <div className="h-px bg-gradient-to-r from-accent-cyan to-transparent mb-4"></div>
-              </div>
-              <div className="space-y-4">
-                <div>
-                  <div className="text-xs font-mono text-slate-500 uppercase tracking-wider mb-1">Role</div>
-                  <p className="text-sm text-slate-300 leading-relaxed">Ingests stakeholder interviews</p>
-                </div>
-                <div>
-                  <div className="text-xs font-mono text-slate-500 uppercase tracking-wider mb-1">Output</div>
-                  <p className="text-sm text-slate-300 leading-relaxed">Extracts sentiment clusters and identifies the "Hidden Friction" between CEO belief and Sales reality.</p>
-                </div>
-              </div>
+              <div className="text-sm font-mono text-accent-cyan uppercase tracking-wider mb-2">Agent 1</div>
+              <div className="text-2xl font-bold font-mono text-white mb-4">The Listener</div>
+              <div className="h-px bg-gradient-to-r from-accent-cyan to-transparent"></div>
             </ForensicScanCard>
 
             {/* Agent 2: The Spy */}
             <ForensicScanCard delay={0.15}>
-              <div className="mb-6">
-                <div className="text-sm font-mono text-accent-violet uppercase tracking-wider mb-2">Agent 2</div>
-                <div className="text-2xl font-bold font-mono text-white mb-4">The Spy</div>
-                <div className="h-px bg-gradient-to-r from-accent-violet to-transparent mb-4"></div>
-              </div>
-              <div className="space-y-4">
-                <div>
-                  <div className="text-xs font-mono text-slate-500 uppercase tracking-wider mb-1">Role</div>
-                  <p className="text-sm text-slate-300 leading-relaxed">Audits the external perimeter</p>
-                </div>
-                <div>
-                  <div className="text-xs font-mono text-slate-500 uppercase tracking-wider mb-1">Output</div>
-                  <p className="text-sm text-slate-300 leading-relaxed">A forensic scan of every keyword, ad, and pricing model your top 3 competitors are running right now.</p>
-                </div>
-              </div>
+              <div className="text-sm font-mono text-accent-violet uppercase tracking-wider mb-2">Agent 2</div>
+              <div className="text-2xl font-bold font-mono text-white mb-4">The Spy</div>
+              <div className="h-px bg-gradient-to-r from-accent-violet to-transparent"></div>
             </ForensicScanCard>
 
             {/* Agent 3: The Analyst */}
             <ForensicScanCard delay={0.3}>
-              <div className="mb-6">
-                <div className="text-sm font-mono text-white uppercase tracking-wider mb-2">Agent 3</div>
-                <div className="text-2xl font-bold font-mono text-white mb-4">The Analyst</div>
-                <div className="h-px bg-gradient-to-r from-white to-transparent mb-4"></div>
-              </div>
-              <div className="space-y-4">
-                <div>
-                  <div className="text-xs font-mono text-slate-500 uppercase tracking-wider mb-1">Role</div>
-                  <p className="text-sm text-slate-300 leading-relaxed">Crunches the raw data</p>
-                </div>
-                <div>
-                  <div className="text-xs font-mono text-slate-500 uppercase tracking-wider mb-1">Output</div>
-                  <p className="text-sm text-slate-300 leading-relaxed">Performs CRM autopsy to identify win/loss patterns, deal size trends, and sales cycle bottlenecks—revealing where revenue is leaking.</p>
-                </div>
-              </div>
+              <div className="text-sm font-mono text-white uppercase tracking-wider mb-2">Agent 3</div>
+              <div className="text-2xl font-bold font-mono text-white mb-4">The Analyst</div>
+              <div className="h-px bg-gradient-to-r from-white to-transparent"></div>
             </ForensicScanCard>
           </div>
 
