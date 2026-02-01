@@ -529,6 +529,107 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Scope Boundary - Architecture vs. Interior Design */}
+      <section className="py-16 md:py-24 px-4 md:px-6 lg:px-8 bg-slate-950 border-y border-slate-800">
+        <div className="max-w-4xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-3xl md:text-5xl font-bold mb-4">
+              Architecture <span className="text-slate-600">vs.</span> Interior Design
+            </h2>
+            <p className="text-xl text-slate-400">We build the blueprints; we don't pour the concrete.</p>
+          </motion.div>
+
+          <div className="space-y-6">
+            <ForensicScanCard delay={0}>
+              <div className="space-y-4 text-slate-300 leading-relaxed">
+                <p className="text-lg">
+                  The Refactor Sprint delivers the <span className="text-accent-cyan font-semibold">Strategy</span>, 
+                  the <span className="text-accent-cyan font-semibold">Narrative Core</span>, and 
+                  the <span className="text-accent-cyan font-semibold">Remediation Roadmap</span>.
+                </p>
+                <p className="text-lg">
+                  It does <span className="text-red-500 font-semibold">not</span> include logo design, final ad production, or web coding.
+                </p>
+                <div className="pt-6 mt-6 border-t border-slate-700">
+                  <p className="text-2xl font-bold text-white mb-3">Why?</p>
+                  <p className="text-lg italic">
+                    Because you cannot paint the walls if the foundation is cracked. We fix the foundation first.
+                  </p>
+                </div>
+              </div>
+            </ForensicScanCard>
+
+            {/* What You Get vs. What You Don't */}
+            <div className="grid md:grid-cols-2 gap-6">
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                className="bg-accent-cyan/10 border border-accent-cyan rounded-xl p-6"
+              >
+                <div className="flex items-center gap-3 mb-4">
+                  <CheckCircle className="w-6 h-6 text-accent-cyan" />
+                  <h3 className="text-xl font-bold text-white">What You Get</h3>
+                </div>
+                <ul className="space-y-2 text-slate-300">
+                  <li className="flex items-start gap-2">
+                    <span className="text-accent-cyan mt-1">→</span>
+                    <span>Strategic Positioning</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-accent-cyan mt-1">→</span>
+                    <span>Revenue Architecture</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-accent-cyan mt-1">→</span>
+                    <span>Narrative Framework</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-accent-cyan mt-1">→</span>
+                    <span>90-Day Roadmap</span>
+                  </li>
+                </ul>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                className="bg-slate-900 border border-slate-700 rounded-xl p-6"
+              >
+                <div className="flex items-center gap-3 mb-4">
+                  <XCircle className="w-6 h-6 text-slate-500" />
+                  <h3 className="text-xl font-bold text-white">What You Don't</h3>
+                </div>
+                <ul className="space-y-2 text-slate-400">
+                  <li className="flex items-start gap-2">
+                    <span className="text-slate-600 mt-1">✕</span>
+                    <span>Logo Design</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-slate-600 mt-1">✕</span>
+                    <span>Ad Production</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-slate-600 mt-1">✕</span>
+                    <span>Website Development</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-slate-600 mt-1">✕</span>
+                    <span>Copywriting Services</span>
+                  </li>
+                </ul>
+              </motion.div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* CTA Section */}
       <section id="book" className="py-20 md:py-32 px-4 md:px-6 lg:px-8 relative overflow-hidden bg-slate-950">
         <div className="absolute inset-0 bg-gradient-to-r from-accent-cyan/10 to-accent-violet/10"></div>
@@ -664,107 +765,6 @@ export default function Home() {
                     </div>
                   </div>
                 </div>
-              </motion.div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Scope Boundary - Architecture vs. Interior Design */}
-      <section className="py-16 md:py-24 px-4 md:px-6 lg:px-8 bg-slate-950 border-y border-slate-800">
-        <div className="max-w-4xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-3xl md:text-5xl font-bold mb-4">
-              Architecture <span className="text-slate-600">vs.</span> Interior Design
-            </h2>
-            <p className="text-xl text-slate-400">We build the blueprints; we don't pour the concrete.</p>
-          </motion.div>
-
-          <div className="space-y-6">
-            <ForensicScanCard delay={0}>
-              <div className="space-y-4 text-slate-300 leading-relaxed">
-                <p className="text-lg">
-                  The Refactor Sprint delivers the <span className="text-accent-cyan font-semibold">Strategy</span>, 
-                  the <span className="text-accent-cyan font-semibold">Narrative Core</span>, and 
-                  the <span className="text-accent-cyan font-semibold">Remediation Roadmap</span>.
-                </p>
-                <p className="text-lg">
-                  It does <span className="text-red-500 font-semibold">not</span> include logo design, final ad production, or web coding.
-                </p>
-                <div className="pt-6 mt-6 border-t border-slate-700">
-                  <p className="text-2xl font-bold text-white mb-3">Why?</p>
-                  <p className="text-lg italic">
-                    Because you cannot paint the walls if the foundation is cracked. We fix the foundation first.
-                  </p>
-                </div>
-              </div>
-            </ForensicScanCard>
-
-            {/* What You Get vs. What You Don't */}
-            <div className="grid md:grid-cols-2 gap-6">
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                className="bg-accent-cyan/10 border border-accent-cyan rounded-xl p-6"
-              >
-                <div className="flex items-center gap-3 mb-4">
-                  <CheckCircle className="w-6 h-6 text-accent-cyan" />
-                  <h3 className="text-xl font-bold text-white">What You Get</h3>
-                </div>
-                <ul className="space-y-2 text-slate-300">
-                  <li className="flex items-start gap-2">
-                    <span className="text-accent-cyan mt-1">→</span>
-                    <span>Strategic Positioning</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-accent-cyan mt-1">→</span>
-                    <span>Revenue Architecture</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-accent-cyan mt-1">→</span>
-                    <span>Narrative Framework</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-accent-cyan mt-1">→</span>
-                    <span>90-Day Roadmap</span>
-                  </li>
-                </ul>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                className="bg-slate-900 border border-slate-700 rounded-xl p-6"
-              >
-                <div className="flex items-center gap-3 mb-4">
-                  <XCircle className="w-6 h-6 text-slate-500" />
-                  <h3 className="text-xl font-bold text-white">What You Don't</h3>
-                </div>
-                <ul className="space-y-2 text-slate-400">
-                  <li className="flex items-start gap-2">
-                    <span className="text-slate-600 mt-1">✕</span>
-                    <span>Logo Design</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-slate-600 mt-1">✕</span>
-                    <span>Ad Production</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-slate-600 mt-1">✕</span>
-                    <span>Website Development</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-slate-600 mt-1">✕</span>
-                    <span>Copywriting Services</span>
-                  </li>
-                </ul>
               </motion.div>
             </div>
           </div>
