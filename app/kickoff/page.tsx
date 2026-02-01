@@ -298,8 +298,18 @@ export default function KickoffDeck() {
       <div className="w-[70%] flex flex-col border-r border-slate-800">
         {/* Top Navigation Bar */}
         <div className="bg-slate-900 border-b border-slate-800 px-8 py-4 flex items-center justify-between">
-          <div className="text-sm font-mono text-slate-400">
-            Refactor Sprint: Day 1 Executive Deposition
+          <div className="flex items-center gap-4">
+            <a
+              href="/app"
+              className="text-slate-400 hover:text-cyan-500 transition-colors text-sm font-mono flex items-center gap-2"
+              title="Return to Command Center"
+            >
+              ← Command Center
+            </a>
+            <div className="text-slate-700">|</div>
+            <div className="text-sm font-mono text-slate-400">
+              Refactor Sprint: Day 1 Executive Deposition
+            </div>
           </div>
           
           {/* Countdown Timer */}
