@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import { Lock, Eye, EyeOff, Download, ExternalLink, Calendar, FileText, Upload } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Lock, Eye, EyeOff, Download, ExternalLink, Calendar, FileText, Upload, ChevronDown, ChevronRight } from "lucide-react";
 import { toast, Toaster } from "sonner";
 
 interface Sprint {
@@ -15,6 +15,10 @@ interface Sprint {
   presentation_slug: string;
 }
 
+interface GroupedSprints {
+  [clientName: string]: Sprint[];
+}
+
 export default function ArchivePage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState("");
@@ -24,6 +28,7 @@ export default function ArchivePage() {
   const [sprints, setSprints] = useState<Sprint[]>([]);
   const [loadingSprints, setLoadingSprints] = useState(false);
   const [downloadingId, setDownloadingId] = useState<string | null>(null);
+  const [expandedClients, setExpandedClients] = useState<Set<string>>(new Set());
 
   const CORRECT_PASSWORD = "popcorn";
 
@@ -57,6 +62,9 @@ export default function ArchivePage() {
       const data = await response.json();
       if (data.success) {
         setSprints(data.sprints);
+        // Auto-expand all clients initially
+        const allClients = new Set(data.sprints.map((s: Sprint) => s.client_name));
+        setExpandedClients(allClients);
       } else {
         toast.error("Failed to load sprints");
       }
@@ -65,6 +73,30 @@ export default function ArchivePage() {
     }
     setLoadingSprints(false);
   };
+
+  const toggleClient = (clientName: string) => {
+    setExpandedClients(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(clientName)) {
+        newSet.delete(clientName);
+      } else {
+        newSet.add(clientName);
+      }
+      return newSet;
+    });
+  };
+
+  // Group sprints by client
+  const groupedSprints: GroupedSprints = sprints.reduce((acc, sprint) => {
+    if (!acc[sprint.client_name]) {
+      acc[sprint.client_name] = [];
+    }
+    acc[sprint.client_name].push(sprint);
+    return acc;
+  }, {} as GroupedSprints);
+
+  // Sort clients alphabetically
+  const sortedClients = Object.keys(groupedSprints).sort();
 
   const handleDownload = async (sprintId: string, clientName: string) => {
     setDownloadingId(sprintId);
@@ -277,75 +309,123 @@ export default function ArchivePage() {
               </a>
             </div>
           ) : (
-            <div className="space-y-4">
-              {sprints.map((sprint) => (
-                <motion.div
-                  key={sprint.id}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="bg-slate-900 border border-slate-800 rounded-xl p-6 hover:border-slate-700 transition-all"
-                >
-                  <div className="flex items-start justify-between gap-4">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-3 mb-2">
-                        <h3 className="text-2xl font-bold">{sprint.client_name}</h3>
-                        {sprint.sprint_name && (
-                          <span className="px-3 py-1 bg-cyan-500/10 text-cyan-500 rounded-full text-sm font-mono">
-                            {sprint.sprint_name}
-                          </span>
+            <div className="space-y-6">
+              {sortedClients.map((clientName) => {
+                const clientSprints = groupedSprints[clientName];
+                const isExpanded = expandedClients.has(clientName);
+                const sprintCount = clientSprints.length;
+
+                return (
+                  <div key={clientName} className="border border-slate-800 rounded-xl overflow-hidden">
+                    {/* Client Header - Clickable */}
+                    <button
+                      onClick={() => toggleClient(clientName)}
+                      className="w-full bg-slate-900 hover:bg-slate-850 transition-all p-6 flex items-center justify-between"
+                    >
+                      <div className="flex items-center gap-4">
+                        {isExpanded ? (
+                          <ChevronDown className="w-6 h-6 text-cyan-500" />
+                        ) : (
+                          <ChevronRight className="w-6 h-6 text-slate-500" />
                         )}
-                      </div>
-                      <div className="flex items-center gap-4 text-sm text-slate-400">
-                        <div className="flex items-center gap-2">
-                          <Calendar className="w-4 h-4" />
-                          Created: {new Date(sprint.created_at).toLocaleDateString()}
+                        <div className="text-left">
+                          <h3 className="text-2xl font-bold text-slate-100">{clientName}</h3>
+                          <p className="text-sm text-slate-500 mt-1">
+                            {sprintCount} {sprintCount === 1 ? 'sprint' : 'sprints'}
+                          </p>
                         </div>
-                        {sprint.updated_at && sprint.updated_at !== sprint.created_at && (
-                          <div className="flex items-center gap-2">
-                            Updated: {new Date(sprint.updated_at).toLocaleDateString()}
+                      </div>
+                      <span className="text-xs text-slate-500 font-mono">
+                        {isExpanded ? 'Click to collapse' : 'Click to expand'}
+                      </span>
+                    </button>
+
+                    {/* Sprint List - Collapsible */}
+                    <AnimatePresence>
+                      {isExpanded && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: 'auto', opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.3 }}
+                          className="overflow-hidden"
+                        >
+                          <div className="bg-slate-950 p-4 space-y-3">
+                            {clientSprints.map((sprint) => (
+                              <motion.div
+                                key={sprint.id}
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                className="bg-slate-900 border border-slate-800 rounded-lg p-5 hover:border-slate-700 transition-all"
+                              >
+                                <div className="flex items-start justify-between gap-4">
+                                  <div className="flex-1">
+                                    <div className="flex items-center gap-3 mb-3">
+                                      {sprint.sprint_name && (
+                                        <span className="px-3 py-1 bg-cyan-500/10 text-cyan-500 rounded-full text-sm font-mono font-semibold">
+                                          {sprint.sprint_name}
+                                        </span>
+                                      )}
+                                      <span className={`px-2 py-1 rounded text-xs font-mono ${
+                                        sprint.status === 'completed' ? 'bg-green-500/10 text-green-500' :
+                                        sprint.status === 'draft' ? 'bg-amber-500/10 text-amber-500' :
+                                        'bg-slate-700 text-slate-400'
+                                      }`}>
+                                        {sprint.status}
+                                      </span>
+                                    </div>
+                                    <div className="flex items-center gap-4 text-sm text-slate-400">
+                                      <div className="flex items-center gap-2">
+                                        <Calendar className="w-4 h-4" />
+                                        Created: {new Date(sprint.created_at).toLocaleDateString()}
+                                      </div>
+                                      {sprint.updated_at && sprint.updated_at !== sprint.created_at && (
+                                        <div className="flex items-center gap-2">
+                                          Updated: {new Date(sprint.updated_at).toLocaleDateString()}
+                                        </div>
+                                      )}
+                                    </div>
+                                  </div>
+
+                                  <div className="flex items-center gap-2">
+                                    <button
+                                      onClick={() => handleLoadSprint(sprint.id, sprint.client_name, sprint.sprint_name)}
+                                      className="px-4 py-2 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold rounded-lg transition-all flex items-center gap-2 text-sm"
+                                      title="Load this sprint into Command Center"
+                                    >
+                                      <Upload className="w-4 h-4" />
+                                      Load
+                                    </button>
+
+                                    <button
+                                      onClick={() => handleDownload(sprint.id, sprint.client_name)}
+                                      disabled={downloadingId === sprint.id}
+                                      className="px-4 py-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 rounded-lg transition-all flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+                                      title="Download ZIP with all files"
+                                    >
+                                      <Download className="w-4 h-4" />
+                                      {downloadingId === sprint.id ? 'Downloading...' : 'ZIP'}
+                                    </button>
+
+                                    <a
+                                      href={`/presentation/${sprint.presentation_slug}`}
+                                      className="px-4 py-2 bg-violet-500 hover:bg-violet-400 text-slate-950 font-bold rounded-lg transition-all flex items-center gap-2 text-sm"
+                                      title="View web presentation"
+                                    >
+                                      <ExternalLink className="w-4 h-4" />
+                                      Present
+                                    </a>
+                                  </div>
+                                </div>
+                              </motion.div>
+                            ))}
                           </div>
-                        )}
-                        <div className="flex items-center gap-2">
-                          <span className={`px-2 py-1 rounded text-xs font-mono ${
-                            sprint.status === 'completed' ? 'bg-green-500/10 text-green-500' :
-                            sprint.status === 'draft' ? 'bg-amber-500/10 text-amber-500' :
-                            'bg-slate-700 text-slate-400'
-                          }`}>
-                            {sprint.status}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center gap-2">
-                      <button
-                        onClick={() => handleLoadSprint(sprint.id, sprint.client_name, sprint.sprint_name)}
-                        className="px-4 py-2 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold rounded-lg transition-all flex items-center gap-2"
-                      >
-                        <Upload className="w-4 h-4" />
-                        Load
-                      </button>
-
-                      <button
-                        onClick={() => handleDownload(sprint.id, sprint.client_name)}
-                        disabled={downloadingId === sprint.id}
-                        className="px-4 py-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 rounded-lg transition-all flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                      >
-                        <Download className="w-4 h-4" />
-                        {downloadingId === sprint.id ? 'Downloading...' : 'ZIP'}
-                      </button>
-
-                      <a
-                        href={`/presentation/${sprint.presentation_slug}`}
-                        className="px-4 py-2 bg-violet-500 hover:bg-violet-400 text-slate-950 font-bold rounded-lg transition-all flex items-center gap-2"
-                      >
-                        <ExternalLink className="w-4 h-4" />
-                        Present
-                      </a>
-                    </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </div>
-                </motion.div>
-              ))}
+                );
+              })}
             </div>
           )}
         </motion.div>
