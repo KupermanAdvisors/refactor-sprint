@@ -348,7 +348,7 @@ export default function Home() {
                 {
                   day: "01",
                   title: "Ingestion",
-                  description: "We download the truth. Diagnostic tools connect to your CRM and Ad accounts to map the 'As-Is' reality.",
+                  description: "We download the truth. Diagnostic tools ingest your reality (clean APIs or messy CSVs) to map the 'As-Is' state.",
                 },
                 {
                   day: "02",
