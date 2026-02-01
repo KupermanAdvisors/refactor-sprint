@@ -253,7 +253,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* The Methodology - Human + Machine */}
+      {/* The Methodology - Computational Strategy */}
       <section className="py-16 md:py-32 px-4 md:px-6 lg:px-8 bg-slate-900">
         <div className="max-w-6xl mx-auto">
           <motion.div
@@ -264,56 +264,92 @@ export default function Home() {
           >
             <h2 className="text-3xl md:text-5xl font-bold mb-4">
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-cyan to-accent-violet">
-                Augmented Strategy
+                Computational Strategy
               </span>
             </h2>
-            <p className="text-xl text-slate-400">Human + Machine working in concert.</p>
+            <p className="text-xl text-slate-400">Three autonomous agents. One revenue truth.</p>
           </motion.div>
 
-          {/* Flowchart with Forensic Scan Effect */}
-          <div className="grid md:grid-cols-2 gap-8">
+          {/* Agent Roster - 3 Column Grid */}
+          <div className="grid md:grid-cols-3 gap-6">
+            {/* Agent 1: The Listener */}
             <ForensicScanCard delay={0}>
-              <div className="flex items-center gap-4 mb-6">
-                <Zap className="w-10 h-10 text-accent-cyan" />
-                <div>
-                  <div className="text-sm font-mono text-accent-cyan uppercase tracking-wider">Speed</div>
-                  <div className="text-2xl font-bold">The AI Stack</div>
-                </div>
+              <div className="mb-6">
+                <div className="text-sm font-mono text-accent-cyan uppercase tracking-wider mb-2">Agent 1</div>
+                <div className="text-2xl font-bold font-mono text-white mb-4">The Listener</div>
+                <div className="h-px bg-gradient-to-r from-accent-cyan to-transparent mb-4"></div>
               </div>
-              <p className="text-lg text-slate-400 leading-relaxed mb-6">
-                Ingests competitor ads, audits CRM data, and extracts stakeholder sentiment instantly.
-              </p>
-              <div className="space-y-2">
-                {["Market Intelligence", "CRM Forensics", "Sentiment Analysis"].map((item, i) => (
-                  <div key={i} className="flex items-center gap-2 text-sm">
-                    <CheckCircle className="w-4 h-4 text-accent-cyan" />
-                    <span className="text-slate-300">{item}</span>
-                  </div>
-                ))}
+              <div className="space-y-4">
+                <div>
+                  <div className="text-xs font-mono text-slate-500 uppercase tracking-wider mb-1">Role</div>
+                  <p className="text-sm text-slate-300 leading-relaxed">Ingests stakeholder interviews</p>
+                </div>
+                <div>
+                  <div className="text-xs font-mono text-slate-500 uppercase tracking-wider mb-1">Output</div>
+                  <p className="text-sm text-slate-300 leading-relaxed">Extracts sentiment clusters and identifies the "Hidden Friction" between CEO belief and Sales reality.</p>
+                </div>
               </div>
             </ForensicScanCard>
 
-            <ForensicScanCard delay={0.2}>
+            {/* Agent 2: The Spy */}
+            <ForensicScanCard delay={0.15}>
+              <div className="mb-6">
+                <div className="text-sm font-mono text-accent-violet uppercase tracking-wider mb-2">Agent 2</div>
+                <div className="text-2xl font-bold font-mono text-white mb-4">The Spy</div>
+                <div className="h-px bg-gradient-to-r from-accent-violet to-transparent mb-4"></div>
+              </div>
+              <div className="space-y-4">
+                <div>
+                  <div className="text-xs font-mono text-slate-500 uppercase tracking-wider mb-1">Role</div>
+                  <p className="text-sm text-slate-300 leading-relaxed">Audits the external perimeter</p>
+                </div>
+                <div>
+                  <div className="text-xs font-mono text-slate-500 uppercase tracking-wider mb-1">Output</div>
+                  <p className="text-sm text-slate-300 leading-relaxed">A forensic scan of every keyword, ad, and pricing model your top 3 competitors are running right now.</p>
+                </div>
+              </div>
+            </ForensicScanCard>
+
+            {/* Agent 3: The Analyst */}
+            <ForensicScanCard delay={0.3}>
+              <div className="mb-6">
+                <div className="text-sm font-mono text-white uppercase tracking-wider mb-2">Agent 3</div>
+                <div className="text-2xl font-bold font-mono text-white mb-4">The Analyst</div>
+                <div className="h-px bg-gradient-to-r from-white to-transparent mb-4"></div>
+              </div>
+              <div className="space-y-4">
+                <div>
+                  <div className="text-xs font-mono text-slate-500 uppercase tracking-wider mb-1">Role</div>
+                  <p className="text-sm text-slate-300 leading-relaxed">Crunches the raw data</p>
+                </div>
+                <div>
+                  <div className="text-xs font-mono text-slate-500 uppercase tracking-wider mb-1">Output</div>
+                  <p className="text-sm text-slate-300 leading-relaxed">Mathematically correlates your "Closed/Lost" deal data with your ad spend to find the cash leaks.</p>
+                </div>
+              </div>
+            </ForensicScanCard>
+          </div>
+
+          {/* Human Oversight Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mt-12 md:mt-16"
+          >
+            <ForensicScanCard delay={0.45}>
               <div className="flex items-center gap-4 mb-6">
                 <Target className="w-10 h-10 text-accent-violet" />
                 <div>
                   <div className="text-sm font-mono text-accent-violet uppercase tracking-wider">Wisdom</div>
-                  <div className="text-2xl font-bold">The Senior Lead</div>
+                  <div className="text-2xl font-bold">The Architect</div>
                 </div>
               </div>
-              <p className="text-lg text-slate-400 leading-relaxed mb-6">
-                Identifies the strategic disconnects, defines the narrative, and prioritizes the fix.
+              <p className="text-lg text-slate-400 leading-relaxed">
+                25+ years of experience interpreting the data, connecting the contradictions, and translating the math into a strategy humans can execute.
               </p>
-              <div className="space-y-2">
-                {["Pattern Recognition", "Strategic Framing", "Priority Roadmap"].map((item, i) => (
-                  <div key={i} className="flex items-center gap-2 text-sm">
-                    <CheckCircle className="w-4 h-4 text-accent-violet" />
-                    <span className="text-slate-300">{item}</span>
-                  </div>
-                ))}
-              </div>
             </ForensicScanCard>
-          </div>
+          </motion.div>
         </div>
       </section>
 
@@ -348,7 +384,7 @@ export default function Home() {
                 {
                   day: "01",
                   title: "Ingestion",
-                  description: "We download the truth. Diagnostic tools ingest your reality (clean APIs or messy CSVs) to map the 'As-Is' state.",
+                  description: "We ingest the truth. Whether via direct API connections or messy CSV dumps, we map the mathematical reality of your revenue engine—stripping away opinion and anecdote.",
                 },
                 {
                   day: "02",
@@ -358,7 +394,7 @@ export default function Home() {
                 {
                   day: "03",
                   title: "The Patch",
-                  description: "On Thursday, you don't get a deck. You get a login. Access your password-protected Remediation Blueprint—a living dashboard showing your Executive Scorecard, Forensic Evidence, and interactive 90-Day Roadmap.",
+                  description: "The Reveal & Handover. We don't just email you a PDF. We host a 60-minute 'Reveal Briefing' to walk through the forensics. Then, we grant you access to your Remediation Console—a password-protected, living dashboard of your new strategy.",
                 },
               ].map((item, index) => (
                 <motion.div
@@ -394,6 +430,47 @@ export default function Home() {
                   </div>
                 </motion.div>
               ))}
+
+              {/* THE GOTCHA - Strategic Disconnect Visual */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true, amount: 0.5 }}
+                transition={{ 
+                  delay: 1.2,
+                  duration: 0.8,
+                  ease: [0.25, 0.1, 0.25, 1]
+                }}
+                className="grid md:grid-cols-12 gap-4 md:gap-6 items-start relative mt-12"
+              >
+                {/* Connection node - pulsing red warning */}
+                <div className="absolute left-4 md:left-8 lg:left-24 top-6 md:top-8 w-4 h-4 -ml-1.5 bg-red-500 rounded-full shadow-lg shadow-red-500/50 z-10 animate-pulse" />
+                
+                <div className="hidden md:block md:col-span-2">
+                  <div className="text-5xl lg:text-7xl font-bold text-red-500 opacity-20">
+                    ⚠
+                  </div>
+                </div>
+                
+                <div className="md:col-span-10 ml-10 md:ml-0">
+                  <div className="border-2 border-red-500 rounded-xl p-6 md:p-8 bg-red-500/5 backdrop-blur-sm">
+                    <h3 className="text-2xl md:text-3xl font-bold mb-4 text-red-500">We Find the Strategic Disconnect</h3>
+                    <p className="text-base md:text-lg text-slate-300 mb-6 italic">The exact moment where your CEO's belief contradicts your Customer's reality.</p>
+                    
+                    {/* Split-screen comparison */}
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div className="bg-slate-900 border border-slate-700 rounded-lg p-4">
+                        <div className="text-xs font-mono text-accent-cyan uppercase tracking-wider mb-2">CEO Belief</div>
+                        <p className="text-slate-200 font-semibold text-sm md:text-base">"We are a premium platform."</p>
+                      </div>
+                      <div className="bg-slate-900 border border-red-500 rounded-lg p-4">
+                        <div className="text-xs font-mono text-red-500 uppercase tracking-wider mb-2">Data Reality</div>
+                        <p className="text-slate-200 font-semibold text-sm md:text-base">"60% of lost deals cite 'Price' as the primary factor."</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
             </div>
           </div>
         </div>
@@ -587,6 +664,107 @@ export default function Home() {
                     </div>
                   </div>
                 </div>
+              </motion.div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Scope Boundary - Architecture vs. Interior Design */}
+      <section className="py-16 md:py-24 px-4 md:px-6 lg:px-8 bg-slate-950 border-y border-slate-800">
+        <div className="max-w-4xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-3xl md:text-5xl font-bold mb-4">
+              Architecture <span className="text-slate-600">vs.</span> Interior Design
+            </h2>
+            <p className="text-xl text-slate-400">We build the blueprints; we don't pour the concrete.</p>
+          </motion.div>
+
+          <div className="space-y-6">
+            <ForensicScanCard delay={0}>
+              <div className="space-y-4 text-slate-300 leading-relaxed">
+                <p className="text-lg">
+                  The Refactor Sprint delivers the <span className="text-accent-cyan font-semibold">Strategy</span>, 
+                  the <span className="text-accent-cyan font-semibold">Narrative Core</span>, and 
+                  the <span className="text-accent-cyan font-semibold">Remediation Roadmap</span>.
+                </p>
+                <p className="text-lg">
+                  It does <span className="text-red-500 font-semibold">not</span> include logo design, final ad production, or web coding.
+                </p>
+                <div className="pt-6 mt-6 border-t border-slate-700">
+                  <p className="text-2xl font-bold text-white mb-3">Why?</p>
+                  <p className="text-lg italic">
+                    Because you cannot paint the walls if the foundation is cracked. We fix the foundation first.
+                  </p>
+                </div>
+              </div>
+            </ForensicScanCard>
+
+            {/* What You Get vs. What You Don't */}
+            <div className="grid md:grid-cols-2 gap-6">
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                className="bg-accent-cyan/10 border border-accent-cyan rounded-xl p-6"
+              >
+                <div className="flex items-center gap-3 mb-4">
+                  <CheckCircle className="w-6 h-6 text-accent-cyan" />
+                  <h3 className="text-xl font-bold text-white">What You Get</h3>
+                </div>
+                <ul className="space-y-2 text-slate-300">
+                  <li className="flex items-start gap-2">
+                    <span className="text-accent-cyan mt-1">→</span>
+                    <span>Strategic Positioning</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-accent-cyan mt-1">→</span>
+                    <span>Revenue Architecture</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-accent-cyan mt-1">→</span>
+                    <span>Narrative Framework</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-accent-cyan mt-1">→</span>
+                    <span>90-Day Roadmap</span>
+                  </li>
+                </ul>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                className="bg-slate-900 border border-slate-700 rounded-xl p-6"
+              >
+                <div className="flex items-center gap-3 mb-4">
+                  <XCircle className="w-6 h-6 text-slate-500" />
+                  <h3 className="text-xl font-bold text-white">What You Don't</h3>
+                </div>
+                <ul className="space-y-2 text-slate-400">
+                  <li className="flex items-start gap-2">
+                    <span className="text-slate-600 mt-1">✕</span>
+                    <span>Logo Design</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-slate-600 mt-1">✕</span>
+                    <span>Ad Production</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-slate-600 mt-1">✕</span>
+                    <span>Website Development</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-slate-600 mt-1">✕</span>
+                    <span>Copywriting Services</span>
+                  </li>
+                </ul>
               </motion.div>
             </div>
           </div>
