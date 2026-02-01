@@ -455,12 +455,12 @@ export default function Home() {
                 <div className="md:col-span-10 ml-10 md:ml-0">
                   <div className="border-2 border-red-500 rounded-xl p-6 md:p-8 bg-red-500/5 backdrop-blur-sm">
                     <h3 className="text-2xl md:text-3xl font-bold mb-4 text-red-500">We Find the Strategic Disconnect</h3>
-                    <p className="text-base md:text-lg text-slate-300 mb-6 italic">The exact moment where your CEO's belief contradicts your Customer's reality.</p>
+                    <p className="text-base md:text-lg text-slate-300 mb-6 italic">The exact moment where your perception contradicts your Customer's reality.</p>
                     
                     {/* Split-screen comparison */}
                     <div className="grid md:grid-cols-2 gap-4">
                       <div className="bg-slate-900 border border-slate-700 rounded-lg p-4">
-                        <div className="text-xs font-mono text-accent-cyan uppercase tracking-wider mb-2">CEO Belief</div>
+                        <div className="text-xs font-mono text-accent-cyan uppercase tracking-wider mb-2">Belief</div>
                         <p className="text-slate-200 font-semibold text-sm md:text-base">"We are a premium platform."</p>
                       </div>
                       <div className="bg-slate-900 border border-red-500 rounded-lg p-4">
